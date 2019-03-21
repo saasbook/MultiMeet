@@ -22,9 +22,9 @@ before_script:
 # DO NOT expose that value here!
 #- gpg --passphrase $KEY -d -o config/application.yml config/application.yml.asc
 # install CodeClimate test reporter and tell it we are starting a test run
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > $CCTR
-- chmod +x $CCTR
-- $CCTR before-build
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- ./cc-test-reporter before-build
 
 script:
 # setup the test database, including any seed data
@@ -32,14 +32,14 @@ script:
 # insert here any other steps needed (load other sample data, etc) before starting tests
 # run RSpec tests, and capture coverage
 - bundle exec rspec
-- $CCTR format-coverage --output coverage/codeclimate.$SUITE.json
+- ./cc-test-reporter format-coverage --output coverage/codeclimate.$SUITE.json
 # run Cucumber scenarios, and capture coverage. --strict means undefined steps result in a failure.
 - bundle exec cucumber --strict
-- $CCTR format-coverage --output coverage/codeclimate.$SUITE.json
+- ./cc-test-reporter format-coverage --output coverage/codeclimate.$SUITE.json
 
 after_script:
 # combine coverage from all suites, and upload to CodeClimate
-- $CCTR sum-coverage coverage/codeclimate.*.json | $CCTR upload-coverage
-- $CCTR after-build --exit-code $TRAVIS_TEST_RESULT
+- ./cc-test-reporter sum-coverage coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage
+- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 # just in case, be paranoid and remove sensitive config info file
 # - rm -f config/application.yml
