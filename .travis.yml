@@ -40,7 +40,7 @@ script:
 after_script:
   # combine coverage from all suites, and upload to CodeClimate
   # - ./cc-test-reporter sum-coverage -i coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage
-  - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
+  - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json                # Sum both coverage parts into coverage/codeclimate.json
   - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage -r $CC_TEST_REPORTER_ID; fi  # Upload coverage/codeclimate.json
 
   # after-build used only for single test suites
