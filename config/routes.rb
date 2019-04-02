@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  get 'projects/index'
+  get 'projects/index', :as => 'projects'
+  
+  get 'signup' => 'users#new', :as => 'new_user'
+  post 'users' => 'users#create'
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   # The priority is based upon order of creation: first created -> highest priority.
@@ -9,6 +12,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'projects#index'
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
