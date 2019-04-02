@@ -4,8 +4,9 @@
     <div class="jumbotron">
         <% if flash[:message] %>
            <div class="alert alert-danger">
+             <strong>Errors</strong>
              <% flash[:message].each do |msg| %>
-                 <div class="error"><%= msg %></div>
+                 <div class="error">- <%= msg %></div>
              <% end %>
            </div>
         <% end %>
@@ -40,6 +41,7 @@
                         <%= f.password_field :password, placeholder: "Password", class: "form-control" %>
                     </div>
                     <div class="col">
+                        <%= f.password_field :password_confirmation, placeholder: "Confirm Password", class: "form-control" %>
                     </div>
                 </div>  
             </div>

@@ -11,12 +11,12 @@ class UsersController < ApplicationController
             redirect_to projects_path
         else
             flash[:message] = @user.errors.full_messages
-            redirect_to new_user_path
+            redirect_to signup_path
         end
     end
     
     private
     def user_params
-        params.require(:user).permit(:first_name, :last_name, :username, :email, :password)
+        params.require(:user).permit(:first_name, :last_name, :username, :email, :password, :password_confirmation)
     end
 end

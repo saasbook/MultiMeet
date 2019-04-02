@@ -1,0 +1,23 @@
+<%= stylesheet_link_tag "application" %>
+
+<div class="user-container">
+    <div class="jumbotron">
+        <% if flash[:danger] %>
+           <div class="alert alert-danger">
+             <div class="error"><%= flash[:danger] %></div>
+           </div>
+        <% end %>
+        
+        <h1>Log In</h1>
+        
+        <%= form_for(:session, url: login_path) do |f| %>
+            <div class="form-group">
+                <%= f.email_field :email, placeholder: "Email", class: "form-control"%>
+            </div>
+            <div class="form-group">
+                <%= f.password_field :password, placeholder: "Password", class: "form-control" %>
+            </div>
+            <%= f.submit "Log In", class:"btn btn-primary" %>
+        <% end %>
+    </div>
+</div>

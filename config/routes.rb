@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
+  get 'sessions/new'
+
   get 'projects/index', :as => 'projects'
   
-  get 'signup' => 'users#new', :as => 'new_user'
+  get 'signup' => 'users#new', :as => 'signup'
   post 'users' => 'users#create'
+  get 'login' => 'sessions#new', :as => 'login'
+  post 'login' => 'sessions#create'
+  delete 'logout' => 'sessions#destroy', :as => 'logout'
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   # The priority is based upon order of creation: first created -> highest priority.
