@@ -20,3 +20,6 @@
 
 # Ignore IDE styling files.
 .idea/*
+
+# Ignore rbenv
+.ruby-version
