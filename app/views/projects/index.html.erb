@@ -14,7 +14,7 @@
    <ul class="navbar-nav">
       <% if logged_in? %>
          <li class="nav-item dropdown mx-2">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <%= current_user.username %>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -34,14 +34,14 @@
 </nav>
 
 <% if logged_in? %>  
-   <div>Welcome to MultiMatch!</div>
-   <div>All Projects</div> 
+   <div class="mx-4 my-4"><strong>Welcome to MultiMatch!</strong></div>
+   <div class="project-header mx-4 my-4"><strong>All Projects</strong></div> 
 <% else %>
-   <div>
+   <div class="mx-4 my-4">
       <p>
       No projects available.
       <br></br>
-      Please login or sign up for a new account!
+      Please <strong>login</strong> or <strong>sign up</strong> for a new account!
    </p>
    </div>
 <% end %>
