@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190402023510) do
+ActiveRecord::Schema.define(version: 20190402052719) do
 
   create_table "participant_ranked_times", id: false, force: :cascade do |t|
     t.string  "participant_email"
@@ -38,15 +38,15 @@ ActiveRecord::Schema.define(version: 20190402023510) do
     t.string  "project_name"
   end
 
-  create_table "users", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "obf_user_id"
-    t.string  "first_name"
-    t.string  "last_name"
-    t.string  "email"
-    t.string  "username"
-    t.string  "password"
-    t.boolean "is_admin"
+  create_table "users", force: :cascade do |t|
+    t.string   "username"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "password_digest"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "password_confirmation"
   end
 
 end
