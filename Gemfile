@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 ruby '2.4.0'
 gem 'rails', '4.2.10'
+gem 'bcrypt', '~> 3.1.7'
+gem 'bootstrap'
 # Use sqlite3 as the database for Active Record
 # Use SCSS for stylesheets
 group :production do
