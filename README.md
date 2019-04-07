@@ -7,7 +7,7 @@
 
 ## Dependencies
 - Ruby 2.4.0
-- Rails 2.4.10
+- Rails 4.2.10
 
 ## Development Quickstart
 1. clone repo: `git clone https://github.com/Aakup/MultiMeet-1`
@@ -20,10 +20,10 @@
 ## Development Guidelines
 - develop on your own branch of this repo, call it by your <name/feature> e.g. kevin/projects-list
 - write your own tests for your own feature
-- before you push: make sure tests run via `rspec` and `cucumber features`
+- write down cucumber scenarios before coding
+- before you push: make sure tests run via `bundle exec rspec` and `bundle exec cucumber features`
 - push the branch, then PR to master, and wait for a code review
-- only merge if travis passes for PR
-- in case of merge conflict: follow Github instructions for resolving merge conflict.
+- in case of merge conflict: pull from master, resolve locally, push to your branch.
 
 - TODO: add linter
 

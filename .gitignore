@@ -23,3 +23,6 @@
 
 # Ignore rbenv
 .ruby-version
+
+# OSX
+.DS_Store

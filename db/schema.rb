@@ -14,9 +14,9 @@
 ActiveRecord::Schema.define(version: 20190402023510) do
 
   create_table "participant_ranked_times", force: :cascade do |t|
-    t.float  "ranking"
-    t.string "participant_id", null: false
-    t.string "project_id",     null: false
+    t.integer "ranking"
+    t.string  "participant_id",  null: false
+    t.string  "project_time_id", null: false
   end
 
   create_table "participants", force: :cascade do |t|
@@ -26,15 +26,20 @@ ActiveRecord::Schema.define(version: 20190402023510) do
 
   add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email", unique: true
 
+  create_table "project_dates", force: :cascade do |t|
+    t.date    "date",       null: false
+    t.integer "project_id", null: false
+  end
+
   create_table "project_times", force: :cascade do |t|
-    t.datetime "start_time", null: false
-    t.datetime "end_time"
-    t.datetime "[]"
+    t.integer  "project_date_id", null: false
+    t.datetime "start_time",      null: false
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string "project_name", null: false
-    t.string "username",     null: false
+    t.string  "project_name", null: false
+    t.string  "username",     null: false
+    t.integer "duration"
   end
 
   create_table "users", force: :cascade do |t|
