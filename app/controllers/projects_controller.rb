@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
     if project_name.nil? or project_name.empty?
       flash[:message] = "Invalid project name"
       redirect_to new_project_path and return
-    elsif !Project.where(project_name: project_name).blank?
+    elsif !Project.where(project_name: project_name, username: @project.username).blank?
       flash[:message] = "Project name already exists"
       redirect_to new_project_path and return
     end
