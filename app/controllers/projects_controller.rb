@@ -5,14 +5,25 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params)
-    @project.update(project_name: :project_name)
-    @project.update(username: :username)
+    @project = Project.new(project_params.merge(:username => current_user.username))
+    project_name = @project.project_name
 
-    # print(@project)
+    byebug
 
-    if @project.save
-      flash[:success] = "Successfully created #{@project.project_name}!"
+    if session[:message]
+      flash[:message] = session[:message]
+    end
+
+    if project_name.nil? or project_name.empty?
+      session[:message] = "Invalid project name"
+      redirect_to new_project_path and return
+    elsif !Project.where(project_name: project_name).blank?
+      session[:message] = "Project name already exists"
+      redirect_to new_project_path and return
+    end
+
+    if @project.save!
+      flash[:success] = "Successfully created project #{project_name}"
       redirect_to projects_path
     else
       flash[:message] = @user.errors.full_messages
@@ -22,15 +33,13 @@ class ProjectsController < ApplicationController
 
   def index
     @user = current_user
-    print(@user)
     if @user
-      print(@user)
       @projects = Project.where(username: @user.username)
     end
   end
 
   private
   def project_params
-    params.require(:project).permit(:project_name, :username)
+    params.require(:project).permit(:project_name)
   end
 end

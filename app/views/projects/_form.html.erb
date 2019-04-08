@@ -1,22 +1,31 @@
-<%= form_for(@project) do |f| %>
-  <% if @project.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+<div class="user-container">
+  <div class="jumbotron">
 
-      <ul>
-      <% @project.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    <h2>New Project</h2>
+    <p>Enter the name of your new project here</p>
+
+    <%= form_for(@project) do |f| %>
+      <% if @project.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+          <ul>
+          <% @project.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% else %>
+      <div class="form-group">
+        <%= f.text_field :project_name, placeholder: "Project Name", class: "form-control"%>
+      </div>
+
       <% end %>
-      </ul>
-    </div>
-  <% else %>
-  <div class="form-group">
-    <%= f.text_field :project_name, placeholder: "Project Name", class: "form-control"%>
-  </div>
 
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Create Project" %>
+      <div class="actions">
+        <%= f.submit "Create Project" %>
+        <%= f.button link_to 'Back', projects_path %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

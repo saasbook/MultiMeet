@@ -39,7 +39,7 @@
   <div class="project-header mx-4 my-4">All Projects</div>
   <% if @projects %>
     <!--<ul>-->
-    <button><%= link_to 'New Project', new_project_path %></button>
+    <button class="btn btn-outline-primary"><%= link_to 'New Project', new_project_path %></button>
     <% @projects.each do |project| %>
       <li><%= project.project_name %></li>
     <% end %>
