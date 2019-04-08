@@ -8,17 +8,11 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params.merge(:username => current_user.username))
     project_name = @project.project_name
 
-    byebug
-
-    if session[:message]
-      flash[:message] = session[:message]
-    end
-
     if project_name.nil? or project_name.empty?
-      session[:message] = "Invalid project name"
+      flash[:message] = "Invalid project name"
       redirect_to new_project_path and return
     elsif !Project.where(project_name: project_name).blank?
-      session[:message] = "Project name already exists"
+      flash[:message] = "Project name already exists"
       redirect_to new_project_path and return
     end
 
