@@ -7,50 +7,44 @@
    </div>
 <% end %>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-   <ul class="navbar-nav mr-auto">
-      <a class="navbar-brand" href="/">MultiMeet</a>
-   </ul>
-   <ul class="navbar-nav">
-      <% if logged_in? %>
-         <li class="nav-item dropdown mx-2">
-            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               <%= current_user.username %>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-               <a class="dropdown-item" href="#">Projects</a>
-               <a class="dropdown-item" href="#">Something</a>
-               <div class="dropdown-divider"></div>
-               <a class="dropdown-item" href="#">Settings</a>
-            </div>
-         </li>
-         
-         <li class="nav-item"><%= link_to 'Log Out', logout_path, method: :delete, class: "btn btn-outline-primary" %></li>
-      <% else %>
-         <li class="nav-item mx-2"><%= link_to 'Log In', login_path, class: "btn btn-outline-primary" %></li>
-         <li class="nav-item mx-2"><%= link_to 'Sign Up', signup_path, class: "btn btn-outline-primary" %></li>
-      <% end %>
-   </ul>
-</nav>
+<%= render 'navbar' %>
 
 <% if logged_in? %>
   <div class="mx-4 my-4">
     <p>Welcome to MultiMatch!</p></div>
   <div class="project-header mx-4 my-4">All Projects</div>
   <% if @projects %>
-    <!--<ul>-->
-    <%= link_to 'New Project', new_project_path, class:"btn btn-primary" %>
-    <% @projects.each do |project| %>
-      <li><%= project.project_name %></li>
-    <% end %>
-    <!--</ul>-->
+    <div class="mx-4 my-4">
+      <%= link_to 'New Project', new_project_path, class:"btn btn-primary" %>
+      <br>
+
+      <table style="width:50%">
+        <thead>
+          <tr>
+            <th>Project Name</th>
+            <th>Project Number</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @projects.each do |project| %>
+          <tr>
+            <td> <%= project.project_name %> </td>
+            <td> <%= project.id %> </td>
+            <td> Edit Link </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
   <% end %>
   </div>
 <% else %>
   <div class="mx-4 my-4">
     <p>
       No projects available.
-      <br></br>
+      <br>
       Please <strong>login</strong> or <strong>sign up</strong> for a new account!
     </p>
   </div>
