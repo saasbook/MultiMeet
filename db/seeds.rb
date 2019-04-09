@@ -31,7 +31,7 @@ end
 projects_list = [
   [1, "CS 61A Sections", "jdoe", 60],
   [2, "169 Meeting Times", "afox", 45],
-  [3, "Midterm Grading Sessions", "afox", 120],
+  [3, "Midterm Grading Sessions", "asfox", 120],
   [4, "EE 16A Lab Sections", "jdoe", 180]
 ]
 
