@@ -1,22 +1,16 @@
 Rails.application.routes.draw do
 
-  get 'projects/index', :as => 'projects'
-  post 'projects/index' => 'projects#create'
-
   get 'signup' => 'users#new', :as => 'signup'
   post 'users' => 'users#create'
   get 'login' => 'sessions#new', :as => 'login'
   post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy', :as => 'logout'
 
-  get 'new_project' => 'projects#new', :as => 'new_project'
-  post 'projects' => 'projects#create'
-
+  resources :projects
+  
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
-  # resources :projects
 
   # You can have the root of your site routed with "root"
   root 'projects#index'
