@@ -1,10 +1,30 @@
 Rails.application.routes.draw do
 
-  get 'signup' => 'users#new', :as => 'signup'
-  post 'users' => 'users#create'
-  get 'login' => 'sessions#new', :as => 'login'
+  # PROJECTS routes:
+  ## PARTICIPANTS are copied from the ROSTER selected at project creation.
+  ## RANKING is the time ranking selected by the specific participant.
+  ## TIMES includes each datetime for the matching.
+  ## MATCHING is the final matching.
+
+  resources :projects do
+    resources :participants do
+      resource :ranking
+    end
+    resources :times
+    resource :matching
+  end
+
+  # USERS routes: currently admins, may also include participants
+  resources :users
+
+  # ROSTERS routes: all rosters created by each user
+  resources :rosters
+
+  # Custom singular routes or reroutes
   post 'login' => 'sessions#create'
+  get 'login' => 'sessions#new'
   delete 'logout' => 'sessions#destroy', :as => 'logout'
+  get 'signup' => 'users#new', :as => 'signup'
 
   resources :projects
   
@@ -14,7 +34,6 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'projects#index'
-
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
