@@ -66,52 +66,39 @@ end
 ##################
 
 =begin
-example usage of joining project dates and times:
-
-Kevin@kevintekiair MultiMeet-1 (kevin/models-sample-data) $ rake db:seed
-Kevin@kevintekiair MultiMeet-1 (kevin/models-sample-data) $ rails db
-SQLite version 3.13.0 2016-05-18 10:57:30
-Enter ".help" for usage hints.
-sqlite> select project_id, start_time from project_dates
-   ...> join project_times
-   ...> on project_dates.id = project_times.project_date_id;
-1|2019-12-01 18:00:00.000000
-1|2019-12-01 21:00:00.000000
-1|2019-12-08 23:00:00.000000
-1|2019-12-09 00:00:00.000000
-2|2019-05-07 17:30:00.000000
-2|2019-05-07 08:30:00.000000
-2|2019-05-10 17:30:00.000000
-2|2019-05-10 08:30:00.000000
+We store both project dates and times in the project_times table.
+To differentiate, we use the boolean flag is_date (default false):
+- is_date: True  -> signifies a date
+- is_date: False -> signifies a time
 =end
 
 project_dates_list = [
   # CS 61A Sections
-  {id: 1, project_id: 1, date: Date.parse("Dec 1 2019")},
-  {id: 2, project_id: 1, date: Date.parse("Dec 8 2019")},
+  {id: 1, project_id: 1, date_time: Date.parse("Dec 1 2019"), is_date: true},
+  {id: 2, project_id: 1, date_time: Date.parse("Dec 8 2019"), is_date: true},
   # 169 Meeting Times
-  {id: 3, project_id: 2, date: Date.parse("May 7 2019")},
-  {id: 4, project_id: 2, date: Date.parse("May 10 2019")}
+  {id: 3, project_id: 2, date_time: Date.parse("May 7 2019"), is_date: true},
+  {id: 4, project_id: 2, date_time: Date.parse("May 10 2019"), is_date: true}
 ]
 
 project_dates_list.each do |project_date|
-  ProjectDate.create(project_date)
+  ProjectTime.create(project_date)
 end
 
 # seed Project Times
 project_times_list = [
   # CS 61A Sections Dec 1 2019
-  {id: 1, project_date_id: 1, start_time: Time.parse("Dec 1 2019 10:00 AM")},
-  {id: 2, project_date_id: 1, start_time: Time.parse("Dec 1 2019 1:00 PM")},
+  {id: 5, project_id: 1, date_time: Time.parse("Dec 1 2019 10:00 AM")},
+  {id: 6, project_id: 1, date_time: Time.parse("Dec 1 2019 1:00 PM")},
   # CS 61A Sections Dec 8 2019
-  {id: 3, project_date_id: 2, start_time: Time.parse("Dec 8 2019 3:00 PM")},
-  {id: 4, project_date_id: 2, start_time: Time.parse("Dec 8 2019 4:00 PM")},
+  {id: 7, project_id: 1, date_time: Time.parse("Dec 8 2019 3:00 PM")},
+  {id: 8, project_id: 1, date_time: Time.parse("Dec 8 2019 4:00 PM")},
   # 169 Meeting Times May 7 2019
-  {id: 5, project_date_id: 3, start_time: Time.parse("May 7 2019 10:30")},
-  {id: 6, project_date_id: 3, start_time: Time.parse("May 7 2019 1:30")},
+  {id: 9, project_id: 2, date_time: Time.parse("May 7 2019 10:30")},
+  {id: 10, project_id: 2, date_time: Time.parse("May 7 2019 1:30")},
   # 169 Meeting Times May 10 2019
-  {id: 7, project_date_id: 4, start_time: Time.parse("May 10 2019 10:30")},
-  {id: 8, project_date_id: 4, start_time: Time.parse("May 10 2019 1:30")}
+  {id: 11, project_id: 2, date_time: Time.parse("May 10 2019 10:30")},
+  {id: 12, project_id: 2, date_time: Time.parse("May 10 2019 1:30")}
 ]
 
 project_times_list.each do |project_time|
@@ -120,24 +107,24 @@ end
 
 ##################
 #
-# SEED PARTICIPANT RANKINGS
+# SEED RANKINGS
 #
 ##################
 
-project_rankings_list = [
+rankings_list = [
   # CS 61A Sections Dec 1 2019
   # Participant 1: adnan@berkeley.edu
-  {participant_id: 1, project_time_id: 1, ranking: 1},
-  {participant_id: 1, project_time_id: 2, ranking: 3},
-  {participant_id: 1, project_time_id: 3, ranking: 2},
-  {participant_id: 1, project_time_id: 4, ranking: 1},
+  {participant_id: 1, project_time_id: 5, ranking: 1},
+  {participant_id: 1, project_time_id: 6, ranking: 3},
+  {participant_id: 1, project_time_id: 7, ranking: 2},
+  {participant_id: 1, project_time_id: 8, ranking: 1},
   # Participant 2: awesometa@berkeley.edu
-  {participant_id: 2, project_time_id: 1, ranking: 0},
-  {participant_id: 2, project_time_id: 2, ranking: 1},
-  {participant_id: 2, project_time_id: 3, ranking: 2},
-  {participant_id: 2, project_time_id: 4, ranking: 3}
+  {participant_id: 2, project_time_id: 5, ranking: 0},
+  {participant_id: 2, project_time_id: 6, ranking: 1},
+  {participant_id: 2, project_time_id: 7, ranking: 2},
+  {participant_id: 2, project_time_id: 8, ranking: 3}
 ]
 
-project_rankings_list.each do |ranking|
-  ParticipantRankedTime.create(ranking)
+rankings_list.each do |ranking|
+  Ranking.create(ranking)
 end
