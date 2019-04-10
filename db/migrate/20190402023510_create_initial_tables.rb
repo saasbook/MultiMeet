@@ -21,11 +21,11 @@ class CreateInitialTables < ActiveRecord::Migration
     create_table :projects do |t|
       # default: t.primary_key :id => integer
       t.string :project_name, null: false
-      t.string :username, null: false
+      t.integer :user_id, null: false
       t.integer :duration
     end
 
-    # username => users.username
+    # user_id => users.id
     add_foreign_key :projects, :users,
                     column: :username, primary_key: :username
 

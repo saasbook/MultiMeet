@@ -29,14 +29,14 @@ end
 #
 ##################
 projects_list = [
-  [1, "CS 61A Sections", "jdoe", 60],
-  [2, "169 Meeting Times", "afox", 45],
-  [3, "Midterm Grading Sessions", "afox", 120],
-  [4, "EE 16A Lab Sections", "jdoe", 180]
+  [1, "CS 61A Sections", 2, 60], # jdoe
+  [2, "169 Meeting Times", 1, 45], # afox
+  [3, "Midterm Grading Sessions", 1, 120], # afox
+  [4, "EE 16A Lab Sections", 2, 180] # jdoe
 ]
 
-projects_list.each do |id, name, username, duration|
-  Project.create(id: id, project_name: name, username: username, duration: duration)
+projects_list.each do |id, name, user_id, duration|
+  Project.create(id: id, project_name: name, user_id: user_id, duration: duration)
 end
 
 ##################
