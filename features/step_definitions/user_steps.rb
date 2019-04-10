@@ -12,6 +12,15 @@ Given /^a registered user with the email "(.*)" with password "(.*)" exists$/ do
     :last_name => "Lee", :password => password, :password_confirmation => password)
 end
 
+Given /^a user with the email "(.*)" with password "(.*)" and with username "(.*)" exists$/ do |email, password, username|
+    User.create(:username => username, :email => email, :first_name => "Daniel",
+                :last_name => "Lee", :password => password, :password_confirmation => password)
+end
+
+Given /^a registered user with the username "(.*)" has a project named "(.*)"$/ do |username, project_name|
+  Project.create(:username => username, :project_name => project_name)
+end
+
 
 When /^I access the landing page$/ do
     get "/"
