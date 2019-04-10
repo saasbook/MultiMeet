@@ -13,6 +13,11 @@
 
 ActiveRecord::Schema.define(version: 20190402023510) do
 
+  create_table "matchings", force: :cascade do |t|
+    t.integer "project_id",  null: false
+    t.string  "output_json", null: false
+  end
+
   create_table "participants", force: :cascade do |t|
     t.integer "project_id", null: false
     t.string  "email",      null: false
@@ -33,7 +38,7 @@ ActiveRecord::Schema.define(version: 20190402023510) do
   end
 
   create_table "rankings", force: :cascade do |t|
-    t.integer "ranking"
+    t.integer "rank"
     t.integer "participant_id",  null: false
     t.integer "project_time_id", null: false
   end

@@ -57,17 +57,13 @@ class CreateInitialTables < ActiveRecord::Migration
       t.boolean :is_date, null: false, default: false
     end
 
-    # project_date_id => project_dates.id
-    add_foreign_key :project_times, :project_dates,
-                    column: :project_date_id, primary_key: :id
 
-
-    # PARTICIPANT_RANKED_TIMES
+    # RANKINGS
     # primary key: integer id
-    # foreign key: participants.id
-    #              project_times.id
+    # foreign key: participant_id
+    #              project_time_id
     create_table :rankings do |t|
-      t.integer :ranking
+      t.integer :rank
       t.integer :participant_id, null: false
       t.integer :project_time_id, null: false
     end
@@ -79,6 +75,18 @@ class CreateInitialTables < ActiveRecord::Migration
     add_foreign_key :rankings, :participants
     # project_time_id => project_times.id
     add_foreign_key :rankings, :project_times
+
+
+    # MATCHING
+    # primary key: integer id
+    # foreign key: participant_id
+    create_table :matchings do |t|
+      t.integer :project_id, null: false
+      t.string :output_json, null: false
+    end
+
+    # project_id => projects.id
+    add_foreign_key :matchings, :projects
   end
 end
 

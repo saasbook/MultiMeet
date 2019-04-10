@@ -1,10 +1,5 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
 
 ##################
 #
@@ -32,7 +27,8 @@ projects_list = [
   [1, "CS 61A Sections", 2, 60], # jdoe
   [2, "169 Meeting Times", 1, 45], # afox
   [3, "Midterm Grading Sessions", 1, 120], # afox
-  [4, "EE 16A Lab Sections", 2, 180] # jdoe
+  [4, "EE 16A Lab Sections", 2, 180], # jdoe
+  [5, "multimatch-121", 1, 30] # afox (for testing API)
 ]
 
 projects_list.each do |id, name, user_id, duration|
@@ -45,14 +41,20 @@ end
 #
 ##################
 participants_list = [
+    # CS 61A Sections
     {id: 1, project_id: 1, email: "adnan@berkeley.edu"},
     {id: 2, project_id: 1, email: "awesometa@berkeley.edu"},
     {id: 3, project_id: 1, email: "iteachforlife@berkeley.edu"},
     {id: 4, project_id: 1, email: "jackiechan@berkeley.edu"},
+    # 169 Meeting Times
     {id: 5, project_id: 2, email: "bobmarley@gmail.com"},
     {id: 6, project_id: 2, email: "johndoe@hotmail.com"},
     {id: 7, project_id: 2, email: "texasranger@ranch.org"},
     {id: 8, project_id: 2, email: "anju@berkeley.edu"},
+    # multimatch-121
+    {id: 9, project_id: 5, email: "person1@gmail.com"},
+    {id: 10, project_id: 5, email: "person2@gmail.com"},
+    {id: 11, project_id: 5, email: "person3@gmail.com"},
 ]
 
 participants_list.each do |participant|
@@ -87,18 +89,20 @@ end
 
 # seed Project Times
 project_times_list = [
-  # CS 61A Sections Dec 1 2019
+  # CS 61A Sections
   {id: 5, project_id: 1, date_time: Time.parse("Dec 1 2019 10:00 AM")},
   {id: 6, project_id: 1, date_time: Time.parse("Dec 1 2019 1:00 PM")},
-  # CS 61A Sections Dec 8 2019
   {id: 7, project_id: 1, date_time: Time.parse("Dec 8 2019 3:00 PM")},
   {id: 8, project_id: 1, date_time: Time.parse("Dec 8 2019 4:00 PM")},
-  # 169 Meeting Times May 7 2019
+  # 169 Meeting Times
   {id: 9, project_id: 2, date_time: Time.parse("May 7 2019 10:30")},
   {id: 10, project_id: 2, date_time: Time.parse("May 7 2019 1:30")},
-  # 169 Meeting Times May 10 2019
   {id: 11, project_id: 2, date_time: Time.parse("May 10 2019 10:30")},
-  {id: 12, project_id: 2, date_time: Time.parse("May 10 2019 1:30")}
+  {id: 12, project_id: 2, date_time: Time.parse("May 10 2019 1:30")},
+  # multimatch-121
+  {id: 13, project_id: 5, date_time: Time.parse("2019-03-22 13:00")},
+  {id: 14, project_id: 5, date_time: Time.parse("2019-03-22 14:00")},
+  {id: 15, project_id: 5, date_time: Time.parse("2019-03-22 15:00")}
 ]
 
 project_times_list.each do |project_time|
@@ -114,17 +118,72 @@ end
 rankings_list = [
   # CS 61A Sections Dec 1 2019
   # Participant 1: adnan@berkeley.edu
-  {participant_id: 1, project_time_id: 5, ranking: 1},
-  {participant_id: 1, project_time_id: 6, ranking: 3},
-  {participant_id: 1, project_time_id: 7, ranking: 2},
-  {participant_id: 1, project_time_id: 8, ranking: 1},
+  {participant_id: 1, project_time_id: 5, rank: 1},
+  {participant_id: 1, project_time_id: 6, rank: 3},
+  {participant_id: 1, project_time_id: 7, rank: 2},
+  {participant_id: 1, project_time_id: 8, rank: 1},
   # Participant 2: awesometa@berkeley.edu
-  {participant_id: 2, project_time_id: 5, ranking: 0},
-  {participant_id: 2, project_time_id: 6, ranking: 1},
-  {participant_id: 2, project_time_id: 7, ranking: 2},
-  {participant_id: 2, project_time_id: 8, ranking: 3}
+  {participant_id: 2, project_time_id: 5, rank: 0},
+  {participant_id: 2, project_time_id: 6, rank: 1},
+  {participant_id: 2, project_time_id: 7, rank: 2},
+  {participant_id: 2, project_time_id: 8, rank: 3},
+  # multimatch-121
+  {participant_id: 9, project_time_id: 14, rank: 1},
+  {participant_id: 9, project_time_id: 15, rank: 2},
+  {participant_id: 9, project_time_id: 13, rank: 3},
+  {participant_id: 10, project_time_id: 13, rank: 1},
+  {participant_id: 10, project_time_id: 15, rank: 2},
+  {participant_id: 10, project_time_id: 14, rank: 3},
+  {participant_id: 11, project_time_id: 13, rank: 1},
+  {participant_id: 11, project_time_id: 14, rank: 2},
+  {participant_id: 11, project_time_id: 15, rank: 3}
 ]
 
 rankings_list.each do |ranking|
   Ranking.create(ranking)
+end
+
+##################
+#
+# SEED MATCHINGS
+#
+##################
+
+=begin
+ - output_json is a string that stores the result returned
+   from calling the MultiMatch api endpoint.
+=end
+
+multimatch_121_output = {
+    "schedule": [
+        {
+            "event_name": "Person3-0",
+            "people_called": [
+                "Person3"
+            ],
+            "timestamp": "Fri, 22 Mar 2019 13:00:00 GMT"
+        },
+        {
+            "event_name": "Person1-0",
+            "people_called": [
+                "Person1"
+            ],
+            "timestamp": "Fri, 22 Mar 2019 14:00:00 GMT"
+        },
+        {
+            "event_name": "Person2-0",
+            "people_called": [
+                "Person2"
+            ],
+            "timestamp": "Fri, 22 Mar 2019 15:00:00 GMT"
+        }
+    ]
+}
+
+matchings_list = [
+  {project_id: 5, output_json: multimatch_121_output.to_json}
+]
+
+matchings_list.each do |matching|
+  Matching.create(matching)
 end
