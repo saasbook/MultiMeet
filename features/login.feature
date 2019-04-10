@@ -17,7 +17,7 @@ Feature: Login
         And I fill in "Password" with "hello"
         And I press "Log In"
         Then I should be on the login page
-        And I should see "Email or password is wrong."
+        And I should see "Login information is wrong."
         
     Scenario: User enters correct info and reaches projects page
         Given a registered user with the email "daniellee0228@berkeley.edu" with password "password" exists

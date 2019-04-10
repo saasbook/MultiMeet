@@ -11,8 +11,8 @@ class SessionsController < ApplicationController
       flash[:success] = "You have successfully logged in."
       redirect_to projects_path
     else
-      flash[:danger] = "Email or password is wrong."
-      redirect_to login_path
+      flash.now[:danger] = "Login information is wrong."
+      render 'new'
     end 
     
   end
