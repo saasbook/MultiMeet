@@ -26,18 +26,22 @@ class CreateInitialTables < ActiveRecord::Migration
     end
 
     # user_id => users.id
-    add_foreign_key :projects, :users,
-                    column: :username, primary_key: :username
+    add_foreign_key :projects, :users
 
 
     # PARTICIPANTS
+    # primary key: integer id
+    # foreign key: project_id => projects.id
     create_table :participants do |t|
       # default: t.primary_key :id => integer
-      t.integer :project_id, null: false # :projects.id
+      t.integer :project_id, null: false
       t.string :email, null: false
     end
 
-    # for (project_id, email) as PKEY
+    # project_id => projects.id
+    add_foreign_key :participants, :projects
+
+    # for (project_id, email) unique
     add_index :participants, [:project_id, :email], unique: true
 
 
