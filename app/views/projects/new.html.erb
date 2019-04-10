@@ -1,0 +1,43 @@
+<%= stylesheet_link_tag "application" %>
+
+<% if flash[:message] %>
+  <div class="alert alert-danger alert-dismissible show" role="alert">
+    <span class="error"><%= flash[:message] %></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+<%= render 'navbar' %>
+
+<div class="user-container">
+  <div class="jumbotron">
+
+    <h4>Enter the name of your new project here</h4>
+
+    <%= form_for(@project) do |f| %>
+      <% if @project.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+          <ul>
+            <% @project.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% else %>
+        <div class="form-group">
+          <%= f.text_field :project_name, placeholder: "Project Name", class: "form-control"%>
+        </div>
+
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "Create Project", class:"btn btn-primary"  %>
+        <%= link_to 'Back', projects_path, class:"btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

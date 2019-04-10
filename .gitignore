@@ -26,3 +26,6 @@
 
 # OSX
 .DS_Store
+
+# Ignore byebug debugger output
+.byebug_history
