@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :set_project, only: [:show, :edit]
 
   def new
     @project = Project.new
@@ -18,13 +19,14 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params.merge(:username => current_user.username))
+    @project = current_user.projects.new(project_params)
     project_name = @project.project_name
 
     if project_name.nil? or project_name.empty?
       flash[:message] = "Invalid project name"
       redirect_to new_project_path and return
-    elsif !Project.where(project_name: project_name, username: @project.username).blank?
+    elsif !Project.where(
+        project_name: project_name, user_id: @project.user_id).blank?
       flash[:message] = "Project name already exists"
       redirect_to new_project_path and return
     end
@@ -41,12 +43,25 @@ class ProjectsController < ApplicationController
   def index
     @user = current_user
     if @user
-      @projects = Project.where(username: @user.username)
+      @projects = @user.projects # Project.where(user_id: @user.id)
     end
   end
 
   private
+<<<<<<< HEAD
   def project_params
     params.require(:project).permit(:project_name)
   end
 end
+=======
+    # Use callbacks to share common setup or constraints between actions.
+    def set_project
+      # print(params)
+      @project = Project.find(params[:id])
+    end
+
+    def project_params
+      params.require(:project).permit(:project_name)
+    end
+end
+>>>>>>> 3d1ce400373ae3cc872c60166c5b3045af4c7ea0
