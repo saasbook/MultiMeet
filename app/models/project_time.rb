@@ -1,4 +1,4 @@
 class ProjectTime < ActiveRecord::Base
-  belongs_to :project_date
-  has_many :participant_ranked_time
+  belongs_to :project
+  has_many :rankings
 end

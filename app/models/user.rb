@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
               format: {with: VALID_EMAIL_REGEX}
     has_secure_password
     
-    validates :password_confirmation, presence: true;
+    validates :password_confirmation, presence: true
 
     # projects
-    has_many :project
+    has_many :projects
 end
