@@ -1,5 +1,5 @@
 class MatchingsController < ApplicationController
-  before_action :set_matching, only: [:show, :edit, :update, :destroy]
+  before_action :set_matching_and_project, only: [:show, :edit, :update, :destroy]
 
   # GET /project/:project_id/matching
   def show
@@ -48,9 +48,10 @@ class MatchingsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_matching
+    def set_matching_and_project
       # print(params)
       @matching = Matching.find_by(params.slice(:project_id))
+      @project = Project.find(params[:project_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

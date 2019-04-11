@@ -1,10 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_project_matching_path(@matching.project) %> |
 
 <% if @matching %>
   <%= @matching.output_json %>
+  <%= link_to 'Edit', edit_project_matching_path(@matching.project) %>
 <% else %>
   No matching for this project.
 <% end %>
-<%= link_to 'Back', project_path(@matching.project) %>
+
+<%= link_to 'Back', project_path(@project) %>
