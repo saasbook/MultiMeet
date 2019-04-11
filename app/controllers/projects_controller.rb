@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :set_project, only: [:show, :edit]
 
   def new
     @project = Project.new
@@ -34,7 +35,13 @@ class ProjectsController < ApplicationController
   end
 
   private
-  def project_params
-    params.require(:project).permit(:project_name)
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_project
+      # print(params)
+      @project = Project.find(params[:id])
+    end
+
+    def project_params
+      params.require(:project).permit(:project_name)
+    end
 end
