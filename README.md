@@ -10,7 +10,7 @@
 - Rails 4.2.10
 
 ## Development Quickstart
-1. clone repo: `git clone https://github.com/Aakup/MultiMeet-1`
+1. clone repo: `git clone https://github.com/Aakup/MultiMeet`
 2. `cd MultiMatch`
 3. install packages: `bundle install --without production`
 4. setup db: `rake db:setup db:migrate`
