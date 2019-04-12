@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190402052719) do
+ActiveRecord::Schema.define(version: 20190402023510) do
 
-  create_table "participant_ranked_times", force: :cascade do |t|
-    t.integer "ranking"
-    t.string  "participant_id",  null: false
-    t.string  "project_time_id", null: false
+  create_table "matchings", force: :cascade do |t|
+    t.integer "project_id",  null: false
+    t.string  "output_json", null: false
   end
 
   create_table "participants", force: :cascade do |t|
@@ -26,21 +25,25 @@ ActiveRecord::Schema.define(version: 20190402052719) do
 
   add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email", unique: true
 
-  create_table "project_dates", force: :cascade do |t|
-    t.date    "date",       null: false
-    t.integer "project_id", null: false
-  end
-
   create_table "project_times", force: :cascade do |t|
-    t.integer  "project_date_id", null: false
-    t.datetime "start_time",      null: false
+    t.integer  "project_id",                 null: false
+    t.datetime "date_time",                  null: false
+    t.boolean  "is_date",    default: false, null: false
   end
 
   create_table "projects", force: :cascade do |t|
     t.string  "project_name", null: false
-    t.string  "username",     null: false
+    t.integer "user_id",      null: false
     t.integer "duration"
   end
+
+  create_table "rankings", force: :cascade do |t|
+    t.integer "rank"
+    t.integer "participant_id",  null: false
+    t.integer "project_time_id", null: false
+  end
+
+  add_index "rankings", ["participant_id", "project_time_id"], name: "index_rankings_on_participant_id_and_project_time_id", unique: true
 
   create_table "users", force: :cascade do |t|
     t.string   "username"

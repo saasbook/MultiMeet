@@ -18,7 +18,8 @@ Given /^a user with the email "(.*)" with password "(.*)" and with username "(.*
 end
 
 Given /^a registered user with the username "(.*)" has a project named "(.*)"$/ do |username, project_name|
-  Project.create(:username => username, :project_name => project_name)
+  user = User.find_by(:username => username)
+  user.projects.create(:project_name => project_name)
 end
 
 
