@@ -24,6 +24,7 @@
           <tr>
             <th>Project Name</th>
             <th>Project Number</th>
+            <th>Show</th>
             <th>Edit</th>
           </tr>
         </thead>
@@ -32,7 +33,8 @@
           <tr>
             <td> <%= project.project_name %> </td>
             <td> <%= project.id %> </td>
-            <td> Edit Link </td>
+            <td> <%= link_to 'Show', project %> </td>
+            <td> <%= link_to 'Edit', edit_project_path(project) %> </td>
           </tr>
         <% end %>
         </tbody>

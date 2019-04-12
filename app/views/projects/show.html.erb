@@ -1,4 +1,11 @@
 <p id="notice"><%= notice %></p>
 
+<ul>
+  <li>Name: <%= @project.project_name %></li>
+  <li>Participants: <%= @project.participants.to_json %></li>
+  <li>Duration (minutes): <%= @project.duration %></li>
+  <li><%= link_to 'Matching', project_matching_path(@project) %></li>
+</ul>
+
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>
