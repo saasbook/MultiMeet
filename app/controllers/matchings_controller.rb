@@ -3,18 +3,23 @@ class MatchingsController < ApplicationController
 
   # GET /project/:project_id/matching
   def show
+    if @matching
+      @is_matching = true
+      @parsed_matching = JSON.parse(@matching.output_json)
+    end
+    @project_user_id = @project.user_id
   end
 
-  # GET /project/:project_id/matching/new
+  # GET /projects/:project_id/matching/new
   def new
     @matching = Matching.new
   end
 
-  # GET /project/:project_id/matching/edit
+  # GET /projects/:project_id/matching/edit
   def edit
   end
 
-  # POST /project/:project_id/matching
+  # POST /projects/:project_id/matching
   def create
     @matching = Matching.new(matching_params)
 
@@ -27,7 +32,7 @@ class MatchingsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /project/:project_id/matching
+  # PATCH/PUT /projects/:project_id/matching
   def update
     respond_to do |format|
       if @matching.update(matching_params)
@@ -38,7 +43,7 @@ class MatchingsController < ApplicationController
     end
   end
 
-  # DELETE /project/:project_id/matching
+  # DELETE /projects/:project_id/matching
   def destroy
     @matching.destroy
     respond_to do |format|

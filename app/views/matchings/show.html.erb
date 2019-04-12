@@ -1,8 +1,27 @@
 <p id="notice"><%= notice %></p>
 
 
-<% if @matching %>
-  <%= @matching.output_json %>
+<% if @is_matching %>
+
+  
+<table style="width:100%">
+	<tbody>
+	<tr>
+		<td><b>Event</b></td>
+		<td><b>People</b></td>
+		<td><b>Time</b></td>
+	</tr>
+
+  <% @parsed_matching["schedule"].each do |event|  %>
+    <tr>
+      <td><%= event["event_name"] %></td>
+      <td><%= event["people_called"].join(', ') %> </td>
+      <td><%= event["timestamp"] %></td>
+    </tr>
+
+  <% end %>
+	</tbody>
+</table>
   <%= link_to 'Edit', edit_project_matching_path(@matching.project) %>
 <% else %>
   No matching for this project.
