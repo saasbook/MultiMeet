@@ -1,13 +1,14 @@
 /* global $ */
 /* global displayDate */
 
-
+/* Datepicker */
 $(document).on('turbolinks:load', 
     function (){
         $('.datepicker').datepicker({todayHighlight: true, multidate: true, format: 'yyyy-mm-dd'});
     }
 );
 
+/* Show highlighted datepicker dates */
 $(document).on('turbolinks:load',
     function(){
         $('.datepicker').datepicker().on('changeDate', function(e){
@@ -19,31 +20,84 @@ $(document).on('turbolinks:load',
                 var unformatted = dateArray[i]
                 var niceFormat = formatDate(unformatted);
                 var element = "#"+unformatted;
-                
                 if ($(element).length == 0){
-                    var dateDiv = document.createElement("div");
-                    dateDiv.setAttribute('id', unformatted);
-                    var textNode = document.createTextNode(niceFormat);
-                    dateDiv.appendChild(textNode);
-                    $('#times-table').append(dateDiv);
+                    addDiv(unformatted);
                 }
-                
                 formatted += niceFormat + '\n'
             }
             
             deleteDiv(dateArray);
-            
-            if (formatted.includes("undefined")) {
-                $(".dates-chosen").text("No dates chosen.");
-                $("#times-table").empty();
-            }
-            else{
-                $(".dates-chosen").text(formatted);
-            }
+            $(".dates-chosen").text(formatted);
         })
     }
 );
 
+/* Add Button functionality */
+$(document).on('click', '.addbutton', function(){
+    var parent_id = $(this).parent().attr('id');
+    var element = document.getElementById(parent_id);
+    var strid = "#"+parent_id;
+    var entry = createTimeEntry();
+    element.append(entry);
+    console.log($(strid).children());
+    console.log($(strid).children().last());
+    $(strid).children().last().append('<span><button type="button" class="deletebutton btn btn-danger btn-sm">Delete Timeslot</button></span>');
+});
+
+/* Delete Button functionality */
+$(document).on('click', '.deletebutton', function(){
+    var parent = $(this).parent().parent();
+    parent.remove();
+});
+
+
+/* Time Entry Row */
+function createTimeEntry(){
+    var startInput = document.createElement("input");
+    startInput.type = "time";
+    startInput.value = "12:00"
+    startInput.step = "900"
+    var endInput = document.createElement("input")
+    endInput.type = "time";
+    endInput.value = "13:00"
+    endInput.step = "900"
+    
+    var outerDiv = document.createElement("div");
+    var startTime = document.createElement("span");
+    var endTime = document.createElement("span");
+    var startText = document.createTextNode("Start Time ");
+    var endText = document.createTextNode("End Time ");
+    startTime.appendChild(startText);
+    endTime.appendChild(endText);
+    startTime.append(startInput);
+    endTime.append(endInput)
+    outerDiv.appendChild(startTime);
+    outerDiv.appendChild(endTime);
+    return outerDiv
+}
+    
+/* Add a date div */
+function addDiv(divId){
+    var niceFormat = formatDate(divId);
+    var dateDiv = document.createElement("div");
+    dateDiv.setAttribute('id', divId);
+    dateDiv.setAttribute('class', "times-table-date");
+    
+    var addButton = document.createElement("button");
+    var addText = document.createTextNode("Add Timeslot");
+    addButton.setAttribute("class", "addbutton btn btn-primary btn-sm");
+    addButton.appendChild(addText);
+    
+    var outerDiv = createTimeEntry();
+    
+    var textNode = document.createTextNode(niceFormat);
+    dateDiv.appendChild(textNode);
+    dateDiv.appendChild(addButton);
+    dateDiv.appendChild(outerDiv);
+    $('#times-table').append(dateDiv);
+}
+
+/* Delete a date div */
 function deleteDiv(dateArray){
     var copy = $("#times-table").children("div");
     copy.each(function(){
@@ -54,6 +108,7 @@ function deleteDiv(dateArray){
         }
     });
 }
+
 
 function formatDate(date){
     var monthNames = [
@@ -70,18 +125,5 @@ function formatDate(date){
    var month = parseInt(date.split("-")[1], 10)
    var year = date.split("-")[0]
    
-   return dayNames[dayInt] + " , " + monthNames[month] + ' ' + day
+   return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day
 }
-
-// $(document).on('turbolinks:load', 
-// function (){
-//     document.getElementById("very-unique").addEventListener('input', displayDate);
-//     function displayDate(e){
-//         const output = document.getElementById("put-times");
-//         output.textContent = e.srcElement.value;
-//     }
-// });
-
-
-
-
