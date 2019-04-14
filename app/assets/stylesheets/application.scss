@@ -20,6 +20,10 @@
     font-size: 14px;
 }
 
+.dates-chosen {
+  white-space: pre
+}
+
 .datepicker-inline {
     width: 80%;
 }
@@ -46,6 +50,18 @@
 .jumbotron{
     padding-top: 3rem;
     padding-bottom: 3rem;
+}
+
+#billboard{
+    display: flex;
+}
+
+.dates-left-side{
+    width: 50%;
+}
+
+.dates-right-side{
+    flex-grow: 1;
 }
 
 .project-header{
