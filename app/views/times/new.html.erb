@@ -27,25 +27,23 @@
       <% else %>
         <div class="form-group">
             <%= f.text_field :date_time, placeholder: "Date(s)", :autocomplete => :off, class: "datepicker"%>
-            <%= link_to 'Clear Dates', new_project_time_path, class:"btn btn-secondary" %>
+            <%= link_to 'Clear', new_project_time_path, class:"btn btn-secondary btn-smcd" %>
         </div>
       <% end %>
+      <h1>Choose Times</h1>
+      <div id="times-table">
+      </div>
+      <div class="actions">
+        <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
+        <%= f.submit "Submit", class:"btn btn-primary"%>
+      </div>
+    <% end %>
   </div>
   <div class="dates-right-side">
     <h4>Dates:</h4>
     <div class="dates-chosen"></div>
   </div>
+  
 </div>
 
-<div class="jumbotron">
-  <h1>Choose Times</h1>
-  <div id="times-table">
-    
-  </div>
-  <div class="actions">
-    <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
-    <%= f.submit "Submit", class:"btn btn-primary"%>
-  </div>
-  <% end %>
-</div>
 

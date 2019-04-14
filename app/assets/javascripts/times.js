@@ -1,5 +1,4 @@
 /* global $ */
-/* global displayDate */
 
 /* Datepicker */
 $(document).on('turbolinks:load', 
@@ -14,21 +13,21 @@ $(document).on('turbolinks:load',
         $('.datepicker').datepicker().on('changeDate', function(e){
             var string = $('.datepicker').val();
             var dateArray = string.split(",");
-            var formatted = ""
+            var formatted = "";
             
             for (var i = 0; i < dateArray.length && string.length > 0; i++){
-                var unformatted = dateArray[i]
+                var unformatted = dateArray[i];
                 var niceFormat = formatDate(unformatted);
                 var element = "#"+unformatted;
                 if ($(element).length == 0){
                     addDiv(unformatted);
                 }
-                formatted += niceFormat + '\n'
+                formatted += niceFormat + '\n';
             }
             
             deleteDiv(dateArray);
             $(".dates-chosen").text(formatted);
-        })
+        });
     }
 );
 
@@ -37,7 +36,7 @@ $(document).on('click', '.addbutton', function(){
     var parent_id = $(this).parent().attr('id');
     var element = document.getElementById(parent_id);
     var strid = "#"+parent_id;
-    var entry = createTimeEntry();
+    var entry = createTimeEntry(parent_id);
     element.append(entry);
     console.log($(strid).children());
     console.log($(strid).children().last());
@@ -52,15 +51,17 @@ $(document).on('click', '.deletebutton', function(){
 
 
 /* Time Entry Row */
-function createTimeEntry(){
+function createTimeEntry(divId){
     var startInput = document.createElement("input");
     startInput.type = "time";
-    startInput.value = "12:00"
-    startInput.step = "900"
-    var endInput = document.createElement("input")
+    startInput.value = "12:00";
+    startInput.step = "900";
+    startInput.name = "times["+divId +"][]";
+    var endInput = document.createElement("input");
     endInput.type = "time";
-    endInput.value = "13:00"
-    endInput.step = "900"
+    endInput.value = "13:00";
+    endInput.step = "900";
+    endInput.name = "times["+divId +"][]";
     
     var outerDiv = document.createElement("div");
     var startTime = document.createElement("span");
@@ -70,10 +71,10 @@ function createTimeEntry(){
     startTime.appendChild(startText);
     endTime.appendChild(endText);
     startTime.append(startInput);
-    endTime.append(endInput)
+    endTime.append(endInput);
     outerDiv.appendChild(startTime);
     outerDiv.appendChild(endTime);
-    return outerDiv
+    return outerDiv;
 }
     
 /* Add a date div */
@@ -84,11 +85,12 @@ function addDiv(divId){
     dateDiv.setAttribute('class', "times-table-date");
     
     var addButton = document.createElement("button");
+    addButton.type = "button";
     var addText = document.createTextNode("Add Timeslot");
     addButton.setAttribute("class", "addbutton btn btn-primary btn-sm");
     addButton.appendChild(addText);
     
-    var outerDiv = createTimeEntry();
+    var outerDiv = createTimeEntry(divId);
     
     var textNode = document.createTextNode(niceFormat);
     dateDiv.appendChild(textNode);
@@ -108,7 +110,6 @@ function deleteDiv(dateArray){
         }
     });
 }
-
 
 function formatDate(date){
     var monthNames = [

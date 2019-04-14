@@ -13,49 +13,42 @@ class TimesController < ApplicationController
     @times = ProjectTime.where(project_id: @project_id)
   end
 
-  # GET /times/1
-  # GET /times/1.json
-  def show
-    @time = set_time
-  end
-
-  # GET /times/1/edit
-  def edit
-    @time = set_time
-  end
-
   # POST /times
   # POST /times.json
   def create
-    message_flag = false
-    error_flag = false
-    
-    if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
-      flash[:message] = "Invalid date"
-      redirect_to new_project_time_path and return
-    end
-    
+    flash[:message] = "";
+    flash[:error] = "";
     @project_id = params[:project_id]
     @entry = time_params
+    @form_times = params[:times]
     
-    @entry['date_time'].split(",").each_with_index do |date, index|
+    if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
+      flash[:message] = "No date chosen."
+      redirect_to new_project_time_path and return
+    end
+  
+    #Loop Through params[:times]
+    @form_times.keys().each do |date|
+      #Add dates to database
       if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date), is_date: true).blank?
         @time = ProjectTime.new(project_id: @project_id, date_time: date, is_date: true)
         if @time.save
-          if !message_flag
-            flash[:message] = "Added: #{date}. "
-            message_flag = true
-          else
-            flash[:message] << "#{date}. "
-          end
-          
+          flash[:message] += "Date: #{date}. "
         end
       else
-        if !error_flag
-          flash[:error] = "Unable to add: #{date}. "
-          error_flag = true
+        flash[:error] += "Date: #{date}. "
+      end
+      #Add times of the date into database
+      @form_times[date].each do |time|
+        time = time + ":00"
+        #puts "Date: " + date + "| Time: " + time
+        if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false).blank?
+          @time = ProjectTime.new(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false)
+          if @time.save
+            flash[:message] += "Time: #{date + " " + time}. "
+          end
         else
-          flash[:error] << "#{date}. "
+          flash[:error] += "Time: #{date + " " + time}. "
         end
       end
     end
