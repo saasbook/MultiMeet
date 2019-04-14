@@ -6,6 +6,7 @@ ruby '2.4.0'
 gem 'rails', '4.2.10'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap'
+gem 'bootstrap-datepicker-rails'
 # Use sqlite3 as the database for Active Record
 # Use SCSS for stylesheets
 group :production do

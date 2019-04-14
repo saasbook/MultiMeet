@@ -1,5 +1,38 @@
-<h1>New Time</h1>
+<%= render 'navbar' %>
 
-<%= render 'form' %>
+<div class="jumbotron">
+  <h1>New Time</h1>
+  
+  <% if flash[:message] %>
+     <div class="alert alert-danger">
+       <strong>Error: </strong>
+       <%= flash[:message]%>
+     </div>
+  <% end %>
+  
+  <%= form_for(@time) do |f| %>
+    <% if @time.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@time.errors.count, "error") %> prohibited this time from being saved:</h2>
+  
+        <ul>
+        <% @time.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <div class="form-group">
+          <%= f.text_field :date_time, placeholder: "Date Time", :autocomplete => :off, class: "datepicker"%>
+          <%= f.check_box :is_date %>
+      </div>
+    <% end %>
+  
+    <div class="actions">
+      <%= link_to 'Back', project_times_path, class:"btn btn-primary" %>
+      <%= f.submit "Create Time", class:"btn btn-primary"%>
+    </div>
+  <% end %>
+</div>
 
-<%= link_to 'Back', times_path %>
+

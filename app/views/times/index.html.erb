@@ -1,25 +1,36 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Times</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @times.each do |time| %>
+<%= render 'navbar' %>
+<div class="jumbotron">
+  <p id="notice"><%= notice %></p>
+  <h1>List of Times</h1>
+  
+  <% if flash[:message] %>
+     <div class="alert alert-success">
+       <%= flash[:message] %>
+     </div>
+  <% end %>
+  
+  <table>
+    <thead>
       <tr>
-        <td><%= link_to 'Show', time %></td>
-        <td><%= link_to 'Edit', edit_time_path(time) %></td>
-        <td><%= link_to 'Destroy', time, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Time', new_time_path %>
+    </thead>
+  
+    <tbody>
+      <% @times.each do |time| %>
+        <tr>
+        <% if time.is_date %>
+          <td>Date <%= time.date_time.to_date %></td>
+        <% else %>
+          <td>Time <%= time.date_time %></td>
+        <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <br>
+  
+  <%= link_to 'Back to Project', project_path(@project_id), class:"btn btn-primary"%>
+  <%= link_to 'New Time', new_project_time_path, class:"btn btn-primary"%>
+</div>
