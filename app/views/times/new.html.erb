@@ -1,13 +1,15 @@
 <%= render 'navbar' %>
 
 <div class="jumbotron">
-  <h1>New Time</h1>
+  <h1>Choose Dates</h1>
   
   <% if flash[:message] %>
-     <div class="alert alert-danger">
-       <strong>Error: </strong>
-       <%= flash[:message]%>
-     </div>
+     <div class="alert alert-danger alert-dismissible show" role="alert">
+      <div class="error"><strong>Error: </strong><%= flash[:message] %></div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
   <% end %>
   
   <%= form_for(@time) do |f| %>
@@ -23,14 +25,13 @@
       </div>
     <% else %>
       <div class="form-group">
-          <%= f.text_field :date_time, placeholder: "Date Time", :autocomplete => :off, class: "datepicker"%>
-          <%= f.check_box :is_date %>
+          <%= f.text_field :date_time, placeholder: "Date(s)", :autocomplete => :off, class: "datepicker"%>
       </div>
     <% end %>
   
     <div class="actions">
-      <%= link_to 'Back', project_times_path, class:"btn btn-primary" %>
-      <%= f.submit "Create Time", class:"btn btn-primary"%>
+      <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
+      <%= f.submit "Add Dates", class:"btn btn-primary"%>
     </div>
   <% end %>
 </div>

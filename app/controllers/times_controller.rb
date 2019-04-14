@@ -27,24 +27,36 @@ class TimesController < ApplicationController
   # POST /times
   # POST /times.json
   def create
-    flash[:message] = "Successfully added "
+    message_flag = false
+    error_flag = false
     
     if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
-      flash[:message] = "Invalid datetime"
+      flash[:message] = "Invalid date"
       redirect_to new_project_time_path and return
     end
     
     @project_id = params[:project_id]
     @entry = time_params
     
-    @entry['date_time'].split(",").each do |date|
+    @entry['date_time'].split(",").each_with_index do |date, index|
       if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date), is_date: true).blank?
         @time = ProjectTime.new(project_id: @project_id, date_time: date, is_date: true)
         if @time.save
-          flash[:message] << "#{date}, "
+          if !message_flag
+            flash[:message] = "Added: #{date}. "
+            message_flag = true
+          else
+            flash[:message] << "#{date}. "
+          end
+          
         end
       else
-        flash[:message] << "but not #{date}, "
+        if !error_flag
+          flash[:error] = "Unable to add: #{date}. "
+          error_flag = true
+        else
+          flash[:error] << "#{date}. "
+        end
       end
     end
     

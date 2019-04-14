@@ -4,9 +4,20 @@
   <h1>List of Times</h1>
   
   <% if flash[:message] %>
-     <div class="alert alert-success">
+     <div class="alert alert-success alert-dismissible show" role="alert">
        <%= flash[:message] %>
+       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+       </button>
      </div>
+  <% end %>
+  <% if flash[:error] %>
+    <div class="alert alert-danger alert-dismissible show" role="alert">
+      <div class="error"><%= flash[:error] %></div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
   <% end %>
   
   <table>
@@ -31,6 +42,6 @@
   
   <br>
   
-  <%= link_to 'Back to Project', project_path(@project_id), class:"btn btn-primary"%>
-  <%= link_to 'New Time', new_project_time_path, class:"btn btn-primary"%>
+  <%= link_to 'Back to project', project_path(@project_id), class:"btn btn-secondary"%>
+  <%= link_to 'Add new time', new_project_time_path, class:"btn btn-primary"%>
 </div>

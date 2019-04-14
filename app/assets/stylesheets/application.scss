@@ -15,6 +15,29 @@
  */
 @import 'bootstrap';
 
+.datepicker{
+    width: 30%;
+    font-size: 14px;
+}
+
+.datepicker-inline {
+    width: 80%;
+}
+
+.dropdown-menu{
+    width: 25%;
+}
+
+.datepicker table {
+    margin: auto;
+    width: 80%;
+}
+
+.table-condensed{
+    width: 300px;
+    height: 300px;
+}
+
 .user-container{
     margin: 10% auto;
     width: 50%;
