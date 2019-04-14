@@ -1,8 +1,21 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit]
 
+  # GET /projects/new
   def new
     @project = Project.new
+  end
+
+  # GET /projects/1
+  # GET /projects/1.json
+  def show
+    unless current_user
+      redirect_to root_path
+    end
+  end
+
+  # GET /times/1/edit
+  def edit
   end
 
   def create
@@ -21,12 +34,14 @@ class ProjectsController < ApplicationController
     if @project.save!
       flash[:success] = "Successfully created project #{project_name}"
       redirect_to projects_path
-    else
-      flash[:message] = @user.errors.full_messages
-      redirect_to projects_path
+    # else
+    #   flash[:message] = @user.errors.full_messages
+    #   redirect_to projects_path
     end
   end
 
+  # GET /times
+  # GET /times.json
   def index
     @user = current_user
     if @user
