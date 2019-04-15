@@ -32,9 +32,14 @@
           <tr>
             <td> <%= project.project_name %> </td>
             <td> <%= project.id %> </td>
+<<<<<<< HEAD
             <td> <%= link_to 'Show', project, class:"btn btn-info" %> </td>
             <td> <%= link_to 'Edit', edit_project_path(project.id), class:"btn btn-primary" %> </td>
             <td> <%= link_to 'Roster', project_participants_path(project.id), class:"btn btn-success" %> </td>
+=======
+            <td> <%= link_to 'Show', project %> </td>
+            <td> <%= link_to 'Edit', edit_project_path(project.id) %> </td>
+>>>>>>> 93a2f113236ec0318d6a4abe1749fd3a4a72b8a5
           </tr>
         <% end %>
         </tbody>
