@@ -34,15 +34,13 @@ class ParticipantsController < ApplicationController
     @participant = Participant.new(participant_params)
     @participant.project_id = params[:project_id]
     if @participant.email.nil? or @participant.email.empty?
-      flash[:success] = "Invalid project name"
-      redirect_to display_project_participants_path(params[:project_id]) and return
+      flash[:error] = "Please Enter an valid email"
+      redirect_to display_project_participants_path(params[:project_id])
     elsif !Participant.where(
         project_id: @participant.project_id, email: @participant.email).blank?
-      flash[:message] = "Project name already exists"
-      redirect_to display_project_participants_path(params[:project_id]) and return
-    end
-
-    if @participant.save!
+      flash[:error] = "Project name already exists"
+      redirect_to display_project_participants_path(params[:project_id])
+    elsif @participant.save!
       flash[:success] = "Successfully created participant #{@participant.email}"
       redirect_to display_project_participants_path(params[:project_id])
     else
@@ -71,16 +69,13 @@ class ParticipantsController < ApplicationController
   # DELETE /participants/1.json
   def destroy
     @participant.destroy
-    respond_to do |format|
-      format.html { redirect_to project_display_path, notice: 'Participant was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to display_project_participants_path(@participant.project_id)
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_participant
-      @participant = Participant.find(params[:id])
+      @participant = Participant.find(params[:format])
     end
 
     def set_new_user
