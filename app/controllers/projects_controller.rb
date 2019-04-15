@@ -9,9 +9,9 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    unless current_user
-      redirect_to root_path
-    end
+    # unless current_user
+    #   redirect_to root_path
+    # end
   end
 
   # GET /times/1/edit
