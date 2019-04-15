@@ -1,11 +1,37 @@
 <p id="notice"><%= notice %></p>
 
+<% if @is_matching %>
 
-<% if @matching %>
-  <%= @matching.output_json %>
+  
+<table style="width:100%">
+	<tbody>
+	<tr>
+		<td><b>Event</b></td>
+		<td><b>People</b></td>
+		<td><b>Time</b></td>
+	</tr>
+
+  <% @parsed_matching["schedule"].each do |event|  %>
+    <tr>
+      <td><%= event["event_name"] %></td>
+      <td><%= event["people_called"].join(', ') %> </td>
+      <td><%= event["timestamp"] %></td>
+    </tr>
+
+  <% end %>
+	</tbody>
+</table>
   <%= link_to 'Edit', edit_project_matching_path(@matching.project) %>
 <% else %>
-  No matching for this project.
+	<% if !@proj_exists %>
+		No such project exists.
+	<% elsif !@permission %>
+		Permission denied.
+	<% else %>
+  		No matching for this project.
+  	<% end %>
 <% end %>
 
-<%= link_to 'Back', project_path(@project) %>
+<% if @proj_exists %>	
+	<%= link_to 'Back', project_path(@project) %>
+<% end %>

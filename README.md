@@ -3,7 +3,7 @@
 
 <a href="https://codeclimate.com/github/Aakup/MultiMeet-1/test_coverage"><img src="https://api.codeclimate.com/v1/badges/17147a80811321af3566/test_coverage" /></a>
 
-<a href="https://travis-ci.org/Aakup/MultiMeet"><img src="https://travis-ci.org/Aakup/MultiMeet.svg?branch=master">
+<a href="https://travis-ci.org/Aakup/MultiMeet"><img src="https://travis-ci.org/Aakup/MultiMeet.svg?branch=master"></a>
 
 ## Dependencies
 - Ruby 2.4.0
@@ -15,7 +15,7 @@
 3. install packages: `bundle install --without production`
 4. setup db: `rake db:setup db:migrate`
 5. seed db: `rake db:seed`
-6. `rails s(erver)` --> starts app on http://localhost:3000
+6. `rails s(erver)` --> starts app on [http://localhost:3000](http://localhost:3000)
 
 ## Development Guidelines
 - develop on your own branch of this repo, call it by your <name/feature> e.g. kevin/projects-list
