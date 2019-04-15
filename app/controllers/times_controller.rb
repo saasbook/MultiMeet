@@ -11,8 +11,6 @@ class TimesController < ApplicationController
   def index
     @project_id = params[:project_id]
     @times = ProjectTime.where(project_id: @project_id).order(:date_time)
-    puts "HEFEFEFE"
-    puts @times
   end
 
   # POST /times
@@ -41,16 +39,18 @@ class TimesController < ApplicationController
         flash[:error] += "Date: #{date}. "
       end
       #Add times of the date into database
-      @form_times[date].each do |time|
-        time = time + ":00"
-        #puts "Date: " + date + "| Time: " + time
-        if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false).blank?
-          @time = ProjectTime.new(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false)
-          if @time.save
-            flash[:message] += "Time: #{date + " " + time}. "
+      @form_times[date].each_with_index do |time, index|
+        if (index % 2 == 0)
+          time = time + ":00"
+          #puts "Date: " + date + "| Time: " + time
+          if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false).blank?
+            @time = ProjectTime.new(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false)
+            if @time.save
+              flash[:message] += "Time: #{date + " " + time}. "
+            end
+          else
+            flash[:error] += "Time: #{date + " " + time}. "
           end
-        else
-          flash[:error] += "Time: #{date + " " + time}. "
         end
       end
     end
@@ -59,8 +59,9 @@ class TimesController < ApplicationController
   end
   
   def destroy_all
-    puts "Hit this path"
-    redirect_to new_project_time_path
+    @project_id = params[:project_id]
+    ProjectTime.where(project_id: @project_id).destroy_all
+    redirect_to project_times_path
   end
 
   private

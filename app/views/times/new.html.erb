@@ -1,8 +1,20 @@
 <%= render 'navbar' %>
-
+<div class="jumbotron" id="timeslot">
+  <div id="timeslot-div">
+    <h3>Step 1: Choose Timeslot Length</h3>
+    <div>
+      <select id="timeslot-hour">
+      </select>
+      Hours
+      <select id="timeslot-minute">
+      </select>
+      Minutes
+    </div>
+  </div>
+</div>
 <div class="jumbotron" id="billboard">
   <div class="dates-left-side">
-    <h1>Choose Dates</h1>
+    <h3>Step 2: Choose Dates</h3>
     
     <% if flash[:message] %>
        <div class="alert alert-danger alert-dismissible show" role="alert">
@@ -31,19 +43,8 @@
         </div>
       <% end %>
       
-      <div id="timeslot-div">
-        <h6>Timeslot Length</h6>
-        <div>
-          <select id="timeslot-hour">
-          </select>
-          Hours
-          <select id="timeslot-minute">
-          </select>
-          Minutes
-        </div>
-      </div>
       <div id="bottom-times">
-        <h1>Choose Times</h1>
+        <h3>Step 3: Choose Times</h3>
         <div id="times-table">
         </div>
       </div>
@@ -57,7 +58,6 @@
     <h4>Dates:</h4>
     <div class="dates-chosen"></div>
   </div>
-  
 </div>
 
 

@@ -1,7 +1,7 @@
 <%= render 'navbar' %>
 <div class="jumbotron">
   <p id="notice"><%= notice %></p>
-  <h2>Times Selected</h2>
+  <h2>Project Times</h2>
   
   <% if flash[:message] %>
      <div class="alert alert-success alert-dismissible show" role="alert">
@@ -31,13 +31,9 @@
       <% @times.each do |time| %>
         <tr>
         <% if time.is_date %>
-            <td class="list-group-item list-group-item-dark">
-              <%= time.date_time.to_date %> 
-            </td>
+            <td class="list-group-item list-group-item-primary py-2"><%= time.date_time.to_date %> </td>
         <% else %>
-            <td class="list-group-item">
-              <%= time.date_time %>
-            </td>
+            <td class="list-group-item py-2"><%= time.date_time %></td>
         <% end %>
         </tr>
       <% end %>
@@ -46,6 +42,8 @@
   <br>
   
   <%= link_to 'Back to project', project_path(@project_id), class:"btn btn-secondary"%>
-  <%= link_to 'Reselect Times', new_project_time_path, class:"btn btn-danger" %>
+  <% if !@times.empty? %>
+    <%= link_to 'Reselect Times', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? \n - Choosing 'OK' will delete all saved times for the project"}, class:"btn btn-danger" %>
+  <% end %>
   <%= link_to 'Add new time', new_project_time_path, class:"btn btn-primary"%>
 </div>
