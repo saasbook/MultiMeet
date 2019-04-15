@@ -17,13 +17,12 @@
     <%= form_for(@participant) do |f| %>
 
       <div class="form-group">
-        <%= f.text_field :project_id, placeholder: "New Project ID", class: "form-control"%>
         <%= f.text_field :email, placeholder: "New Participant Email", class: "form-control"%>
       </div>
 
       <div class="actions">
         <%= f.submit "Confirm Editing", class:"btn btn-primary"  %>
-        <%= link_to 'Cancel', participants_path, class:"btn btn-primary" %>
+        <%= link_to 'Cancel', project_participants_path, class:"btn btn-primary" %>
       </div>
     <% end %>
 

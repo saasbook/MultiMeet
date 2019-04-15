@@ -6,15 +6,14 @@ Rails.application.routes.draw do
   ## TIMES includes each datetime for the matching.
   ## MATCHING is the final matching.
 
-  # resources :projects do
-  #   resources :participants do
-  #     resource :ranking
-  #   end
-  #   resources :times
-  #   resource :matching
-  # end
-  resources :projects
-  resources :participants
+  resources :projects do
+    resources :participants do
+      get 'display', on: :collection
+      resource :ranking
+    end
+    resources :times
+    resource :matching
+  end
 
   # USERS routes: currently admins, may also include participants
   resources :users
@@ -23,7 +22,6 @@ Rails.application.routes.draw do
   resources :rosters
 
   # Custom singular routes or reroutes
-  get 'display' => 'participants#display', :as => 'display'
   post 'login' => 'sessions#create'
   get 'login' => 'sessions#new'
   delete 'logout' => 'sessions#destroy', :as => 'logout'

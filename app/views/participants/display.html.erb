@@ -1,3 +1,4 @@
+
 <% if flash[:success] %>
    <div class="alert alert-success alert-dismissible show" role="alert">
      <span class="error"><%= flash[:success] %></span>
@@ -13,28 +14,41 @@
   <p id="notice"><%= notice %></p>
 
   <h1>Listing Participants</h1>
-
-  <table style="width:65%">
-    <thead>
-      <tr>
-        <th>Project ID</th>
-        <th>Participant Email</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @participants.each do |participant| %>
+  <%= form_for(@participant, :url => project_participants_path) do |f| %>
+    <table style="width:65%">
+      <thead>
         <tr>
-          <td> <%= participant.project_id %> </td>
-          <td> <%= participant.email %> </td>
-          <td> <%= link_to 'Edit', edit_participant_path(participant.id), class:"btn btn-primary" %></td>
-          <td> <%= link_to 'Destroy', participant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>Participant Email</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
 
+      <tbody>
+        <% @participants.each do |participant| %>
+          <tr>
+            <td> <%= participant.email %> </td>
+            <td> <%= link_to 'Edit', edit_project_participant_path(participant.id, participant.project_id), class:"btn btn-primary" %></td>
+            <td><%= link_to 'Destroy', display_project_participants_path(participant.id, participant.project_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <% if @participant.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@participant.errors.count, "error") %> prohibited this participant from being saved:</h2>
+
+          <ul>
+            <% @participant.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+              <% end %>
+            </ul>
+        </div>
+      <% else %>
+        <div class="action">
+          <td> <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control"%></td>
+          <td> <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
+        </div>
+      <% end %>
+    </table>
+  <% end %>
   <br>
 
-  <%= link_to 'New Participant', new_participant_path %>
 </div>
