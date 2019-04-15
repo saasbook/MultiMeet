@@ -16,8 +16,6 @@ class TimesController < ApplicationController
   # POST /times
   # POST /times.json
   def create
-    flash[:message] = "";
-    flash[:error] = "";
     @project_id = params[:project_id]
     @form_times = params[:times]
     
@@ -38,10 +36,10 @@ class TimesController < ApplicationController
       if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date), is_date: true).blank?
         @time = ProjectTime.new(project_id: @project_id, date_time: date, is_date: true)
         if @time.save
-          flash[:message] += "Date: #{date}. "
+          (flash[:message] ||= "") << "Date: #{date}. "
         end
       else
-        flash[:error] += "Date: #{date}. "
+        (flash[:error] ||= "") << "Date: #{date}. "
       end
       #Add times of the date into database
       @form_times[date].each_with_index do |time, index|
@@ -51,10 +49,10 @@ class TimesController < ApplicationController
           if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false).blank?
             @time = ProjectTime.new(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false)
             if @time.save
-              flash[:message] += "Time: #{date + " " + time}. "
+              (flash[:message] ||= "") << "Time: #{date + " " + time}. "
             end
           else
-            flash[:error] += "Time: #{date + " " + time}. "
+            (flash[:error] ||= "") << "Time: #{date + " " + time}. "
           end
         end
       end
