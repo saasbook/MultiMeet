@@ -1,6 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-
 <% if @is_matching %>
 
   
@@ -24,7 +23,13 @@
 </table>
   <%= link_to 'Edit', edit_project_matching_path(@matching.project) %>
 <% else %>
-  No matching for this project.
+	<% if !@proj_exists %>
+		No project by this id exists.
+	<% elsif !@permission %>
+		Permission denied.
+	<% else %>
+  		No matching for this project.
+  	<% end %>
 <% end %>
 
 <%= link_to 'Back', project_path(@project) %>

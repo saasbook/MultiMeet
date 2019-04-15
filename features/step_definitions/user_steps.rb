@@ -22,7 +22,17 @@ Given /^a registered user with the username "(.*)" has a project named "(.*)"$/ 
   user.projects.create(:project_name => project_name)
 end
 
-
 When /^I access the landing page$/ do
     get "/"
+end
+
+When /^I access the matchings page for project "(.*)"$/ do |name|
+    get "/projects/1/matching"
+    
+end
+
+
+When /^I run the steps for running matchings for project "(.*)"$/ do |name|
+  Project.find_by(name)
+  pending # Write code here that turns the phrase above into concrete actions
 end

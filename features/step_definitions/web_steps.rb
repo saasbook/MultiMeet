@@ -249,14 +249,6 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   end
 end
 
-When "I access the matchings page for project {string}" do |name|
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
-When("I run the steps for running matchings for project {string}") do |name|
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
 
 Then /^show me the page$/ do
   save_and_open_page
