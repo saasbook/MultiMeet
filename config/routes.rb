@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   ## RANKING is the time ranking selected by the specific participant.
   ## TIMES includes each datetime for the matching.
   ## MATCHING is the final matching.
-
+  
   resources :projects do
     resources :participants do
       resource :ranking

@@ -1,13 +1,13 @@
 /* global $ */
 
-/* Datepicker and load timeslot options*/
+/* Datepicker*/
 $(document).on('turbolinks:load', 
     function() {
-        $('.datepicker').datepicker({todayHighlight: true, multidate: true, format: 'yyyy-mm-dd'});
+        $('.datepicker').datepicker({startDate: new Date(), clearBtn: true, todayHighlight: true, multidate: true, format: 'yyyy-mm-dd', constrainInput: false});
     }
 );
 
-
+/* Load timeslot options */
 $(document).on('turbolinks:load', 
     function() {
         for (var i = 0; i < 60; i++) {
@@ -15,7 +15,7 @@ $(document).on('turbolinks:load',
             if (i < 11) {
                 $("#timeslot-hour").append(option);
             }
-            if ((i % 10 == 0) || (i % 15 == 0)) {
+            if (i % 5 == 0) {
                 $("#timeslot-minute").append(option);
             }
         }
@@ -63,23 +63,54 @@ $(document).on('click', '.deletebutton', function(){
     parent.remove();
 });
 
-function addTime(startInput, hourInput, minuteInput){
+/* Change Endinput to fit timeslot length */
+$(document).on('click', '.startInput', function(){
+    var newValue = $(this).val();
+    var hourInput = $('#timeslot-hour').find(":selected").text();
+    var minuteInput = $('#timeslot-minute').find(":selected").text();
+    var newEndInput = changeTime(true, newValue, hourInput, minuteInput);
+    var endInput = $(this).parent().next().children('.endInput');
+    $(endInput).val(newEndInput);
+});
+
+/* Change startInput to fit timeslot length */
+$(document).on('click', '.endInput', function(){
+    var newValue = $(this).val();
+    var hourInput = $('#timeslot-hour').find(":selected").text();
+    var minuteInput = $('#timeslot-minute').find(":selected").text();
+    var newStartInput = changeTime(false, newValue, hourInput, minuteInput);
+    var startInput = $(this).parent().prev().children('.startInput');
+    $(startInput).val(newStartInput);
+});
+
+function changeTime(addBoolean, startInput, hourInput, minuteInput){
     var hour = parseInt(hourInput, 10);
     var minute = parseInt(minuteInput, 10);
     var startHour = parseInt(startInput.split(":")[0], 10);
     var startMinute = parseInt(startInput.split(":")[1], 10);
-    var outMinute = minute + startMinute;
     
-    if (outMinute >= 60){
-        var outHour = startHour + hour + 1;
-        outMinute -= 60;
-    }
-    else {
-        var outHour = startHour + hour;
-    }
-    
-    if (outHour >= 24){
-        outHour -= 24;
+    if (!addBoolean){
+        var outMinute = startMinute - minute;
+        if (outMinute < 0){
+            var outHour = startHour - hour - 1;
+            outMinute += 60;
+        }else {
+            var outHour = startHour - hour;
+        }
+        if (outHour < 0){
+            outHour += 24;
+        }
+    }else {
+        var outMinute = minute + startMinute;
+        if (outMinute >= 60){
+            var outHour = startHour + hour + 1;
+            outMinute -= 60;
+        }else {
+            var outHour = startHour + hour;
+        }
+        if (outHour >= 24){
+            outHour -= 24;
+        }
     }
     
     var strHour = outHour.toString();
@@ -98,13 +129,15 @@ function addTime(startInput, hourInput, minuteInput){
 /* Time Entry Row */
 function createTimeEntry(divId){
     var startInput = document.createElement("input");
+    startInput.setAttribute('class', 'startInput');
     var endInput = document.createElement("input");
+    endInput.setAttribute('class', 'endInput');
     var strid = "#"+divId + " > div";
     var hourInput = $('#timeslot-hour').find(":selected").text();
     var minuteInput = $('#timeslot-minute').find(":selected").text();
     
     if ($(strid).length == 0){
-        startInput.value = "12:00";
+        startInput.value = "08:00";
     }
     else {
         var inputs = 'input[name="times['+divId+'][]"]';
@@ -113,15 +146,14 @@ function createTimeEntry(divId){
         if (hour >= 23){
             startInput.value = "0" + (hour + 1 - 24).toString() + ":00";
         }
-        else if (hour < 10){
+        else if (hour < 9){
             startInput.value = "0" + (hour + 1).toString() + ":00";
         }
         else {
             startInput.value = (hour + 1).toString() + ":00";
         }
-        
     }
-    endInput.value = addTime(startInput.value, hourInput, minuteInput);
+    endInput.value = changeTime(true, startInput.value, hourInput, minuteInput);
     
     startInput.type = "time";
     startInput.step = "900";

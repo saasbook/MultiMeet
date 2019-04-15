@@ -10,7 +10,9 @@ class TimesController < ApplicationController
   # GET /times.json
   def index
     @project_id = params[:project_id]
-    @times = ProjectTime.where(project_id: @project_id)
+    @times = ProjectTime.where(project_id: @project_id).order(:date_time)
+    puts "HEFEFEFE"
+    puts @times
   end
 
   # POST /times
@@ -55,6 +57,11 @@ class TimesController < ApplicationController
     
     redirect_to project_times_path
   end
+  
+  def destroy_all
+    puts "Hit this path"
+    redirect_to new_project_time_path
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -86,8 +93,5 @@ end
   # DELETE /times/1.json
   #def destroy
     #@time.destroy
-    #respond_to do |format|
-      #format.html { redirect_to times_url, notice: 'Time was successfully destroyed.' }
-      #format.json { head :no_content }
     #end
   #end

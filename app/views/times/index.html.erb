@@ -1,7 +1,7 @@
 <%= render 'navbar' %>
 <div class="jumbotron">
   <p id="notice"><%= notice %></p>
-  <h1>List of Times</h1>
+  <h2>Times Selected</h2>
   
   <% if flash[:message] %>
      <div class="alert alert-success alert-dismissible show" role="alert">
@@ -31,9 +31,13 @@
       <% @times.each do |time| %>
         <tr>
         <% if time.is_date %>
-          <td>Date <%= time.date_time.to_date %></td>
+            <td class="list-group-item list-group-item-dark">
+              <%= time.date_time.to_date %> 
+            </td>
         <% else %>
-          <td>Time <%= time.date_time %></td>
+            <td class="list-group-item">
+              <%= time.date_time %>
+            </td>
         <% end %>
         </tr>
       <% end %>
@@ -42,5 +46,6 @@
   <br>
   
   <%= link_to 'Back to project', project_path(@project_id), class:"btn btn-secondary"%>
+  <%= link_to 'Reselect Times', new_project_time_path, class:"btn btn-danger" %>
   <%= link_to 'Add new time', new_project_time_path, class:"btn btn-primary"%>
 </div>
