@@ -3,18 +3,26 @@ class MatchingsController < ApplicationController
 
   # GET /project/:project_id/matching
   def show
+    @proj_exists = !(@project.nil?)
+    if @proj_exists
+      @permission = current_user.id == @project.user.id
+    end
+    if @proj_exists and @matching
+      @is_matching = true
+      @parsed_matching = JSON.parse(@matching.output_json)
+    end
   end
 
-  # GET /project/:project_id/matching/new
+  # GET /projects/:project_id/matching/new
   def new
     @matching = Matching.new
   end
 
-  # GET /project/:project_id/matching/edit
+  # GET /projects/:project_id/matching/edit
   def edit
   end
 
-  # POST /project/:project_id/matching
+  # POST /projects/:project_id/matching
   def create
     @matching = Matching.new(matching_params)
 
@@ -27,7 +35,7 @@ class MatchingsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /project/:project_id/matching
+  # PATCH/PUT /projects/:project_id/matching
   def update
     respond_to do |format|
       if @matching.update(matching_params)
@@ -38,7 +46,7 @@ class MatchingsController < ApplicationController
     end
   end
 
-  # DELETE /project/:project_id/matching
+  # DELETE /projects/:project_id/matching
   def destroy
     @matching.destroy
     respond_to do |format|
@@ -49,9 +57,8 @@ class MatchingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_matching_and_project
-      # print(params)
       @matching = Matching.find_by(params.slice(:project_id))
-      @project = Project.find(params[:project_id])
+      @project = Project.find_by(:id => params[:project_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
