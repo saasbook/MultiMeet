@@ -53,15 +53,12 @@
 }
 
 #billboard{
-    display: flex;
+    display: grid;
 }
 
-.dates-left-side{
-    width: 60%;
-}
-
-.dates-right-side{
-    flex-grow: 1;
+#dates{
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
 .project-header{
@@ -95,7 +92,12 @@
     width: 100%;
 }
 
-#timeslot{
+#timeslot, #dates, #bottom-times{
+    padding: 1.5rem 2rem;
+    margin: 1rem 0;
+}
+
+#actions {
     padding: 1.5rem 2rem;
     margin: 1rem 0;
 }

@@ -19,13 +19,18 @@ class TimesController < ApplicationController
     flash[:message] = "";
     flash[:error] = "";
     @project_id = params[:project_id]
-    @entry = time_params
     @form_times = params[:times]
     
     if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
       flash[:message] = "No date chosen."
       redirect_to new_project_time_path and return
     end
+    
+    hour = params[:timeslot_hour].to_i
+    minute = params[:timeslot_minute].to_i
+    @duration = hour * 60 + minute
+    @project = Project.find(@project_id)
+    @project.update(duration: @duration)
   
     #Loop Through params[:times]
     @form_times.keys().each do |date|

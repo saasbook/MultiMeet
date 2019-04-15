@@ -7,20 +7,6 @@ $(document).on('turbolinks:load',
     }
 );
 
-/* Load timeslot options */
-$(document).on('turbolinks:load', 
-    function() {
-        for (var i = 0; i < 60; i++) {
-            var option = "<option value='" + i.toString()+ "'"+ ">" + i.toString() + "</option>"
-            if (i < 11) {
-                $("#timeslot-hour").append(option);
-            }
-            if (i % 5 == 0) {
-                $("#timeslot-minute").append(option);
-            }
-        }
-    }
-);
 
 /* Show highlighted datepicker dates */
 $(document).on('turbolinks:load',
@@ -66,8 +52,8 @@ $(document).on('click', '.deletebutton', function(){
 /* Change Endinput to fit timeslot length */
 $(document).on('click', '.startInput', function(){
     var newValue = $(this).val();
-    var hourInput = $('#timeslot-hour').find(":selected").text();
-    var minuteInput = $('#timeslot-minute').find(":selected").text();
+    var hourInput = $('#timeslot_hour').find(":selected").text();
+    var minuteInput = $('#timeslot_minute').find(":selected").text();
     var newEndInput = changeTime(true, newValue, hourInput, minuteInput);
     var endInput = $(this).parent().next().children('.endInput');
     $(endInput).val(newEndInput);
@@ -76,8 +62,8 @@ $(document).on('click', '.startInput', function(){
 /* Change startInput to fit timeslot length */
 $(document).on('click', '.endInput', function(){
     var newValue = $(this).val();
-    var hourInput = $('#timeslot-hour').find(":selected").text();
-    var minuteInput = $('#timeslot-minute').find(":selected").text();
+    var hourInput = $('#timeslot_hour').find(":selected").text();
+    var minuteInput = $('#timeslot_minute').find(":selected").text();
     var newStartInput = changeTime(false, newValue, hourInput, minuteInput);
     var startInput = $(this).parent().prev().children('.startInput');
     $(startInput).val(newStartInput);
@@ -123,7 +109,7 @@ function changeTime(addBoolean, startInput, hourInput, minuteInput){
         strMinute = "0" + strMinute;
     }
     
-    return strHour + ":" + strMinute
+    return strHour + ":" + strMinute;
 }
 
 /* Time Entry Row */
@@ -133,8 +119,8 @@ function createTimeEntry(divId){
     var endInput = document.createElement("input");
     endInput.setAttribute('class', 'endInput');
     var strid = "#"+divId + " > div";
-    var hourInput = $('#timeslot-hour').find(":selected").text();
-    var minuteInput = $('#timeslot-minute').find(":selected").text();
+    var hourInput = $('#timeslot_hour').find(":selected").text();
+    var minuteInput = $('#timeslot_minute').find(":selected").text();
     
     if ($(strid).length == 0){
         startInput.value = "08:00";
@@ -156,10 +142,10 @@ function createTimeEntry(divId){
     endInput.value = changeTime(true, startInput.value, hourInput, minuteInput);
     
     startInput.type = "time";
-    startInput.step = "900";
+    startInput.step = "300";
     startInput.name = "times["+divId +"][]";
     endInput.type = "time";
-    endInput.step = "900";
+    endInput.step = "300";
     endInput.name = "times["+divId +"][]";
     
     var outerDiv = document.createElement("div");
@@ -221,9 +207,9 @@ function formatDate(date){
    var dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
    var d = new Date(date);
    var dayInt = d.getDay(); 
-   var day = date.split("-")[2]
-   var month = parseInt(date.split("-")[1], 10)
-   var year = date.split("-")[0]
+   var day = date.split("-")[2];
+   var month = parseInt(date.split("-")[1], 10);
+   var year = date.split("-")[0];
    
-   return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day + ' ' + year
+   return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day + ' ' + year;
 }

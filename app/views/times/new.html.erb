@@ -1,21 +1,6 @@
 <%= render 'navbar' %>
-<div class="jumbotron" id="timeslot">
-  <div id="timeslot-div">
-    <h3>Step 1: Choose Timeslot Length</h3>
-    <div>
-      <select id="timeslot-hour">
-      </select>
-      Hours
-      <select id="timeslot-minute">
-      </select>
-      Minutes
-    </div>
-  </div>
-</div>
-<div class="jumbotron" id="billboard">
-  <div class="dates-left-side">
-    <h3>Step 2: Choose Dates</h3>
-    
+
+<div id="billboard">
     <% if flash[:message] %>
        <div class="alert alert-danger alert-dismissible show" role="alert">
         <div class="error"><strong>Error: </strong><%= flash[:message] %></div>
@@ -26,38 +11,46 @@
     <% end %>
     
     <%= form_for(@time) do |f| %>
-      <% if @time.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@time.errors.count, "error") %> prohibited this time from being saved:</h2>
-    
-          <ul>
-          <% @time.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-          </ul>
+      <div class="jumbotron" id="timeslot">
+        <div id="timeslot-div">
+          <h3>Step 1: Choose Timeslot Length</h3>
+          <div>
+            <%= select_tag(:timeslot_hour, options_for_select((0..10))) %>
+            Hours
+            <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])) %>
+            Minutes
+          </div>
         </div>
-      <% else %>
-        Press this box and pick dates.
-        <div class="form-group">
-            <%= f.text_field :date_time, placeholder: "Date(s)", :autocomplete => :off, class: "datepicker"%>
-        </div>
-      <% end %>
+      </div>
       
-      <div id="bottom-times">
+      <div class="jumbotron" id="dates">
+        <div class="dates-left-side">
+          <h3>Step 2: Choose Dates</h3>
+          Press this box and pick dates.
+          <div class="form-group">
+            <%= f.text_field :date_time, placeholder: "Date(s)", :autocomplete => :off, class: "datepicker"%>
+          </div>
+        </div>
+        
+        <div class="dates-right-side">
+          <h4>Dates:</h4>
+          <div class="dates-chosen">
+          </div>
+        </div>
+      </div>
+      
+      <div class="jumbotron" id="bottom-times">
         <h3>Step 3: Choose Times</h3>
         <div id="times-table">
         </div>
       </div>
-      <div class="actions">
+      
+      <div class="jumbotron" id="actions">
         <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
         <%= f.submit "Submit", class:"btn btn-primary"%>
       </div>
+      
     <% end %>
-  </div>
-  <div class="dates-right-side">
-    <h4>Dates:</h4>
-    <div class="dates-chosen"></div>
-  </div>
 </div>
 
 
