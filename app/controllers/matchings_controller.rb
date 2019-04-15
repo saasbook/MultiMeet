@@ -3,11 +3,11 @@ class MatchingsController < ApplicationController
 
   # GET /project/:project_id/matching
   def show
-    @current_user = current_user
-    @permission = true#!(@user.nil?)
     @proj_exists = !(@project.nil?)
-
-    if @permission and @proj_exists and @matching
+    if @proj_exists
+      @permission = current_user.id == @project.user.id
+    end
+    if @proj_exists and @matching
       @is_matching = true
       @parsed_matching = JSON.parse(@matching.output_json)
     end
@@ -58,7 +58,7 @@ class MatchingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_matching_and_project
       @matching = Matching.find_by(params.slice(:project_id))
-      @project = Project.find_by(params[:project_id])
+      @project = Project.find_by(:id => params[:project_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
