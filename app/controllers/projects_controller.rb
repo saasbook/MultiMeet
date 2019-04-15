@@ -20,7 +20,7 @@ class ProjectsController < ApplicationController
 
     if @project.save!
       flash[:success] = "Successfully created project #{project_name}"
-      redirect_to new_project_time_path(@project)
+      redirect_to projects_path
     else
       flash[:message] = @user.errors.full_messages
       redirect_to projects_path

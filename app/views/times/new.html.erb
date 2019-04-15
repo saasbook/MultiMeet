@@ -25,13 +25,28 @@
           </ul>
         </div>
       <% else %>
+        Press this box and pick dates.
         <div class="form-group">
             <%= f.text_field :date_time, placeholder: "Date(s)", :autocomplete => :off, class: "datepicker"%>
-            <%= link_to 'Clear', new_project_time_path, class:"btn btn-secondary btn-smcd" %>
+            <%= link_to 'Clear', new_project_time_path, class:"btn btn-secondary btn-sm" %>
         </div>
       <% end %>
-      <h1>Choose Times</h1>
-      <div id="times-table">
+      
+      <div id="timeslot-div">
+        <h6>Timeslot Length</h6>
+        <div>
+          <select id="timeslot-hour">
+          </select>
+          Hours
+          <select id="timeslot-minute">
+          </select>
+          Minutes
+        </div>
+      </div>
+      <div id="bottom-times">
+        <h1>Choose Times</h1>
+        <div id="times-table">
+        </div>
       </div>
       <div class="actions">
         <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>

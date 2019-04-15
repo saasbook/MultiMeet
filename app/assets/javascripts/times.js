@@ -1,9 +1,24 @@
 /* global $ */
 
-/* Datepicker */
+/* Datepicker and load timeslot options*/
 $(document).on('turbolinks:load', 
-    function (){
+    function() {
         $('.datepicker').datepicker({todayHighlight: true, multidate: true, format: 'yyyy-mm-dd'});
+    }
+);
+
+
+$(document).on('turbolinks:load', 
+    function() {
+        for (var i = 0; i < 60; i++) {
+            var option = "<option value='" + i.toString()+ "'"+ ">" + i.toString() + "</option>"
+            if (i < 11) {
+                $("#timeslot-hour").append(option);
+            }
+            if ((i % 10 == 0) || (i % 15 == 0)) {
+                $("#timeslot-minute").append(option);
+            }
+        }
     }
 );
 
@@ -14,6 +29,7 @@ $(document).on('turbolinks:load',
             var string = $('.datepicker').val();
             var dateArray = string.split(",");
             var formatted = "";
+            dateArray.sort();
             
             for (var i = 0; i < dateArray.length && string.length > 0; i++){
                 var unformatted = dateArray[i];
@@ -38,8 +54,6 @@ $(document).on('click', '.addbutton', function(){
     var strid = "#"+parent_id;
     var entry = createTimeEntry(parent_id);
     element.append(entry);
-    console.log($(strid).children());
-    console.log($(strid).children().last());
     $(strid).children().last().append('<span><button type="button" class="deletebutton btn btn-danger btn-sm">Delete Timeslot</button></span>');
 });
 
@@ -49,17 +63,70 @@ $(document).on('click', '.deletebutton', function(){
     parent.remove();
 });
 
+function addTime(startInput, hourInput, minuteInput){
+    var hour = parseInt(hourInput, 10);
+    var minute = parseInt(minuteInput, 10);
+    var startHour = parseInt(startInput.split(":")[0], 10);
+    var startMinute = parseInt(startInput.split(":")[1], 10);
+    var outMinute = minute + startMinute;
+    
+    if (outMinute >= 60){
+        var outHour = startHour + hour + 1;
+        outMinute -= 60;
+    }
+    else {
+        var outHour = startHour + hour;
+    }
+    
+    if (outHour >= 24){
+        outHour -= 24;
+    }
+    
+    var strHour = outHour.toString();
+    var strMinute = outMinute.toString();
+ 
+    if (strHour.length == 1){
+        strHour = "0" + strHour;
+    }
+    if (strMinute.length == 1){
+        strMinute = "0" + strMinute;
+    }
+    
+    return strHour + ":" + strMinute
+}
 
 /* Time Entry Row */
 function createTimeEntry(divId){
     var startInput = document.createElement("input");
+    var endInput = document.createElement("input");
+    var strid = "#"+divId + " > div";
+    var hourInput = $('#timeslot-hour').find(":selected").text();
+    var minuteInput = $('#timeslot-minute').find(":selected").text();
+    
+    if ($(strid).length == 0){
+        startInput.value = "12:00";
+    }
+    else {
+        var inputs = 'input[name="times['+divId+'][]"]';
+        var lastTime = $(inputs).last().val();
+        var hour = parseInt(lastTime.split(":")[0], 10);
+        if (hour >= 23){
+            startInput.value = "0" + (hour + 1 - 24).toString() + ":00";
+        }
+        else if (hour < 10){
+            startInput.value = "0" + (hour + 1).toString() + ":00";
+        }
+        else {
+            startInput.value = (hour + 1).toString() + ":00";
+        }
+        
+    }
+    endInput.value = addTime(startInput.value, hourInput, minuteInput);
+    
     startInput.type = "time";
-    startInput.value = "12:00";
     startInput.step = "900";
     startInput.name = "times["+divId +"][]";
-    var endInput = document.createElement("input");
     endInput.type = "time";
-    endInput.value = "13:00";
     endInput.step = "900";
     endInput.name = "times["+divId +"][]";
     
@@ -126,5 +193,5 @@ function formatDate(date){
    var month = parseInt(date.split("-")[1], 10)
    var year = date.split("-")[0]
    
-   return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day
+   return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day + ' ' + year
 }
