@@ -1,12 +1,8 @@
 Feature: See Rankings
-  
-
-
 
     As an admin,
     So that I can run the matching algorithm and see the results,
-    I want to see the ability to see matching results.
-
+    I want to see the matching results for my projects.
 
     Background: user is logged in
         Given a user with the email "turese@berkeley.edu" with password "password" and with username "turese" exists
@@ -23,12 +19,10 @@ Feature: See Rankings
   
     Scenario: User views matchings for a project they do have access to
         When I access the matchings page for project of id "1"
-        Then I should see "Event"
-        Then I should see "Person3-0"
-        Then I should see "People"
-        Then I should see "Person3"
-        Then I should see "Time"
-        Then I should see "Fri, 22 Mar 2019 13:00:00 GMT"
+        Then I should see /Event(\s*)People(\s*)Time/
+        Then I should see /Person3-0(\s*)Person3(\s*)Fri, 22 Mar 2019 13:00:00 GMT/
+        Then I should see /Person1-0(\s*)Person1(\s*)Fri, 22 Mar 2019 14:00:00 GMT/
+        Then I should see /Person2-0(\s*)Person2(\s*)Fri, 22 Mar 2019 15:00:00 GMT/
     Scenario: User tries to view matchings for a project with no matchings yet
         When I access the matchings page for project of id "2"
         Then I should see "No matching for this project."
