@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   ## RANKING is the time ranking selected by the specific participant.
   ## TIMES includes each datetime for the matching.
   ## MATCHING is the final matching.
-
   resources :projects do
     resources :participants do
+      get 'display', on: :collection
       resource :ranking
     end
     resources :times
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :rosters
 
   # Custom singular routes or reroutes
+  delete 'projects/:project_id/times' => 'times#destroy_all', :as => 'destroy_project_times'
   post 'login' => 'sessions#create'
   get 'login' => 'sessions#new'
   delete 'logout' => 'sessions#destroy', :as => 'logout'

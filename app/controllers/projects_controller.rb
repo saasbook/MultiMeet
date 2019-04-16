@@ -16,6 +16,15 @@ class ProjectsController < ApplicationController
 
   # GET /times/1/edit
   def edit
+
+  end
+
+  def update
+    @project = Project.find(params[:id].to_i)
+    @project.project_name = project_params[:project_name]
+    if @project.save!
+      redirect_to projects_path
+    end
   end
 
   def create
@@ -32,11 +41,16 @@ class ProjectsController < ApplicationController
     end
 
     if @project.save!
-      flash[:success] = "Successfully created project #{project_name}"
+      if params[:commit] == "Create Project and Choose Times"
+        flash[:success] = "Successfully created project #{project_name}. Choose dates and times now!"
+        redirect_to new_project_time_path(@project)
+      else
+        flash[:success] = "Successfully created project #{project_name}"
+        redirect_to projects_path
+      end
+    else
+      flash[:message] = @user.errors.full_messages
       redirect_to projects_path
-    # else
-    #   flash[:message] = @user.errors.full_messages
-    #   redirect_to projects_path
     end
   end
 

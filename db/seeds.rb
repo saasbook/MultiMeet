@@ -95,14 +95,14 @@ project_times_list = [
   {id: 7, project_id: 1, date_time: Time.parse("Dec 8 2019 3:00 PM")},
   {id: 8, project_id: 1, date_time: Time.parse("Dec 8 2019 4:00 PM")},
   # 169 Meeting Times
-  {id: 9, project_id: 2, date_time: Time.parse("May 7 2019 10:30")},
-  {id: 10, project_id: 2, date_time: Time.parse("May 7 2019 1:30")},
-  {id: 11, project_id: 2, date_time: Time.parse("May 10 2019 10:30")},
-  {id: 12, project_id: 2, date_time: Time.parse("May 10 2019 1:30")},
+  {id: 9, project_id: 2, date_time: Time.parse("May 7 2019 10:30 AM")},
+  {id: 10, project_id: 2, date_time: Time.parse("May 7 2019 1:30 PM")},
+  {id: 11, project_id: 2, date_time: Time.parse("May 10 2019 10:30 PM")},
+  {id: 12, project_id: 2, date_time: Time.parse("May 10 2019 1:30 AM")},
   # multimatch-121
-  {id: 13, project_id: 5, date_time: Time.parse("2019-03-22 13:00")},
-  {id: 14, project_id: 5, date_time: Time.parse("2019-03-22 14:00")},
-  {id: 15, project_id: 5, date_time: Time.parse("2019-03-22 15:00")}
+  {id: 13, project_id: 5, date_time: Time.parse("2019-03-22 13:00 PM")},
+  {id: 14, project_id: 5, date_time: Time.parse("2019-03-22 14:00 PM")},
+  {id: 15, project_id: 5, date_time: Time.parse("2019-03-22 15:00 PM")}
 ]
 
 project_times_list.each do |project_time|
