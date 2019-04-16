@@ -16,6 +16,9 @@ module NavigationHelpers
     when /^the home\s?page$/
       '/'
 
+    when /^the edit matchings page for "(.*)"$/
+      edit_project_matching_path(Project.find_by(:project_name => $1))
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

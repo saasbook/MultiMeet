@@ -4,8 +4,12 @@ Feature: Match
   I want to run the matching algorithm
   So users can be assigned a time
 
+  user = User.find_by(:username => username)
+  user.projects.create(:project_name => project_name)
+
   Background: A project is set up
-    Given a registered user with the username "jsluong" has a project named "CS61A Sections"
+    Given a registered user with the email "jsluong@berkeley.edu" with username "jsluong" exists
+    And a registered user with the username "jsluong" has a project named "CS61A Sections"
     And the project named "CS61A Sections" has the following participants:
     | email                      |
     | alexstennet@berkeley.edu   |
@@ -21,21 +25,21 @@ Feature: Match
     | Dec 8 2019 3:00 PM  |
     | Dec 8 2019 4:00 PM  |
 
-    And I am on the matchings page for project "CS61A Sections"
+    And I am on the edit matchings page for "CS61A Sections"
 
   Scenario: User is unable to start a match when not everyone has submitted preferences
-    Given not everyone has submitted preferences
-    When I access the edit matchings page for project "Temp"
+    Given 3 people submitted preferences for "CS61A Sections"
+    When I am on the edit matchings page for "CS61A Sections"
     Then I should see "Not everyone has submitted preferences."
 
   Scenario: User is able to start a match when everyone has submitted preferences
-    Given everyone has submitted preferences
-    When I access the edit matchings page for project "Temp"
+    Given 5 people submitted preferences for "CS61A Sections"
+    When I am on the edit matchings page for "CS61A Sections"
     Then I should see "Ready to match."
 
   Scenario: User runs the algorithm successfully after everyone has submitted preferences
-    Given everyone has submitted preferences
-    When I access the edit matchings page for project "Temp"
-    And I click "Match!"
-    Then I should be on the matchings page for project "Temp"
+    Given 5 people submitted preferences for "CS61A Sections"
+    When I am on the edit matchings page for "CS61A Sections"
+    And I press "Match!"
+    Then I should be on the edit matchings page for "CS61A Sections"
     And I should see "Successfully matched."
