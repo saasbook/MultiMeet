@@ -25,7 +25,7 @@ Feature: Match
     | Dec 8 2019 3:00 PM  |
     | Dec 8 2019 4:00 PM  |
 
-    And I am on the edit matchings page for "CS61A Sections"
+    And I am on the matchings page for "CS61A Sections"
 
   Scenario: User is unable to start a match when not everyone has submitted preferences
     Given 3 people submitted preferences for "CS61A Sections"

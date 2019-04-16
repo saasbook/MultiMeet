@@ -19,6 +19,10 @@ module NavigationHelpers
     when /^the edit matchings page for "(.*)"$/
       edit_project_matching_path(Project.find_by(:project_name => $1))
 
+    when /^the matchings page for "(.*)"$/
+      puts(Project.where(:project_name => $1).exists?)
+      project_matching_path(Project.find_by(:project_name => $1))
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

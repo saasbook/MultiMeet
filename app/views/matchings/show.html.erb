@@ -2,7 +2,7 @@
 
 <% if @is_matching %>
 
-  
+
 <table style="width:100%">
 	<tbody>
 	<tr>
@@ -28,10 +28,10 @@
 	<% elsif !@permission %>
 		Permission denied.
 	<% else %>
-  		No matching for this project.
+  	No matching for this project.
   	<% end %>
 <% end %>
 
-<% if @proj_exists %>	
+<% if @proj_exists %>
 	<%= link_to 'Back', project_path(@project) %>
 <% end %>
