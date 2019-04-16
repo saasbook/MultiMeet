@@ -5,6 +5,14 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
+  def update
+    @project = Project.find(params[:id].to_i)
+    @project.project_name = project_params[:project_name]
+    if @project.save!
+      redirect_to projects_path
+    end
+  end
+
   def create
     @project = current_user.projects.new(project_params)
     project_name = @project.project_name

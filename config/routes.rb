@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :projects do
     resources :participants do
+      get 'display', on: :collection
       resource :ranking
     end
     resources :times
