@@ -10,7 +10,7 @@ gem 'bootstrap-datepicker-rails'
 # Use sqlite3 as the database for Active Record
 # Use SCSS for stylesheets
 group :production do
-  gem 'pg'              # use PostgreSQL in production (Heroku)
+  gem 'pg', '~> 0.20'   # use PostgreSQL in production (Heroku)
   gem 'rails_12factor'  # Heroku-specific production settings
 end
 gem 'sass-rails', '~> 5.0'
