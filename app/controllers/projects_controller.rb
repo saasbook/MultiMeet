@@ -1,8 +1,30 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit]
 
+  # GET /projects/new
   def new
     @project = Project.new
+  end
+
+  # GET /projects/1
+  # GET /projects/1.json
+  def show
+    # unless current_user
+    #   redirect_to root_path
+    # end
+  end
+
+  # GET /times/1/edit
+  def edit
+
+  end
+
+  def update
+    @project = Project.find(params[:id].to_i)
+    @project.project_name = project_params[:project_name]
+    if @project.save!
+      redirect_to projects_path
+    end
   end
 
   def create
@@ -19,14 +41,21 @@ class ProjectsController < ApplicationController
     end
 
     if @project.save!
-      flash[:success] = "Successfully created project #{project_name}"
-      redirect_to projects_path
+      if params[:commit] == "Create Project and Choose Times"
+        flash[:success] = "Successfully created project #{project_name}. Choose dates and times now!"
+        redirect_to new_project_time_path(@project)
+      else
+        flash[:success] = "Successfully created project #{project_name}"
+        redirect_to projects_path
+      end
     else
       flash[:message] = @user.errors.full_messages
       redirect_to projects_path
     end
   end
 
+  # GET /times
+  # GET /times.json
   def index
     @user = current_user
     if @user

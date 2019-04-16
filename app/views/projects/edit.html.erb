@@ -1,4 +1,31 @@
-<h1>Editing Project</h1>
+<%= stylesheet_link_tag "application" %>
 
-<%= link_to 'Show', @project %> |
-<%= link_to 'Back', projects_path %>
+<% if flash[:message] %>
+  <div class="alert alert-danger alert-dismissible show" role="alert">
+    <span class="error"><%= flash[:message] %></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+<%= render 'navbar' %>
+
+<div class="user-container">
+  <div class="jumbotron">
+
+    <h4>Editing Porject</h4>
+
+    <%= form_for(@project) do |f| %>
+      <div class="form-group">
+        <%= f.text_field :project_name, placeholder: "New Project Name", class: "form-control"%>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Confirm Editing", class:"btn btn-primary"  %>
+        <%= link_to 'Cancel', projects_path, class:"btn btn-primary" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
