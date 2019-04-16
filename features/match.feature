@@ -9,6 +9,10 @@ Feature: Match
 
   Background: A project is set up
     Given a registered user with the email "jsluong@berkeley.edu" with username "jsluong" exists
+    And I am on the login page
+    When I fill in "Email" with "jsluong@berkeley.edu"
+    And I fill in "Password" with "password"
+    And I press "Log In"
     And a registered user with the username "jsluong" has a project named "CS61A Sections"
     And the project named "CS61A Sections" has the following participants:
     | email                      |
