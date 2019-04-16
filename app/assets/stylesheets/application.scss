@@ -10,8 +10,37 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require bootstrap-datepicker
+ *= require_tree
  */
 @import 'bootstrap';
+
+.datepicker{
+    width: 30%;
+    font-size: 14px;
+}
+
+.dates-chosen {
+  white-space: pre
+}
+
+.datepicker-inline {
+    width: 80%;
+}
+
+.dropdown-menu{
+    width: 25%;
+}
+
+.datepicker table {
+    margin: auto;
+    width: 80%;
+}
+
+.table-condensed{
+    width: 300px;
+    height: 300px;
+}
 
 .user-container{
     margin: 10% auto;
@@ -23,6 +52,52 @@
     padding-bottom: 3rem;
 }
 
+#billboard{
+    display: grid;
+}
+
+#dates{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
 .project-header{
     font-size: 30px;
+}
+
+.times-table-date{
+    font-weight:bold;
+    margin: 15px 0;
+}
+
+.times-table-date span{
+    font-size: 15px;
+    font-weight: normal;
+    margin-right: 10px;
+}
+
+.times-table-date button{
+    margin: 0 15px;
+}
+
+.times-table-date div{
+    margin: 10px 0;
+}
+
+#bottom-times, #timeslow_div{
+    margin-top: 30px;
+}
+
+.timeslot-div {
+    width: 100%;
+}
+
+#timeslot, #dates, #bottom-times{
+    padding: 1.5rem 2rem;
+    margin: 1rem 0;
+}
+
+#actions {
+    padding: 1.5rem 2rem;
+    margin: 1rem 0;
 }

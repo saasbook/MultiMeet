@@ -1,5 +1,65 @@
-<h1>New Time</h1>
+<%= render 'navbar' %>
 
-<%= render 'form' %>
+<div id="billboard">
+    <% if flash[:message] %>
+       <div class="alert alert-danger alert-dismissible show" role="alert">
+        <div class="error"><strong>Error: </strong><%= flash[:message] %></div>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    <% end %>
+    
+    <% if flash[:success] %>
+       <div class="alert alert-success alert-dismissible show" role="alert">
+        <div class="error"><strong>Message: </strong><%= flash[:success] %></div>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    <% end %>
+    
+    <%= form_for(@time) do |f| %>
+      <div class="jumbotron" id="timeslot">
+        <div id="timeslot-div">
+          <h3>Step 1: Choose Duration</h3>
+          <div>
+            <%= select_tag(:timeslot_hour, options_for_select((0..10))) %>
+            Hours
+            <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])) %>
+            Minutes
+          </div>
+        </div>
+      </div>
+      
+      <div class="jumbotron" id="dates">
+        <div class="dates-left-side">
+          <h3>Step 2: Choose Dates</h3>
+          Press this box and pick dates.
+          <div class="form-group">
+            <%= f.text_field :date_time, placeholder: "Date(s)", :autocomplete => :off, class: "datepicker"%>
+          </div>
+        </div>
+        
+        <div class="dates-right-side">
+          <h4>Dates:</h4>
+          <div class="dates-chosen">
+          </div>
+        </div>
+      </div>
+      
+      <div class="jumbotron" id="bottom-times">
+        <h3>Step 3: Choose Times</h3>
+        <div id="times-table">
+        </div>
+      </div>
+      
+      <div class="jumbotron" id="actions">
+        <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
+        <%= f.submit "Submit", class:"btn btn-primary"%>
+      </div>
+      
+    <% end %>
+</div>
 
-<%= link_to 'Back', times_path %>
+
