@@ -15,6 +15,15 @@
  */
 @import 'bootstrap';
 
+ul {
+  list-style-type: none;
+}
+
+ul li {
+    margin: 5px 0;
+}
+
+/* Times */
 .datepicker{
     width: 30%;
     font-size: 14px;
