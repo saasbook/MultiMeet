@@ -50,7 +50,7 @@ $(document).on('click', '.deletebutton', function(){
 });
 
 /* Change Endinput to fit timeslot length */
-$(document).on('click', '.startInput', function(){
+$(document).on('input', '.startInput', function(){
     var newValue = $(this).val();
     var hourInput = $('#timeslot_hour').find(":selected").text();
     var minuteInput = $('#timeslot_minute').find(":selected").text();
@@ -60,7 +60,7 @@ $(document).on('click', '.startInput', function(){
 });
 
 /* Change startInput to fit timeslot length */
-$(document).on('click', '.endInput', function(){
+$(document).on('input', '.endInput', function(){
     var newValue = $(this).val();
     var hourInput = $('#timeslot_hour').find(":selected").text();
     var minuteInput = $('#timeslot_minute').find(":selected").text();
@@ -182,6 +182,14 @@ function addDiv(divId){
     dateDiv.appendChild(addButton);
     dateDiv.appendChild(outerDiv);
     $('#times-table').append(dateDiv);
+    sortDivs();
+}
+
+function sortDivs(){
+    const items = document.querySelector("#times-table");
+    const divs = [...items.children];
+    divs.sort((a,b) => a.id.localeCompare(b.id));
+    divs.forEach(div => items.appendChild(div));
 }
 
 /* Delete a date div */
