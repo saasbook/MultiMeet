@@ -25,17 +25,23 @@
 	</tbody>
 </table>
   <%= link_to 'Run algorithm again', edit_project_matching_path(@matching.project) %>
+
 <% else %>
 	<% if !@proj_exists %>
 		No such project exists.
 	<% elsif !@permission %>
 		Permission denied.
-	<% else %>
+	<% elsif !@eligible_to_match %>
   	No matching for this project.
-  	<% end %>
+		Not everyone has submitted preferences.
+	<% else %>
+	  No matching for this project.
+		Ready to match.
+		<%= button_to 'Match!', project_matching_path(@project.id) %>
+  <% end %>
 <% end %>
 
-<p>
+<br><br>
 <% if @proj_exists %>
 	<%= link_to 'Back', project_path(@project) %>
 <% end %>

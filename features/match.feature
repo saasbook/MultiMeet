@@ -33,17 +33,17 @@ Feature: Match
 
   Scenario: User is unable to start a match when not everyone has submitted preferences
     Given 3 people submitted preferences for "CS61A Sections"
-    When I am on the edit matchings page for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
     Then I should see "Not everyone has submitted preferences."
 
   Scenario: User is able to start a match when everyone has submitted preferences
     Given 5 people submitted preferences for "CS61A Sections"
-    When I am on the edit matchings page for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
 
   Scenario: User runs the algorithm successfully after everyone has submitted preferences
     Given 5 people submitted preferences for "CS61A Sections"
-    When I am on the edit matchings page for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
     And I press "Match!"
-    Then I should be on the edit matchings page for "CS61A Sections"
+    Then I should be on the matchings page for "CS61A Sections"
     And I should see "Successfully matched."

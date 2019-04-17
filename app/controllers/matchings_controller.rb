@@ -10,6 +10,51 @@ class MatchingsController < ApplicationController
     if @proj_exists and @matching
       @is_matching = true
       @parsed_matching = JSON.parse(@matching.output_json)
+    elsif @proj_exists
+      @is_matching = false
+      @eligible_to_match = all_submitted_preferences?
+    end
+  end
+
+  # GET /projects/:project_id/matching/new
+  def new
+    @matching = Matching.new
+  end
+
+  # GET /projects/:project_id/matching/edit
+  def edit
+    respond_to do |format|
+      if all_submitted_preferences?
+        #matching = Matching.where(project_id: @project.id).update_all(output_json: api)
+        if @matching.update(output_json: api)
+          format.html { redirect_to project_matching_path, notice: 'Successfully matched.' }
+        else
+          format.html { render :edit }
+        end
+      end
+    end
+  end
+
+  # POST /projects/:project_id/matching
+  def create
+    @project = Project.find_by(:id => params[:project_id])
+    @matching = Matching.new({project_id: @project.id})
+    @matching.output_json = api
+
+    respond_to do |format|
+      if @matching.save!
+        format.html { redirect_to project_matching_path, notice: 'Successfully matched.' }
+      else
+        format.html { render :new }
+      end
+    end
+  end
+
+  # DELETE /projects/:project_id/matching
+  def destroy
+    @matching.destroy
+    respond_to do |format|
+      format.html { redirect_to matchings_url, notice: 'Matching was successfully destroyed.' }
     end
   end
 
@@ -70,7 +115,7 @@ class MatchingsController < ApplicationController
 
     all_participants_ids.each do |participant_id|
       all_project_time_ids.each do |project_time_id|
-        if not Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)['rank'].is_a? Integer
+        if not Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)
           return false
         end
       end
@@ -118,46 +163,6 @@ class MatchingsController < ApplicationController
     return output.to_json
   end
 
-  # GET /projects/:project_id/matching/new
-  def new
-    @matching = Matching.new
-  end
-
-  # GET /projects/:project_id/matching/edit
-  def edit
-    respond_to do |format|
-      if all_submitted_preferences?
-        matching = Matching.where(project_id: @project.id).update_all(output_json: api)
-        if @matching.update(matching_params)
-          format.html { redirect_to project_matching_path, notice: 'Matching was successfully updated.' }
-        else
-          format.html { render :edit }
-        end
-      end
-    end
-  end
-
-  # POST /projects/:project_id/matching
-  def create
-    @matching = Matching.new(matching_params)
-
-    respond_to do |format|
-      if @matching.save
-        format.html { redirect_to @matching, notice: 'Matching was successfully created.' }
-      else
-        format.html { render :new }
-      end
-    end
-  end
-
-  # DELETE /projects/:project_id/matching
-  def destroy
-    @matching.destroy
-    respond_to do |format|
-      format.html { redirect_to matchings_url, notice: 'Matching was successfully destroyed.' }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_matching_and_project
@@ -167,6 +172,6 @@ class MatchingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def matching_params
-      params.fetch(:matching, {})
+      params.require(:project_id)
     end
 end
