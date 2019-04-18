@@ -7,7 +7,6 @@ $(document).on('turbolinks:load',
     }
 );
 
-
 /* Show highlighted datepicker dates */
 $(document).on('turbolinks:load',
     function(){
@@ -69,6 +68,29 @@ $(document).on('input', '.endInput', function(){
     $(startInput).val(newStartInput);
 });
 
+/* Change endInput value to match new duration if timeslot divs exist */
+$(document).on('input', '#timeslot_hour', function(){
+    var hourInput = $(this).val();
+    var minuteInput = $('#timeslot_minute').find(":selected").text();
+    $(".endInput").each(function(){
+        var startInput = $(this).parent().prev().children('.startInput').val();
+        var newEndInput = changeTime(true, startInput, hourInput, minuteInput);
+        $(this).val(newEndInput);
+    });
+});
+
+/* Change endInput value to match new duration if timeslot divs exist */
+$(document).on('input', '#timeslot_minute', function(){
+    var minuteInput = $(this).val();
+    var hourInput = $('#timeslot_hour').find(":selected").text();
+    $(".endInput").each(function(){
+        var startInput = $(this).parent().prev().children('.startInput').val();
+        var newEndInput = changeTime(true, startInput, hourInput, minuteInput);
+        $(this).val(newEndInput);
+    });
+});
+
+/* Helper method to calculate either starttime or endtime */
 function changeTime(addBoolean, startInput, hourInput, minuteInput){
     var hour = parseInt(hourInput, 10);
     var minute = parseInt(minuteInput, 10);
@@ -98,7 +120,6 @@ function changeTime(addBoolean, startInput, hourInput, minuteInput){
             outHour -= 24;
         }
     }
-    
     var strHour = outHour.toString();
     var strMinute = outMinute.toString();
  
@@ -185,6 +206,7 @@ function addDiv(divId){
     sortDivs();
 }
 
+/* Sort Dates divs in times table */
 function sortDivs(){
     const items = document.querySelector("#times-table");
     const divs = [...items.children];
