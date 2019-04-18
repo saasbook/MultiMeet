@@ -19,7 +19,7 @@ end
 
 Given /^a registered user with the username "(.*)" has a project named "(.*)"$/ do |username, project_name|
   user = User.find_by(:username => username)
-  user.projects.create(:project_name => project_name)
+  user.projects.create(:project_name => project_name, :duration => 60)
 end
 
 When /^I access the landing page$/ do
