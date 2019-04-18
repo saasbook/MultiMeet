@@ -59,15 +59,15 @@ class MatchingsController < ApplicationController
   end
 
   def category
-    return "person_to_time"
+    "person_to_time"
   end
 
   def global_settings
-    return {"minutes": @project.duration}
+    {"minutes": @project.duration}
   end
 
   def people
-    all_participants_emails = Participant.where(project_id: @project.id).pluck(:email)
+    all_participants_emails = @project.participants.pluck(:email)
 
     people = []
     for email in all_participants_emails
@@ -75,7 +75,7 @@ class MatchingsController < ApplicationController
       people.push(row)
     end
 
-    return people
+    people
   end
 
   def timeslots
@@ -83,44 +83,39 @@ class MatchingsController < ApplicationController
 
     timeslots = []
     for timeslot in all_project_times
-      timeslot_formatted = timeslot.utc.strftime('%Y-%m-%d %H:%M %p')
+      timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
       row = {"timestamp": timeslot_formatted, "tracks": 1}
       timeslots.push(row)
     end
 
-    return timeslots
+    timeslots
   end
 
   def preferences
-    all_participants_ids = Participant.where(project: @project.id).pluck(:id)
-    all_project_time_ids = ProjectTime.where(project_id: @project.id).pluck(:id)
-
     preferences = []
-    all_participants_ids.each do |participant_id|
-      all_project_time_ids.each do |project_time_id|
-        person = Participant.find_by(project_id: @project.id)['email']
-        timeslot = ProjectTime.find_by(project_id: @project.id)['date_time']
-        timeslot_formatted = timeslot.utc.strftime('%Y-%m-%d %H:%M %p')
-        rank = Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)['rank']
-        row = {"person_name": person, "timeslot": timeslot_formatted, "rank": rank}
-        preferences.push(row)
-        end
+    @project.rankings.each do |ranking|
+      timeslot = ranking.project_time.date_time
+      timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
+      person = ranking.participant.email
+      row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
+      preferences.push(row)
     end
-    return preferences
+
+    preferences
   end
 
   def all_submitted_preferences?
-    all_participants_ids = Participant.where(project: @project.id).pluck(:id)
-    all_project_time_ids = ProjectTime.where(project_id: @project.id).pluck(:id)
+    all_participants_ids = @project.participants.pluck(:id)
+    all_project_time_ids = @project.project_times.pluck(:id)
 
     all_participants_ids.each do |participant_id|
       all_project_time_ids.each do |project_time_id|
-        if not Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)
+        unless Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)
           return false
         end
       end
     end
-    return true
+    true
   end
 
   def api
@@ -133,36 +128,13 @@ class MatchingsController < ApplicationController
       :timeslots => timeslots,
       :preferences => preferences
     }
+    # print(JSON.pretty_generate(input))
 
-    #output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input).body
-    output = {
-      "schedule": [
-          {
-              "event_name": rand(36**10).to_s(36),
-              "people_called": [
-                  "PersonNew"
-              ],
-              "timestamp": "Fri, 30 Mar 2119 13:00:00 GMT"
-          },
-          {
-              "event_name": "PersonNew1-0",
-              "people_called": [
-                  "PersonNew2"
-              ],
-              "timestamp": "Fri, 30 Mar 2119 14:00:00 GMT"
-          },
-          {
-              "event_name": "PersonNew1-0",
-              "people_called": [
-                  "PersonNew3"
-              ],
-              "timestamp": "Fri, 30 Mar 2119 15:00:00 GMT"
-          }
-      ]
-    }
-    return output.to_json
+    output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input.to_json,
+                             {content_type: :json, accept: :json}).body
+    return output
   end
-
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_matching_and_project
