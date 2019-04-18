@@ -19,7 +19,7 @@ end
 
 Given /^a registered user with the username "(.*)" has a project named "(.*)"$/ do |username, project_name|
   user = User.find_by(:username => username)
-  user.projects.create(:project_name => project_name)
+  user.projects.create(:project_name => project_name, :duration => 60)
 end
 
 When /^I access the landing page$/ do
@@ -28,9 +28,7 @@ end
 
 When /^I access the matchings page for project of id "(.*)"$/ do |id|
     visit "/projects/" + id + "/matching"
-    
 end
-
 
 Given /^a default matching exists for project with id "(.*)"$/ do |id|
       multimatch_121_output = {
@@ -59,5 +57,5 @@ Given /^a default matching exists for project with id "(.*)"$/ do |id|
         ]
     }
     Matching.create(project_id: id, output_json: multimatch_121_output.to_json)
-  
+
 end

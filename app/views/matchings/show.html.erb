@@ -1,8 +1,26 @@
 <%= render 'layouts/navbar' %>
+<% if flash[:success] %>
+  <div class="alert alert-success alert-dismissible show" role="alert">
+    <span class="error"><%= flash[:success] %></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+<% if flash[:error] %>
+  <div class="alert alert-success alert-dismissible show" role="alert" style = "background-color:#FFA533;">
+    <span class="error"><%= flash[:error] %></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+<h1>Editing Matching</h1>
+
 <p id="notice"><%= notice %></p>
 
 <% if @is_matching %>
-
 
 <table style="width:100%">
 	<tbody>
@@ -22,17 +40,24 @@
   <% end %>
 	</tbody>
 </table>
-  <%= link_to 'Edit', edit_project_matching_path(@matching.project) %>
+  <%= link_to 'Run algorithm again', edit_project_matching_path(@matching.project) %>
+
 <% else %>
 	<% if !@proj_exists %>
 		No such project exists.
 	<% elsif !@permission %>
 		Permission denied.
+	<% elsif !@eligible_to_match %>
+  	No matching for this project.
+		Not everyone has submitted preferences.
 	<% else %>
-  		No matching for this project.
-  	<% end %>
+	  No matching for this project.
+		Ready to match.
+		<%= button_to 'Match!', project_matching_path(@project.id) %>
+  <% end %>
 <% end %>
 
+<br><br>
 <% if @proj_exists %>
 	<%= link_to 'Back', project_path(@project) %>
 <% end %>
