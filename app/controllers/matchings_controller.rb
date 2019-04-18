@@ -27,7 +27,8 @@ class MatchingsController < ApplicationController
       if all_submitted_preferences?
         #matching = Matching.where(project_id: @project.id).update_all(output_json: api)
         if @matching.update(output_json: api)
-          format.html { redirect_to project_matching_path, notice: 'Successfully matched.' }
+          flash[:success] = 'Successfully matched.'
+          format.html { redirect_to project_matching_path }
         else
           format.html { render :edit }
         end
@@ -43,7 +44,8 @@ class MatchingsController < ApplicationController
 
     respond_to do |format|
       if @matching.save!
-        format.html { redirect_to project_matching_path, notice: 'Successfully matched.' }
+        flash[:success] = 'Successfully matched.'
+        format.html { redirect_to project_matching_path }
       else
         format.html { render :new }
       end
@@ -54,7 +56,8 @@ class MatchingsController < ApplicationController
   def destroy
     @matching.destroy
     respond_to do |format|
-      format.html { redirect_to matchings_url, notice: 'Matching was successfully destroyed.' }
+      flash[:success] = 'Matching was successfully destroyed.'
+      format.html { redirect_to matchings_url }
     end
   end
 
