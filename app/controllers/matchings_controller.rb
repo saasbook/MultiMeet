@@ -17,9 +17,9 @@ class MatchingsController < ApplicationController
   end
 
   # GET /projects/:project_id/matching/new
-  def new
-    @matching = Matching.new
-  end
+  # def new
+  #   @matching = Matching.new
+  # end
 
   # GET /projects/:project_id/matching/edit
   def edit
@@ -29,8 +29,8 @@ class MatchingsController < ApplicationController
         if @matching.update(output_json: api)
           flash[:success] = 'Successfully matched.'
           format.html { redirect_to project_matching_path }
-        else
-          format.html { render :edit }
+        # else
+        #   format.html { render :edit }
         end
       end
     end
@@ -46,20 +46,20 @@ class MatchingsController < ApplicationController
       if @matching.save!
         flash[:success] = 'Successfully matched.'
         format.html { redirect_to project_matching_path }
-      else
-        format.html { render :new }
+      # else
+      #   format.html { render :new }
       end
     end
   end
 
   # DELETE /projects/:project_id/matching
-  def destroy
-    @matching.destroy
-    respond_to do |format|
-      flash[:success] = 'Matching was successfully destroyed.'
-      format.html { redirect_to matchings_url }
-    end
-  end
+  # def destroy
+  #   @matching.destroy
+  #   respond_to do |format|
+  #     flash[:success] = 'Matching was successfully destroyed.'
+  #     format.html { redirect_to matchings_url }
+  #   end
+  # end
 
   def category
     "person_to_time"

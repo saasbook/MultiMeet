@@ -47,3 +47,13 @@ Feature: Match
     And I press "Match!"
     Then I should be on the matchings page for "CS61A Sections"
     And I should see "Successfully matched."
+
+  Scenario: User re-runs the algorithm after successfully running algorithm
+    Given 5 people submitted preferences for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
+    And I press "Match!"
+    Then I should be on the matchings page for "CS61A Sections"
+    And I should see "Successfully matched."
+    When I follow "Run algorithm again"
+    Then I should be on the matchings page for "CS61A Sections"
+    And I should see "Successfully matched."
