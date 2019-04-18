@@ -3,17 +3,17 @@ Given /^no current user$/ do
 end
 
 Given /^a registered user with the email "(.*)" with username "(.*)" exists$/ do |email, username|
-    user = User.create(:username => username, :email => email, :first_name => "Daniel",
+    User.create(:username => username, :email => email, :first_name => "Daniel",
     :last_name => "Lee", :password => "password", :password_confirmation => "password")
 end
 
 Given /^a registered user with the email "(.*)" with password "(.*)" exists$/ do |email, password|
-    user = User.create(:username => "ddd", :email => email, :first_name => "Daniel",
+    User.create(:username => "ddd", :email => email, :first_name => "Daniel",
     :last_name => "Lee", :password => password, :password_confirmation => password)
 end
 
 Given /^a user with the email "(.*)" with password "(.*)" and with username "(.*)" exists$/ do |email, password, username|
-    user = User.create(:username => username, :email => email, :first_name => "Daniel",
+    User.create(:username => username, :email => email, :first_name => "Daniel",
                 :last_name => "Lee", :password => password, :password_confirmation => password)
 end
 
@@ -27,6 +27,10 @@ Given("a project of id {string} with date {string} and time {string} and duratio
     project.update(duration: duration)
     ProjectTime.create(:project_id => id, :date_time => Date.parse(date), :is_date => true)
     ProjectTime.create(:project_id => id, :date_time => Time.parse(time), :is_date => false)
+end
+
+When /^I should not visualize a list-group-item $/ do 
+    expect(page).not_to have_css '.list-group-item'
 end
 
 When /^I access the landing page$/ do

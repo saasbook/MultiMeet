@@ -13,14 +13,12 @@ Feature: Choose times
     And I press "Log In"
     Then I should be on the projects page
     
-  Scenario: Create new project and choose times
+  Scenario: Choose times from project creation page
     When I follow "New Project"
     Then I should see "Enter the name of your new project here"
     When I fill in "Project Name" with "Party 2"
     And I press "Create Project and Choose Times"
     Then I should see "Step 1: Choose Duration"
-    Then I should see "Step 2: Choose Dates"
-    Then I should see "Step 3: Choose Times"
 
   Scenario: Choose times from projects page
     Given I am on the projects page
@@ -31,8 +29,6 @@ Feature: Choose times
     Then I should see "Project Times"
     When I follow "Add new time"
     Then I should see "Step 1: Choose Duration"
-    Then I should see "Step 2: Choose Dates"
-    Then I should see "Step 3: Choose Times"
 
   Scenario: No date chosen
     Given I access the times page for project of id "1"
@@ -47,7 +43,21 @@ Feature: Choose times
     And I follow "Show"
     Then I should see "Duration (minutes): 60"
     And I follow "Times"
-    Then I should see "2019-12-01"
-    And I should see "2019-12-01 10:00:00 UTC"
+    Then I should see "Sunday, December 01 2019"
+    And I should see "Start: 10:00 AM"
+    And I should see "End: 11:00 AM"
     
-   
+  Scenario: Duration already set
+    Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
+    And I access the times page for project of id "1"
+    And I follow "Add new time"
+    Then I should see "Current Timeslot Length: 60 minutes"
+    And I should see "Change Duration"
+    
+  Scenario: Reselect Times
+    Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
+    And I access the times page for project of id "1"
+    And I follow "Reselect Times"
+    Then I should see "Current Timeslot Duration: Not set yet"
+  
+  

@@ -1,13 +1,14 @@
 class TimesController < ApplicationController
-  before_action :set_time, only: [:show, :edit, :update, :destroy]
   
   # GET /times/new
   def new
     @time = ProjectTime.new
     @project_id = params[:project_id]
     @duration = Project.find(@project_id).duration
-    @hour = @duration/60.ceil
-    @minute = @duration - (@hour*60)
+    if !@duration.nil?
+      @hour = @duration/60.ceil
+      @minute = @duration - (@hour*60)
+    end
   end
   
   # GET /times
@@ -67,16 +68,6 @@ class TimesController < ApplicationController
     redirect_to project_times_path
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_time
-      @time = ProjectTime.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def time_params
-      params.require(:project_time).permit(:date_time, :is_date)
-    end
 end
 
 # PATCH/PUT /times/1
