@@ -44,14 +44,13 @@ class TimesController < ApplicationController
 
   def add_time_to_db(date, time)
     time = time + ":00"
-    #puts "Date: " + date + "| Time: " + time
     if @project.project_times.where(date_time: DateTime.parse(date + " " + time), is_date:false).blank?
       @time = @project.project_times.new(date_time: DateTime.parse(date + " " + time), is_date:false)
       if @time.save
         (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
       end
     else
-      # (flash[:error] ||= "") << "Time: #{date + " " + time}. "
+       (flash[:error] ||= "") << "Time: #{date + " " + time}. "
     end
   end
 
