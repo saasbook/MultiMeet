@@ -1,8 +1,8 @@
 Feature: Roster
 
-  As a logged in users,
+  As a logged in user,
   So that I can display my roster,
-  I can add new participant to my roster.
+  I can add a new participant to my roster.
 
   Background: user is logged in
     Given a user with the email "aaronli98@berkeley.edu" with password "password" and with username "aaronli98" exists
