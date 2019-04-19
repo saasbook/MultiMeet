@@ -29,9 +29,6 @@ Given("a project of id {string} with date {string} and time {string} and duratio
     ProjectTime.create(:project_id => id, :date_time => Time.parse(time), :is_date => false)
 end
 
-When /^I should not visualize a list-group-item $/ do 
-    expect(page).not_to have_css '.list-group-item'
-end
 
 When /^I access the landing page$/ do
     get "/"
@@ -49,6 +46,14 @@ end
 
 When("I click the second show") do
     page.all("a.btn btn-info")[1].click
+end
+
+Then /^show page contents$/ do
+  puts page.body
+end
+
+When("I click the datepicker") do
+    page.execute_script("$('.datepicker').datepicker('setDate', 'new Date(2019, 04, 20)')")
 end
 
 

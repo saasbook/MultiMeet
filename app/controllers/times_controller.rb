@@ -30,27 +30,19 @@ class TimesController < ApplicationController
     end
     
     @new_duration = params[:timeslot_hour].to_i * 60 + params[:timeslot_minute].to_i
-    @project = Project.find(@project_id)
-    @project.update(duration: @new_duration)
+    @project = Project.find(@project_id).update(duration: @new_duration)
   
-    #Loop Through params[:times]
     params[:times].keys().each do |date|
-      #Add dates to database
       if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date), is_date: true).blank?
         @time = ProjectTime.new(project_id: @project_id, date_time: date, is_date: true)
         @time.save
       end
-      #Add times of the date into database
       params[:times][date].each_with_index do |time, index|
-        #Even indexes are start times, odd indexes are end times
         if (index % 2 == 0)
           time = time + ":00"
-          #puts "Date: " + date + "| Time: " + time
           if ProjectTime.where(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false).blank?
             @time = ProjectTime.new(project_id: @project_id, date_time: DateTime.parse(date + " " + time), is_date:false)
-            if @time.save
-              (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
-            end
+            (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. " if @time.save
           else
             (flash[:error] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
           end

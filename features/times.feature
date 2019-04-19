@@ -18,7 +18,13 @@ Feature: Choose times
     Then I should see "Enter the name of your new project here"
     When I fill in "Project Name" with "Party 2"
     And I press "Create Project and Choose Times"
+    Then I should see "Successfully created project Party 2. Choose dates and times now!"
     Then I should see "Step 1: Choose Duration"
+    And I select "2" from "timeslot_hour"
+    And I select "30" from "timeslot_minute"
+    Then I should see "Step 2: Choose Dates"
+    Then show page contents
+    
 
   Scenario: Choose times from projects page
     Given I am on the projects page
@@ -44,8 +50,6 @@ Feature: Choose times
     Then I should see "Duration (minutes): 60"
     And I follow "Times"
     Then I should see "Sunday, December 01 2019"
-    And I should see "Start: 10:00 AM"
-    And I should see "End: 11:00 AM"
     
   Scenario: Duration already set
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
