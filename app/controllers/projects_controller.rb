@@ -21,10 +21,8 @@ class ProjectsController < ApplicationController
 
   def update
     @project = Project.find(params[:id].to_i)
-    @project.project_name = project_params[:project_name]
-    if @project.save!
-      redirect_to projects_path
-    end
+    @project.update(:project_name => project_params[:project_name])
+    redirect_to projects_path
   end
 
   # returns true if ok, false if not
