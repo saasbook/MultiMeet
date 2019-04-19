@@ -9,6 +9,11 @@ class TimesController < ApplicationController
   # GET /times
   # GET /times.json
   def index
+    if !logged_in?
+      require_user
+      return
+    end
+
     @project_id = params[:project_id]
     @times = ProjectTime.where(project_id: @project_id).order(:date_time)
   end
