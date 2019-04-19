@@ -19,7 +19,7 @@ end
 
 Given /^a registered user with the username "(.*)" has a project named "(.*)"$/ do |username, project_name|
   user = User.find_by(:username => username)
-  user.projects.create(:project_name => project_name)
+  user.projects.create(:project_name => project_name, :duration => 60)
 end
 
 Given("a project of id {string} with date {string} and time {string} and duration {string}") do |id, date, time, duration|
@@ -35,7 +35,6 @@ end
 
 When /^I access the matchings page for project of id "(.*)"$/ do |id|
     visit "/projects/" + id + "/matching"
-    
 end
 
 When /^I access the times page for project of id "(.*)"$/ do |id|
@@ -45,14 +44,6 @@ end
 
 When("I click the second show") do
     page.all("a.btn btn-info")[1].click
-end
-
-Then /^show page contents$/ do
-  puts page.body
-end
-
-When("I click the datepicker") do
-    page.execute_script("$('.datepicker').datepicker('setDate', 'new Date(2019, 04, 20)')")
 end
 
 Given /^a default matching exists for project with id "(.*)"$/ do |id|
@@ -82,5 +73,5 @@ Given /^a default matching exists for project with id "(.*)"$/ do |id|
         ]
     }
     Matching.create(project_id: id, output_json: multimatch_121_output.to_json)
-  
+
 end
