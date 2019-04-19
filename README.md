@@ -5,6 +5,8 @@
 
 <a href="https://travis-ci.org/Aakup/MultiMeet"><img src="https://travis-ci.org/Aakup/MultiMeet.svg?branch=master"></a>
 
+<a href="http://multi-meet.herokuapp.com/"><img src="https://www.herokucdn.com/deploy/button.svg"></a>
+
 ## Dependencies
 - Ruby 2.4.0
 - Rails 4.2.10
