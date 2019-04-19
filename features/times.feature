@@ -24,7 +24,6 @@ Feature: Choose times
     And I select "30" from "timeslot_minute"
     Then I should see "Step 2: Choose Dates"
     Then show page contents
-    
 
   Scenario: Choose times from projects page
     Given I am on the projects page

@@ -29,7 +29,6 @@ Given("a project of id {string} with date {string} and time {string} and duratio
     ProjectTime.create(:project_id => id, :date_time => Time.parse(time), :is_date => false)
 end
 
-
 When /^I access the landing page$/ do
     get "/"
 end
@@ -55,8 +54,6 @@ end
 When("I click the datepicker") do
     page.execute_script("$('.datepicker').datepicker('setDate', 'new Date(2019, 04, 20)')")
 end
-
-
 
 Given /^a default matching exists for project with id "(.*)"$/ do |id|
       multimatch_121_output = {
