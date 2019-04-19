@@ -31,12 +31,16 @@ class TimesController < ApplicationController
     @project.update(duration: @duration)
   end
 
+  def no_project_date_time?(date_time, is_date)
+    @project.project_times.where(date_time: DateTime.parse(date_time), is_date: is_date).blank?
+  end
+
   # returns if a project time was created and saved
   def create_project_time_if_needed(date, time, is_date)
     unless is_date
       date = date + " " + time
     end
-    if @project.project_times.where(date_time: DateTime.parse(date), is_date: is_date).blank?
+    if no_project_date_time? date, is_date
       @time = @project.project_times.new(date_time: date, is_date: is_date)
       return @time.save
     end
@@ -54,19 +58,8 @@ class TimesController < ApplicationController
     end
   end
 
-  # POST /times/new
-  # POST /times.json
-  def create
+  def add_requested_times_to_db
     @form_times = params[:times]
-
-    
-    if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
-      flash[:message] = "No date chosen."
-      redirect_to new_project_time_path and return
-    end
-
-    update_duration_from_params
-
     #Loop Through params[:times]
     @form_times.keys.each do |date|
       #Add dates to database
@@ -78,6 +71,19 @@ class TimesController < ApplicationController
         end
       end
     end
+  end
+
+  # POST /times/new
+  # POST /times.json
+  def create
+    if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
+      flash[:message] = "No date chosen."
+      redirect_to new_project_time_path and return
+    end
+
+    update_duration_from_params
+
+    add_requested_times_to_db
 
     redirect_to project_times_path
   end
