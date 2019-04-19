@@ -1,9 +1,15 @@
 class TimesController < ApplicationController
-  before_action :set_time, only: [:show, :edit, :update, :destroy]
+  before_action :set_project_and_project_id, only: [:index, :create, :destroy_all]
   
   # GET /times/new
   def new
     @time = ProjectTime.new
+    @project_id = params[:project_id]
+    @duration = Project.find(@project_id).duration
+    unless @duration.nil?
+      @hour = @duration/60.ceil
+      @minute = @duration - (@hour*60)
+    end
   end
   
   # GET /times
@@ -14,8 +20,7 @@ class TimesController < ApplicationController
       return
     end
 
-    @project_id = params[:project_id]
-    @project = Project.find(@project_id)
+    @duration = @project.duration
     @times = @project.project_times.order(:date_time)
   end
 
@@ -30,7 +35,7 @@ class TimesController < ApplicationController
     if @project.project_times.where(date_time: DateTime.parse(date), is_date: true).blank?
       @time = @project.project_times.new(date_time: date, is_date: true)
       if @time.save
-        (flash[:message] ||= "") << "Date: #{date}. "
+        # (flash[:message] ||= "") << "Date: #{date}. "
       end
     else
       # (flash[:error] ||= "") << "Date: #{date}. "
@@ -43,20 +48,19 @@ class TimesController < ApplicationController
     if @project.project_times.where(date_time: DateTime.parse(date + " " + time), is_date:false).blank?
       @time = @project.project_times.new(date_time: DateTime.parse(date + " " + time), is_date:false)
       if @time.save
-        (flash[:message] ||= "") << "Time: #{date + " " + time}. "
+        (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
       end
     else
       # (flash[:error] ||= "") << "Time: #{date + " " + time}. "
     end
   end
 
-  # POST /times
+  # POST /times/new
   # POST /times.json
   def create
-    @project_id = params[:project_id]
-    @project = Project.find(@project_id)
     @form_times = params[:times]
 
+    
     if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
       flash[:message] = "No date chosen."
       redirect_to new_project_time_path and return
@@ -80,8 +84,8 @@ class TimesController < ApplicationController
   end
   
   def destroy_all
-    @project_id = params[:project_id]
     @project.project_times.destroy_all
+    @project.update(duration: nil)
     redirect_to project_times_path
   end
 
@@ -89,6 +93,11 @@ class TimesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_time
       @time = ProjectTime.find(params[:id])
+    end
+
+    def set_project_and_project_id
+      @project_id = params[:project_id]
+      @project = Project.find_by(:id => @project_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
