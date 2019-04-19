@@ -31,26 +31,26 @@ class TimesController < ApplicationController
     @project.update(duration: @duration)
   end
 
-  def add_date_to_db(date)
-    if @project.project_times.where(date_time: DateTime.parse(date), is_date: true).blank?
-      @time = @project.project_times.new(date_time: date, is_date: true)
-      if @time.save
-        # (flash[:message] ||= "") << "Date: #{date}. "
-      end
-    else
-      # (flash[:error] ||= "") << "Date: #{date}. "
+  # returns if a project time was created and saved
+  def create_project_time_if_needed(date, time, is_date)
+    unless is_date
+      date = date + " " + time
     end
+    if @project.project_times.where(date_time: DateTime.parse(date), is_date: is_date).blank?
+      @time = @project.project_times.new(date_time: date, is_date: is_date)
+      return @time.save
+    end
+    false
+  end
+
+  def add_date_to_db(date)
+    create_project_time_if_needed date, nil, true
   end
 
   def add_time_to_db(date, time)
     time = time + ":00"
-    if @project.project_times.where(date_time: DateTime.parse(date + " " + time), is_date:false).blank?
-      @time = @project.project_times.new(date_time: DateTime.parse(date + " " + time), is_date:false)
-      if @time.save
-        (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
-      end
-    else
-       (flash[:error] ||= "") << "Time: #{date + " " + time}. "
+    if create_project_time_if_needed date, time, false
+      (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
     end
   end
 
