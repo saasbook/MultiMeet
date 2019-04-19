@@ -29,6 +29,8 @@
   
     <tbody>
       <% @times.each do |time| %>
+        <% print(time.date_time) %>
+        <% print(time.is_date) %>
         <tr>
         <% if time.is_date %>
             <td class="list-group-item list-group-item-primary py-2"><%= time.date_time.to_date %> </td>
