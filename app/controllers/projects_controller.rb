@@ -40,6 +40,16 @@ class ProjectsController < ApplicationController
     true
   end
 
+  def redirect_based_on_create_type(project_name)
+    if params[:commit] == "Create Project and Choose Times"
+      flash[:success] = "Successfully created project #{project_name}. Choose dates and times now!"
+      redirect_to new_project_time_path(@project)
+    else
+      flash[:success] = "Successfully created project #{project_name}"
+      redirect_to projects_path
+    end
+  end
+
   def create
     @project = current_user.projects.new(project_params)
     project_name = @project.project_name
@@ -49,13 +59,7 @@ class ProjectsController < ApplicationController
     end
 
     if @project.save!
-      if params[:commit] == "Create Project and Choose Times"
-        flash[:success] = "Successfully created project #{project_name}. Choose dates and times now!"
-        redirect_to new_project_time_path(@project)
-      else
-        flash[:success] = "Successfully created project #{project_name}"
-        redirect_to projects_path
-      end
+      redirect_based_on_create_type(project_name)
     # else
     #   flash[:message] = @user.errors.full_messages
     #   redirect_to projects_path
