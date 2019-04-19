@@ -1,9 +1,14 @@
 class TimesController < ApplicationController
-  before_action :set_time, only: [:show, :edit, :update, :destroy]
   
   # GET /times/new
   def new
     @time = ProjectTime.new
+    @project_id = params[:project_id]
+    @duration = Project.find(@project_id).duration
+    if !@duration.nil?
+      @hour = @duration/60.ceil
+      @minute = @duration - (@hour*60)
+    end
   end
   
   # GET /times
@@ -17,6 +22,7 @@ class TimesController < ApplicationController
     @project_id = params[:project_id]
     @project = Project.find(@project_id)
     @times = @project.project_times.order(:date_time)
+    @duration = @project.duration
   end
 
   def update_duration_from_params
@@ -33,24 +39,24 @@ class TimesController < ApplicationController
         (flash[:message] ||= "") << "Date: #{date}. "
       end
     else
-      # (flash[:error] ||= "") << "Date: #{date}. "
+       (flash[:error] ||= "") << "Date: #{date}. "
     end
   end
 
   def add_time_to_db(date, time)
     time = time + ":00"
-    #puts "Date: " + date + "| Time: " + time
     if @project.project_times.where(date_time: DateTime.parse(date + " " + time), is_date:false).blank?
       @time = @project.project_times.new(date_time: DateTime.parse(date + " " + time), is_date:false)
       if @time.save
         (flash[:message] ||= "") << "Time: #{date + " " + time}. "
       end
     else
-      # (flash[:error] ||= "") << "Time: #{date + " " + time}. "
+       (flash[:error] ||= "") << "Time: #{date + " " + time}. "
     end
+
   end
 
-  # POST /times
+  # POST /times/new
   # POST /times.json
   def create
     @project_id = params[:project_id]
@@ -61,7 +67,7 @@ class TimesController < ApplicationController
       flash[:message] = "No date chosen."
       redirect_to new_project_time_path and return
     end
-
+    
     update_duration_from_params
 
     #Loop Through params[:times]
@@ -81,20 +87,12 @@ class TimesController < ApplicationController
   
   def destroy_all
     @project_id = params[:project_id]
+    @project = Project.find(@project_id)
     @project.project_times.destroy_all
+    @project.update(duration: nil)
     redirect_to project_times_path
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_time
-      @time = ProjectTime.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def time_params
-      params.require(:project_time)
-    end
+ 
 end
 
 # PATCH/PUT /times/1
