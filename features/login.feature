@@ -1,15 +1,15 @@
 Feature: Login
-  
+
     As a new user
     I want to login with my info
     So that I can access my projects
-    
+
     Scenario: User is not logged in
         Given no current user
-        When I access the landing page
+        When I am on the landing page
         And I follow "login"
         Then I should be on the login page
-        
+
     Scenario: User enters wrong password
         Given a registered user with the email "daniel@example.com" with password "password" exists
         And I am on the login page
@@ -18,7 +18,7 @@ Feature: Login
         And I press "Log In"
         Then I should be on the login page
         And I should see "Login information is wrong."
-        
+
     Scenario: User enters correct info and reaches projects page
         Given a registered user with the email "daniellee0228@berkeley.edu" with password "password" exists
         And I am on the login page
@@ -39,4 +39,3 @@ Feature: Login
         Then I should see "You must be logged in to perform that action"
         When I go to the URL "/projects/1/matching"
         Then I should see "You must be logged in to perform that action"
-

@@ -12,12 +12,16 @@ class MatchingsController < ApplicationController
     if @proj_exists
       @permission = current_user.id == @project.user.id
     end
+
     if @proj_exists and @matching
-      @is_matching = true
       @parsed_matching = JSON.parse(@matching.output_json)
     elsif @proj_exists
-      @is_matching = false
-      @eligible_to_match = all_submitted_preferences?
+      @all_participants_ids = @project.participants.pluck(:id)
+      @all_project_time_ids = @project.project_times.pluck(:id)
+
+      @participants_are_set = @all_participants_ids.size > 0
+      @times_are_set = @all_participants_ids.size > 0
+      @all_submitted_preferences = all_submitted_preferences?
     end
   end
 
@@ -103,9 +107,9 @@ class MatchingsController < ApplicationController
   def preferences
     preferences = []
     @project.rankings.each do |ranking|
+      person = ranking.participant.email
       timeslot = ranking.project_time.date_time
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      person = ranking.participant.email
       row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
       preferences.push(row)
     end
@@ -114,11 +118,8 @@ class MatchingsController < ApplicationController
   end
 
   def all_submitted_preferences?
-    all_participants_ids = @project.participants.pluck(:id)
-    all_project_time_ids = @project.project_times.pluck(:id)
-
-    all_participants_ids.each do |participant_id|
-      all_project_time_ids.each do |project_time_id|
+    @all_participants_ids.each do |participant_id|
+      @all_project_time_ids.each do |project_time_id|
         unless Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)
           return false
         end
@@ -143,7 +144,7 @@ class MatchingsController < ApplicationController
                              {content_type: :json, accept: :json}).body
     return output
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_matching_and_project
