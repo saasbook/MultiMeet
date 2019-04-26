@@ -116,10 +116,8 @@ class MatchingsController < ApplicationController
 
   def all_submitted_preferences?
     @all_participants_ids.each do |participant_id|
-      @all_project_time_ids.each do |project_time_id|
-        unless Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)
-          return false
-        end
+      if Participant.find_by(id: participant_id).last_responded.nil?
+        return false
       end
     end
     true
