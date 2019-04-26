@@ -145,8 +145,11 @@ class MatchingsController < ApplicationController
     def set_instance_variables
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
-      @all_participants_ids = @project.participants.pluck(:id)
-      @all_project_time_ids = @project.project_times.pluck(:id)
+
+      if @project
+        @all_participants_ids = @project.participants.pluck(:id)
+        @all_project_time_ids = @project.project_times.pluck(:id)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
