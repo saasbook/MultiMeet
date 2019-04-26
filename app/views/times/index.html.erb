@@ -53,7 +53,7 @@
   
   <%= link_to 'Back to project', project_path(@project_id), class:"btn btn-secondary"%>
   <% if !@times.empty? %>
-    <%= link_to 'Reselect Times/Duration', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Delete all saved times for the project. \n- Reset duration."}, class:"btn btn-danger" %>
+    <%= link_to 'Reselect Times', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Delete all saved times for the project. \n- Reset duration."}, class:"btn btn-danger" %>
   <% end %>
   <%= link_to 'Add new time', new_project_time_path, class:"btn btn-primary"%>
 </div>

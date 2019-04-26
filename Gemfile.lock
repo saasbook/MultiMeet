@@ -422,6 +422,7 @@ DEPENDENCIES
   jquery-rails
   metric_fu
   pg (~> 0.20)
+  rack-test
   rails (= 4.2.10)
   rails_12factor
   rest-client

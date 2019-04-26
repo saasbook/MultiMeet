@@ -26,19 +26,16 @@
           <h3>Step 1: Choose Duration</h3>
           <% if @duration.blank? %>
             <div>
-              <%= select_tag(:timeslot_hour, options_for_select((0..8))) %>
-              Hours
-              <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])) %>
-              Minutes
+              <%= select_tag(:timeslot_hour, options_for_select((0..8))) %> Hours
+              <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])) %> Minutes
+               
             </div>
           <% else %>
             <p><b>Current Timeslot Length:</b> <%= @duration %> minutes</p>
-            <button name="change-duration" id="change-duration" type="button" data-toggle="collapse" data-target="#timeslot-toggle" class="btn btn-info btn-sm">Change Duration</button>
+            <%= link_to 'Reselect Duration', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Delete all saved times for the project. \n- Reset duration."}, class:"btn btn-danger btn-sm" %>
             <div id="timeslot-toggle" class="collapse">
               <%= select_tag(:timeslot_hour, options_for_select((0..8), :selected => @hour)) %>
-              Hours
               <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55], :selected => @minute)) %>
-              Minutes
             </div>
           <% end %>
         </div>

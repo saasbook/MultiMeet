@@ -33,6 +33,13 @@ When /^I access the landing page$/ do
     get "/"
 end
 
+When /^I send a POST request to "([^\"]*)" with:$/ do |url,body|
+    header 'Accept', 'application/json'
+    header 'Content-Type', 'application/json'
+
+    post url, body
+end
+
 When /^I access the matchings page for project of id "(.*)"$/ do |id|
     visit "/projects/" + id + "/matching"
 end

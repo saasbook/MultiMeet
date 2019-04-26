@@ -48,10 +48,9 @@ class TimesController < ApplicationController
     if not (minquery.blank? and maxquery.blank?)
       (flash[:error] ||= "<br/>") << "#{DateTime.parse(date).strftime("%B %d %Y, %I:%M %p")} is already in range<br/>"
       return false
-    else
-      return true
     end
     
+    return true
   end
 
   # returns if a project time was created and saved
