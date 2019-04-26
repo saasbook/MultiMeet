@@ -8,7 +8,7 @@ RSpec.describe Participant, type: :model do
     # create a project date under project
     participant = project.participants.create(
         email: "student@berkeley.edu",
-        last_responded: null)
+        last_responded: nil)
 
     expect(participant.project_id).to eq(1)
   end
