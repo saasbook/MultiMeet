@@ -40,7 +40,8 @@
   <% end %>
 	</tbody>
 </table>
-  <%= link_to 'Run algorithm again', edit_project_matching_path(@matching.project) %>
+  <br>
+  <%= button_to 'Run algorithm again', project_matching_path(@matching.project), class:"btn btn-primary" %>
 
 <% else %>
 	<% if !@proj_exists %>
@@ -55,7 +56,7 @@
   	Not eligible to match. Not everyone has submitted preferences.
 	<% else %>
 		All participants have submitted preferences. Ready to match.
-		<%= button_to 'Match!', project_matching_path(@project.id) %>
+		<%= button_to 'Match!', project_matching_path(@project) %>
   <% end %>
 <% end %>
 

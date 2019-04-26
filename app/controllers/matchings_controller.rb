@@ -29,19 +29,19 @@ class MatchingsController < ApplicationController
 
   # TODO: convert to a PUT/ UPDATE
   # GET /projects/:project_id/matching/edit
-  def edit
-    respond_to do |format|
-      if all_submitted_preferences?
-        #matching = Matching.where(project_id: @project.id).update_all(output_json: api)
-        if @matching.update(output_json: api)
-          flash[:success] = 'Successfully matched.'
-          format.html { redirect_to project_matching_path }
-        # else
-        #   format.html { render :edit }
-        end
-      end
-    end
-  end
+  # def edit
+  #   respond_to do |format|
+  #     if all_submitted_preferences?
+  #       #matching = Matching.where(project_id: @project.id).update_all(output_json: api)
+  #       if @matching.update(output_json: api)
+  #         flash[:success] = 'Successfully matched.'
+  #         format.html { redirect_to project_matching_path }
+  #       # else
+  #       #   format.html { render :edit }
+  #       end
+  #     end
+  #   end
+  # end
 
   # POST /projects/:project_id/matching
   def create

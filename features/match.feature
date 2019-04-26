@@ -36,15 +36,17 @@ Feature: Match
     When I am on the matchings page for "CS61A Sections"
     Then I should see "Not everyone has submitted preferences."
 
-  Scenario: User runs the algorithm successfully after everyone has submitted preferences
+  Scenario: User runs the algorithm successfully after everyone has submitted preferences and rematches
     Given 5 people submitted preferences for "CS61A Sections"
     When I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"
     Then I should be on the matchings page for "CS61A Sections"
     And I should see "Successfully matched."
+    Then I press "Run algorithm again"
+    And I should see "Successfully matched."
 
-  Scenario: A user sets up a project with no roster.
+  Scenario: A user sets up a project with no roster
     Given a registered user with the username "jsluong" has a project named "No Participants"
     And I am on the matchings page for "No Participants"
     Then I should see "There are no participants."
