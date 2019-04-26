@@ -22,8 +22,8 @@ module NavigationHelpers
     when /^the matchings page for project of id "(.*)"$/
       "/projects/" + $1 + "/matching"
 
-    when /^the times page for project of id "(.*)"$/
-      project_times_path(Project.find_by(:id => $1))
+    when /^the times page for "(.*)"$/
+      project_times_path(Project.find_by(:project_name => $1))
 
     when /^the roster page for "(.*)"$/
       project_participants_path(Project.find_by(:project_name => $1))
