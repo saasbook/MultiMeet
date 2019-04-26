@@ -1,5 +1,5 @@
 class MatchingsController < ApplicationController
-  before_action :set_matching_and_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy]
 
   # GET /project/:project_id/matching
   def show
@@ -16,9 +16,6 @@ class MatchingsController < ApplicationController
     if @proj_exists and @matching
       @parsed_matching = JSON.parse(@matching.output_json)
     elsif @proj_exists
-      @all_participants_ids = @project.participants.pluck(:id)
-      @all_project_time_ids = @project.project_times.pluck(:id)
-
       @participants_are_set = @all_participants_ids.size > 0
       @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
@@ -147,9 +144,11 @@ class MatchingsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_matching_and_project
+    def set_instance_variables
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
+      @all_participants_ids = @project.participants.pluck(:id)
+      @all_project_time_ids = @project.project_times.pluck(:id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
