@@ -6,8 +6,8 @@ Feature: Roster
 
   Background: user is logged in
     Given a user with the email "aaronli98@berkeley.edu" with password "password" and with username "aaronli98" exists
-    And a registered user with the username "aaronli98" has a project named "Test Meeting 1" with id "1"
-    And a registered user with the username "aaronli98" has a project named "Test Meeting 2" with id "2"
+    And a registered user with the username "aaronli98" has a project named "Test Meeting 1"
+    And a registered user with the username "aaronli98" has a project named "Test Meeting 2"
     And I am on the login page
     When I fill in "Email" with "aaronli98@berkeley.edu"
     And I fill in "Password" with "password"
@@ -24,8 +24,7 @@ Feature: Roster
     And I should see "Successfully created project Test Meeting 3"
 
   Scenario: successfully to display rosters
-    When I am on the roster page for project of id "1"
-    Then I follow "Enter Manually"
+    When I am on the roster page for "Test Meeting 1"
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing1@berkeley.edu"
     And I press "Add New Participant"
@@ -39,8 +38,7 @@ Feature: Roster
     Then I should see "Participant's email already exists"
     When I follow "Back to All Projects"
     Then I should be on the projects page
-    When I am on the roster page for project of id "1"
-    And I follow "Enter Manually"
+    When I am on the roster page for "Test Meeting 1"
     Then I should see "testing1@berkeley.edu"
     Then I should see "testing2@berkeley.edu"
     Then I should see "testing3@berkeley.edu"
@@ -48,7 +46,7 @@ Feature: Roster
     Then I should be on the projects page
 
   Scenario: successfully to edit project name
-    When I am on the edit page for project of id "1"
+    When I am on the edit page for "Test Meeting 1"
     Then I should see "Editing Project"
     When I fill in "New Project Name" with "Testing Meeting 1_1"
     And I press "Confirm Editing"
@@ -56,8 +54,7 @@ Feature: Roster
     And I should see "Testing Meeting 1_1"
 
   Scenario: successfully to destroy participant
-    When I am on the roster page for project of id "2"
-    Then I follow "Enter Manually"
+    When I am on the roster page for "Test Meeting 2"
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
     And I press "Add New Participant"

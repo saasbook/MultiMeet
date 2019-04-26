@@ -24,38 +24,43 @@
 
   <h1>Listing Participants</h1>
   <%= form_for(@participant, :url => project_participants_path) do |f| %>
-    <table style="width:65%">
+    <table style="width:100%">
       <thead>
         <tr>
           <th>Participant Email</th>
+          <th>Last Responded</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
         <% @participants.each do |participant| %>
           <tr>
-            <td> <%= participant.email %> </td>
+            <td><%= participant.email %></td>
+            <td><%= participant.last_responded %></td>
             <td><%= link_to 'DELETE', display_project_participants_path(participant.project_id, participant.id), method: :delete, url: project_participants_path, class:"btn btn-danger"%></td>
           </tr>
         <% end %>
       </tbody>
-      <% if @participant.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@participant.errors.count, "error") %> prohibited this participant from being saved:</h2>
-
-          <ul>
-            <% @participant.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-              <% end %>
-            </ul>
-        </div>
-      <% else %>
-        <div class="action">
-          <td> <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control", :required => 'required'%></td>
-          <td> <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
-        </div>
-      <% end %>
     </table>
+
+    <% if @participant.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@participant.errors.count, "error") %> prohibited this participant from being saved:</h2>
+
+        <ul>
+          <% @participant.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+          </ul>
+      </div>
+    <% else %>
+      <div class="action" style="width:500px">
+        <br>
+        <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control", :required => 'required'%>
+        <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
+      </div>
+    <% end %>
   <% end %>
   <br>
   <%= link_to 'Back to All Projects', projects_path, class:"btn btn-info" %>

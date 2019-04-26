@@ -22,14 +22,14 @@ module NavigationHelpers
     when /^the matchings page for project of id "(.*)"$/
       "/projects/" + $1 + "/matching"
 
-    when /^the roster page for project of id "(.*)"$/
-      project_participants_path(Project.find_by(:id => $1))
-
-    when /^the edit page for project of id "(.*)"$/
-      edit_project_path(Project.find_by(:id => $1))
-
     when /^the times page for project of id "(.*)"$/
       project_times_path(Project.find_by(:id => $1))
+
+    when /^the roster page for "(.*)"$/
+      project_participants_path(Project.find_by(:project_name => $1))
+
+    when /^the edit page for "(.*)"$/
+      edit_project_path(Project.find_by(:project_name => $1))
 
     when /^the matchings page for "(.*)"$/
       project_matching_path(Project.find_by(:project_name => $1))

@@ -9,8 +9,8 @@ class ParticipantsController < ApplicationController
       require_user
       return
     end
-
     @participants = Participant.all
+    redirect_to display_project_participants_path(params[:project_id])
   end
 
   # GET /participants/1
