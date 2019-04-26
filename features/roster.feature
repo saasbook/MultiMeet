@@ -62,3 +62,25 @@ Feature: Roster
     Then I should not see "testing4@berkeley.edu"
     When I follow "Back to All Projects"
     Then I should be on the projects page
+
+  Scenario: "Last Responded" should update with datetime of last response
+    Given a registered user with the username "aaronli98" has a project named "Participants Test"
+    And the project named "Participants Test" has the following participants:
+    | email                       |
+    | andrew.huang@berkeley.edu   |
+    | jsluong@berkeley.edu        |
+
+    And the project named "Participants Test" has the following times:
+    | datetime            |
+    | Dec 1 2019 10:00 AM |
+    | Dec 1 2019 1:00 PM  |
+    | Dec 8 2019 3:00 PM  |
+
+    When I am on the roster page for "Participants Test"
+    Then I should see "No response yet"
+    When 1 people submitted preferences for "Participants Test"
+    And I am on the roster page for "Participants Test"
+    Then I should see "No response yet"
+    When 2 people submitted preferences for "Participants Test"
+    And I am on the roster page for "Participants Test"
+    Then I should not see "No response yet"

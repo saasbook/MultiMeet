@@ -81,6 +81,6 @@ class ParticipantsController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def participant_params
-      params.require(:participant).permit(:email)
+      params.require(:participant).permit(:email, :last_responded)
     end
 end
