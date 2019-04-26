@@ -71,7 +71,7 @@
         <% if @duration.blank? %>
           <%= f.submit "Submit", data: {confirm: "Are you sure?"}, class:"btn btn-primary"%>
         <% else %>
-          <%= f.submit "Submit", data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Change end times for previously selected start times."}, class:"btn btn-primary"%>
+          <%= f.submit "Submit", data: {confirm: "Are you sure? Choosing 'OK' may.. \n- Change end times for previously selected start times."}, class:"btn btn-primary"%>
         <% end %>
       </div>
       

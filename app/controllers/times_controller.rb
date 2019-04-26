@@ -25,14 +25,33 @@ class TimesController < ApplicationController
   end
 
   def update_duration_from_params
-    hour = params[:timeslot_hour].to_i
-    minute = params[:timeslot_minute].to_i
-    @duration = hour * 60 + minute
+    @hour = params[:timeslot_hour].to_i
+    @minute = params[:timeslot_minute].to_i
+    @duration = @hour * 60 + @minute
     @project.update(duration: @duration)
   end
-
-  def no_project_date_time?(date_time, is_date)
-    @project.project_times.where(date_time: DateTime.parse(date_time), is_date: is_date).blank?
+  
+  def validate_times(date, is_date)
+    datetime = DateTime.parse(date)
+    minDatetime = datetime.advance(:hours => -@hour, :minute => -@minute)
+    maxDatetime = datetime.advance(:hours => +@hour, :minute => +@minute)
+    query = @project.project_times.where(date_time: datetime, is_date: is_date)
+    
+    if is_date 
+      query.blank? ? (return true) : (return false)
+    end
+    
+    minquery = @project.project_times.where("date_time > ? AND date_time <= ?", minDatetime, datetime)
+    maxquery = @project.project_times.where("date_time >= ? AND date_time < ?", datetime, maxDatetime)
+    
+    #Check min time and max time
+    if not (minquery.blank? and maxquery.blank?)
+      (flash[:error] ||= "<br/>") << "#{DateTime.parse(date).strftime("%B %d %Y, %I:%M %p")} is already in range<br/>"
+      return false
+    else
+      return true
+    end
+    
   end
 
   # returns if a project time was created and saved
@@ -40,7 +59,9 @@ class TimesController < ApplicationController
     unless is_date
       date = date + " " + time
     end
-    if no_project_date_time? date, is_date
+    
+    #let's do some validations
+    if validate_times(date, is_date)
       @time = @project.project_times.new(date_time: date, is_date: is_date)
       return @time.save
     end
@@ -54,7 +75,7 @@ class TimesController < ApplicationController
   def add_time_to_db(date, time)
     time = time + ":00"
     if create_project_time_if_needed date, time, false
-      (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
+      (flash[:message] ||= "<br/>") << "#{DateTime.parse(date + " " + time).strftime("%B %d %Y, %I:%M %p")}<br/>"
     end
   end
 
@@ -82,7 +103,7 @@ class TimesController < ApplicationController
     end
 
     update_duration_from_params
-
+    
     add_requested_times_to_db
 
     redirect_to project_times_path
