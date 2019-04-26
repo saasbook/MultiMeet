@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 class TimesController < ApplicationController
-  before_action :set_project_and_project_id, only: [:index, :create, :destroy_all]
-  
+  before_action :set_project_and_project_id, only: %i[index create destroy_all]
+
   # GET /times/new
   def new
     @time = ProjectTime.new
     @project_id = params[:project_id]
     @duration = Project.find(@project_id).duration
     unless @duration.nil?
-      @hour = @duration/60.ceil
-      @minute = @duration - (@hour*60)
+      @hour = @duration / 60.ceil
+      @minute = @duration - (@hour * 60)
     end
   end
-  
+
   # GET /times
   # GET /times.json
   def index
-    if !logged_in?
+    unless logged_in?
       require_user
       return
     end
@@ -30,35 +32,33 @@ class TimesController < ApplicationController
     @duration = @hour * 60 + @minute
     @project.update(duration: @duration)
   end
-  
+
   def validate_times(date, is_date)
     datetime = DateTime.parse(date)
-    minDatetime = datetime.advance(:hours => -@hour, :minute => -@minute)
-    maxDatetime = datetime.advance(:hours => +@hour, :minute => +@minute)
+    minDatetime = datetime.advance(hours: -@hour, minute: -@minute)
+    maxDatetime = datetime.advance(hours: +@hour, minute: +@minute)
     query = @project.project_times.where(date_time: datetime, is_date: is_date)
-    
-    if is_date 
+
+    if is_date
       query.blank? ? (return true) : (return false)
     end
-    
-    minmaxquery = @project.project_times.where("date_time > ? AND date_time < ?", minDatetime, maxDatetime)
-    
-    #Check min time and max time
-    if not minmaxquery.blank?
-      (flash[:error] ||= "<br/>") << "#{DateTime.parse(date).strftime("%B %d %Y, %I:%M %p")} is an overlapping time.<br/>"
+
+    minmaxquery = @project.project_times.where('date_time > ? AND date_time < ?', minDatetime, maxDatetime)
+
+    # Check min time and max time
+    unless minmaxquery.blank?
+      (flash[:error] ||= '<br/>') << "#{DateTime.parse(date).strftime('%B %d %Y, %I:%M %p')} is an overlapping time.<br/>"
       return false
     end
-    
-    return true
+
+    true
   end
 
   # returns if a project time was created and saved
   def create_project_time_if_needed(date, time, is_date)
-    unless is_date
-      date = date + " " + time
-    end
-    
-    #let's do some validations
+    date = date + ' ' + time unless is_date
+
+    # let's do some validations
     if validate_times(date, is_date)
       @time = @project.project_times.new(date_time: date, is_date: is_date)
       return @time.save
@@ -71,23 +71,21 @@ class TimesController < ApplicationController
   end
 
   def add_time_to_db(date, time)
-    time = time + ":00"
+    time += ':00'
     if create_project_time_if_needed date, time, false
-      (flash[:message] ||= "<br/>") << "#{DateTime.parse(date + " " + time).strftime("%B %d %Y, %I:%M %p")}<br/>"
+      (flash[:message] ||= '<br/>') << "#{DateTime.parse(date + ' ' + time).strftime('%B %d %Y, %I:%M %p')}<br/>"
     end
   end
 
   def add_requested_times_to_db
     @form_times = params[:times]
-    #Loop Through params[:times]
+    # Loop Through params[:times]
     @form_times.keys.each do |date|
-      #Add dates to database
+      # Add dates to database
       add_date_to_db date
-      #Add times of the date into database
+      # Add times of the date into database
       @form_times[date].each_with_index do |time, index|
-        if index % 2 == 0
-          add_time_to_db date, time
-        end
+        add_time_to_db date, time if index.even?
       end
     end
   end
@@ -95,18 +93,18 @@ class TimesController < ApplicationController
   # POST /times/new
   # POST /times.json
   def create
-    if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
-      flash[:message] = "No date chosen."
-      redirect_to new_project_time_path and return
+    if params[:project_time][:date_time].nil? || params[:project_time][:date_time].empty?
+      flash[:message] = 'No date chosen.'
+      redirect_to(new_project_time_path) && return
     end
 
     update_duration_from_params
-    
+
     add_requested_times_to_db
 
     redirect_to project_times_path
   end
-  
+
   def destroy_all
     @project.project_times.destroy_all
     @project.update(duration: nil)
@@ -114,36 +112,37 @@ class TimesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
 
-    def set_project_and_project_id
-      @project_id = params[:project_id]
-      @project = Project.find_by(:id => @project_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def time_params
-      params.require(:project_time)
-    end
+  def set_project_and_project_id
+    @project_id = params[:project_id]
+    @project = Project.find_by(id: @project_id)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def time_params
+    params.require(:project_time)
+  end
 end
 
 # PATCH/PUT /times/1
-  # PATCH/PUT /times/1.json
-  #def update
-    #respond_to do |format|
-      #if @time.update(time_params)
-        #format.html { redirect_to @time, notice: 'Time was successfully updated.' }
-        #format.json { render :show, status: :ok, location: @time }
-      #else
-        #format.html { render :edit }
-        #format.json { render json: @time.errors, status: :unprocessable_entity }
-      #end
-    #end
-  #end
+# PATCH/PUT /times/1.json
+# def update
+# respond_to do |format|
+# if @time.update(time_params)
+# format.html { redirect_to @time, notice: 'Time was successfully updated.' }
+# format.json { render :show, status: :ok, location: @time }
+# else
+# format.html { render :edit }
+# format.json { render json: @time.errors, status: :unprocessable_entity }
+# end
+# end
+# end
 
-  # DELETE /times/1
-  # DELETE /times/1.json
-  #def destroy
-    #@time.destroy
-    #end
-  #end
+# DELETE /times/1
+# DELETE /times/1.json
+# def destroy
+# @time.destroy
+# end
+# end

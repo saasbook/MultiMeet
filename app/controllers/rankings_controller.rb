@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # class RankingsController < ApplicationController
 #   before_action :set_ranking, only: [:show, :edit, :update, :destroy]
 #
