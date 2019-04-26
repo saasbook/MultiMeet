@@ -19,7 +19,6 @@ Feature: Choose times
     When I fill in "Project Name" with "Party 2"
     And I press "Create Project and Choose Times"
     Then I should see "Successfully created project Party 2. Choose dates and times now!"
-    Then I should see "Step 1: Choose Duration"
     When I send a POST request to "/projects/2/times" with:
       """
       {
@@ -93,3 +92,4 @@ Feature: Choose times
     And I access the times page for project of id "1"
     And I follow "Reselect Times"
     Then I should see "Current Timeslot Duration: Not set yet"
+    Then I should not see "Start:"

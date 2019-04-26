@@ -41,12 +41,11 @@ class TimesController < ApplicationController
       query.blank? ? (return true) : (return false)
     end
     
-    minquery = @project.project_times.where("date_time > ? AND date_time <= ?", minDatetime, datetime)
-    maxquery = @project.project_times.where("date_time >= ? AND date_time < ?", datetime, maxDatetime)
+    minmaxquery = @project.project_times.where("date_time > ? AND date_time < ?", minDatetime, maxDatetime)
     
     #Check min time and max time
-    if not (minquery.blank? and maxquery.blank?)
-      (flash[:error] ||= "<br/>") << "#{DateTime.parse(date).strftime("%B %d %Y, %I:%M %p")} is already in range<br/>"
+    if not minmaxquery.blank?
+      (flash[:error] ||= "<br/>") << "#{DateTime.parse(date).strftime("%B %d %Y, %I:%M %p")} is an overlapping time.<br/>"
       return false
     end
     
@@ -116,9 +115,6 @@ class TimesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_time
-      @time = ProjectTime.find(params[:id])
-    end
 
     def set_project_and_project_id
       @project_id = params[:project_id]
