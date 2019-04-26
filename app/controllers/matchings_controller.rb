@@ -116,7 +116,7 @@ class MatchingsController < ApplicationController
 
   def all_submitted_preferences?
     @all_participants_ids.each do |participant_id|
-      if Participant.find_by(id: participant_id).last_responded.nil?
+      unless Participant.find_by(id: participant_id).last_responded
         return false
       end
     end
