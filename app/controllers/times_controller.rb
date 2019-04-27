@@ -25,9 +25,6 @@ class TimesController < ApplicationController
   end
 
   def update_duration_from_params
-    @hour = params[:timeslot_hour].to_i
-    @minute = params[:timeslot_minute].to_i
-    @duration = @hour * 60 + @minute
     @project.update(duration: @duration)
   end
 
@@ -91,8 +88,15 @@ class TimesController < ApplicationController
   # POST /times/new
   # POST /times.json
   def create
+    @hour = params[:timeslot_hour].to_i
+    @minute = params[:timeslot_minute].to_i
+    @duration = @hour * 60 + @minute
+    
     if params[:project_time][:date_time].nil? || params[:project_time][:date_time].empty?
       flash[:message] = 'No date chosen.'
+      redirect_to(new_project_time_path) && return
+    elsif @duration == 0
+      flash[:message] = 'Duration cannot be 0 minutes.'
       redirect_to(new_project_time_path) && return
     end
 
