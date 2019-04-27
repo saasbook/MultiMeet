@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TimesController < ApplicationController
   before_action :set_project_and_project_id, only: %i[index create destroy_all]
 
@@ -35,8 +33,8 @@ class TimesController < ApplicationController
 
   def validate_times(date, is_date)
     datetime = DateTime.parse(date)
-    minDatetime = datetime.advance(hours: -@hour, minute: -@minute)
-    maxDatetime = datetime.advance(hours: +@hour, minute: +@minute)
+    minDatetime = datetime.advance(hours: -@hour, minutes: -@minute)
+    maxDatetime = datetime.advance(hours: +@hour, minutes: +@minute)
     query = @project.project_times.where(date_time: datetime, is_date: is_date)
 
     if is_date

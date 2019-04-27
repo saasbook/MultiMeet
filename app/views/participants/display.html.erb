@@ -58,6 +58,15 @@
     </table>
   <% end %>
   <br>
+  
+  <h1>Notify Participants</h1>
+  <%= form_tag email_project_participants_path, :method => :post, class: "email-body" do %>
+    <%= label_tag :email_subject, 'Email Subject', class: "font-weight-bold" %>
+    <%= text_field_tag :email_subject, 'Need your availability', class: 'form-control email-subject'%>
+    <%= label_tag :email_body, 'Email Body', class: "font-weight-bold" %>
+    <%= text_area_tag :email_body, '', rows: 8, class: "form-control" %>
+    <%= submit_tag "Send email to participants", class: "btn btn-secondary" %>
+  <% end %>
+  <br>
   <%= link_to 'Back to All Projects', projects_path, class:"btn btn-info" %>
-  <%= link_to 'Send email to participants', email_project_participants_path, :method => :post,class: "btn btn-secondary" %>
 </div>

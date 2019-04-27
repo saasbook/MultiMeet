@@ -21,13 +21,16 @@ class ParticipantsController < ApplicationController
   end
 
   def email
-    puts 'HERAWRRAWRAWRAWRW'
     @participants = Participant.where(project_id: params[:project_id])
-
+    @project = Project.find(params[:project_id])
+    @email_subject = params[:email_subject]
+    @email_body = params[:email_body]
+    
     @participants.each do |participant|
-      ParticipantsMailer.availability_email(participant.email).deliver_now
+      ParticipantsMailer.availability_email(participant.email, @project.project_name, @email_subject, @email_body).deliver_now
     end
-    flash[:message] = 'Emails have been sent'
+    
+    flash[:success] = 'Emails have been sent.'
     redirect_to display_project_participants_path(params[:project_id])
   end
   # GET /participants/1
