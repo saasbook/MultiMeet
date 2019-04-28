@@ -12,6 +12,24 @@ Feature: Choose times
     And I fill in "Password" with "password"
     And I press "Log In"
     Then I should be on the projects page
+  
+  Scenario: User submits with 0 minutes for duration
+    When I follow "New Project"
+    When I fill in "Project Name" with "Lan party"
+    And I press "Create Project and Choose Times"
+    When I send a POST request to "/projects/2/times" with:
+      """
+      {
+        "timeslot_hour":"0", 
+        "timeslot_minute":"0", 
+        "project_time":{"date_time":"2019-04-26"}, 
+        "times":{"2019-04-26":["09:00", "9:00"]}, 
+        "commit":"Submit", 
+        "project_id":"1"
+      }
+      """
+    And I follow "Back"
+    Then I should see "Current Timeslot Duration: Not set yet"
 
   Scenario: Choose times from project creation page
     When I follow "New Project"

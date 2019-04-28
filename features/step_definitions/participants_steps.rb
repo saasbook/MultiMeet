@@ -10,3 +10,12 @@ Given('the project named {string} has the following participants:') do |project_
     Participant.create(participant)
   end
 end
+
+
+Then "the participant should receive an email" do
+  participant = Participant.find(1)
+  email = ActionMailer::Base.deliveries.first
+  email.from[0].should == "multimeetemailer@gmail.com"
+  email.to[0].should == participant.email
+  email.body.encoded.should include("Hello, please give me your availability")
+end
