@@ -25,16 +25,16 @@
 <table style="width:100%">
 	<tbody>
 	<tr>
+    <td><b>Time</b></td>
 		<td><b>Event</b></td>
 		<td><b>People</b></td>
-		<td><b>Time</b></td>
 	</tr>
 
   <% @parsed_matching["schedule"].each do |event|  %>
     <tr>
+      <td><%= event["timestamp"] %></td>
       <td><%= event["event_name"] %></td>
       <td><%= event["people_called"].join(', ') %> </td>
-      <td><%= event["timestamp"] %></td>
     </tr>
 
   <% end %>
