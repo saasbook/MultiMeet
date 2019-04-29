@@ -36,7 +36,7 @@ class ParticipantsController < ApplicationController
     @participant.project_id = params[:project_id]
     if !Participant.where(
         project_id: @participant.project_id, email: @participant.email).blank?
-      flash[:error] = "Participant's email already exists"
+      flash[:danger] = "Participant's email already exists"
       redirect_to display_project_participants_path(params[:project_id])
     else @participant.save!
       flash[:success] = "Successfully created participant #{@participant.email}"

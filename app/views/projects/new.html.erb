@@ -1,15 +1,7 @@
 <%= stylesheet_link_tag "application" %>
 
-<% if flash[:message] %>
-  <div class="alert alert-danger alert-dismissible show" role="alert">
-    <span class="error"><%= flash[:message] %></span>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<% end %>
-
 <%= render 'layouts/navbar' %>
+<%= render 'layouts/alerts' %>
 
 <div class="user-container">
   <div class="jumbotron">

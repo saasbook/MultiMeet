@@ -54,7 +54,7 @@ class TimesController < ApplicationController
   def add_time_to_db(date, time)
     time = time + ":00"
     if create_project_time_if_needed date, time, false
-      (flash[:message] ||= "") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
+      (flash[:success] ||= "Added times: ") << "#{DateTime.parse(date + " " + time).strftime("%A, %B %d %Y, %I:%M %p")}. "
     end
   end
 
@@ -77,7 +77,7 @@ class TimesController < ApplicationController
   # POST /times.json
   def create
     if params[:project_time][:date_time].nil? or params[:project_time][:date_time].empty?
-      flash[:message] = "No date chosen."
+      flash[:danger] = "Error: No date chosen."
       redirect_to new_project_time_path and return
     end
 

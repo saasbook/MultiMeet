@@ -11,7 +11,7 @@ class UsersController < ApplicationController
             flash[:success] = "Welcome to MultiMeet #{@user.username}!"
             redirect_to projects_path
         else
-            flash[:message] = @user.errors.full_messages
+            flash[:danger] = @user.errors.full_messages
             redirect_to signup_path
         end
     end
