@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20190402023510) do
     t.datetime "last_responded"
   end
 
-  add_index "participants", ["project_id", "email], name: "index_participants_on_project_id_and_email", unique: true
+  add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email", unique: true
 
   create_table "project_times", force: :cascade do |t|
     t.integer  "project_id",                 null: false
