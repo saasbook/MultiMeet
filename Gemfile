@@ -37,6 +37,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 # for calling external API
 gem 'rest-client'
+#secure token
+gem 'has_secure_token'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

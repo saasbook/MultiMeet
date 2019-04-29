@@ -22,7 +22,7 @@
     
     
     <%= form_for(@time) do |f| %>
-      <div class="jumbotron shadow" id="timeslot">
+      <div class="jumbotron shadow white-bg" id="timeslot">
         <div id="timeslot-div">
           <h3>Step 1: Choose Duration</h3>
           <% if @duration.blank? %>
@@ -42,7 +42,7 @@
         </div>
       </div>
       
-      <div class="jumbotron shadow" id="dates">
+      <div class="jumbotron shadow white-bg" id="dates">
         <div class="dates-left-side">
           <h3>Step 2: Choose Dates</h3>
           Press this box and pick dates.
@@ -58,13 +58,13 @@
         </div>
       </div>
       
-      <div class="jumbotron shadow" id="bottom-times">
+      <div class="jumbotron shadow white-bg" id="bottom-times">
         <h3>Step 3: Choose Times</h3>
         <div id="times-table">
         </div>
       </div>
       
-      <div class="jumbotron" id="actions">
+      <div class="jumbotron shadow white-bg" id="actions">
         <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
         <% if @duration.blank? %>
           <%= f.submit "Submit", data: {confirm: "Are you sure?"}, class:"btn btn-primary"%>

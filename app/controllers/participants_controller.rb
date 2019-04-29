@@ -18,6 +18,7 @@ class ParticipantsController < ApplicationController
   # GET /participants/1
   def display
     @participants = Participant.where(project_id: params[:project_id])
+    @project = Project.find(params[:project_id])
   end
 
   def email
