@@ -28,7 +28,7 @@ class ParticipantsController < ApplicationController
     @email_body = params[:email_body]
     
     @participants.each do |participant|
-      ParticipantsMailer.availability_email(participant.email, @project.project_name, @email_subject, @email_body).deliver_now
+      ParticipantsMailer.availability_email(participant.id, @project.id, participant.email, participant.secret_id, @project.project_name, @email_subject, @email_body).deliver_now
     end
     
     flash[:success] = 'Emails have been sent.'

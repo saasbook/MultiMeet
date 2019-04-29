@@ -44,7 +44,7 @@ end
 ##################
 participants_list = [
   # CS 61A Sections
-  { id: 1, project_id: 1, email: 'adnan@berkeley.edu' },
+  { id: 1, project_id: 1, email: 'adnan@berkeley.edu'},
   { id: 2, project_id: 1, email: 'awesometa@berkeley.edu' },
   { id: 3, project_id: 1, email: 'iteachforlife@berkeley.edu' },
   { id: 4, project_id: 1, email: 'jackiechan@berkeley.edu' },

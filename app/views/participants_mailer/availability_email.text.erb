@@ -1,4 +1,5 @@
 MultiMeet: Project '<%=@project_name%>'
 ================================
-
 <%=@body%>
+
+Click here to rank: <%= link_to "link", edit_project_participant_ranking_url(secret_id: @secret_id, participant_id: @part_id,project_id: @proj_id) %>
