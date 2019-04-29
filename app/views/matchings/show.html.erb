@@ -56,7 +56,7 @@
   	Not eligible to match. Not everyone has submitted preferences.
 	<% else %>
 		All participants have submitted preferences. Ready to match.
-		<%= button_to 'Match!', project_matching_path(@project) %>
+		<%= link_to 'Match!', project_matching_path(@project), class:"btn btn-primary" %>
   <% end %>
 <% end %>
 
