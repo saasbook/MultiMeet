@@ -36,13 +36,14 @@ class CreateInitialTables < ActiveRecord::Migration
       # default: t.primary_key :id => integer
       t.integer :project_id, null: false
       t.string :email, null: false
+      t.timestamp :last_responded, null: true, default: nil
     end
 
     # project_id => projects.id
     add_foreign_key :participants, :projects
 
     # for (project_id, email) unique
-    add_index :participants, [:project_id, :email], unique: true
+    add_index :participants, [:project_id, :email, :last_responded], unique: true
 
 
     # PROJECT_TIMES
@@ -89,4 +90,3 @@ class CreateInitialTables < ActiveRecord::Migration
     add_foreign_key :matchings, :projects
   end
 end
-

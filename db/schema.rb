@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20190428045610) do
     t.integer "project_id", null: false
     t.string  "email",      null: false
     t.string  "secret_id"
+    t.datetime "last_responded"
   end
 
   add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email", unique: true
