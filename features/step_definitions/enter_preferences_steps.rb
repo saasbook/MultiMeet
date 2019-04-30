@@ -27,8 +27,7 @@ When /^I access the time ranking page for project of id "(.*)" from user id "(.*
 end
 
 When /^I choose "(.*)" for time "(.*)"$/ do |option, time|
-  pending # Write code here that turns the phrase above into concrete actions
-  time = ProjectTime.find_by(:date_time => Time.parse(row[:datetime]))
+  time = ProjectTime.find_by(:date_time => Time.parse(time[:datetime]))
   if option.eql?("Preferred")
     choose(time.id, option: 1) # name and value to make unique
   elsif option.eql?("Okay")
