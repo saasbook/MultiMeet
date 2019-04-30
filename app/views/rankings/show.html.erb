@@ -13,5 +13,5 @@
 
 <%# end %>
 
-<%= link_to 'Edit', edit_project_participant_ranking_path(@participant.project_id, @participant.id) %> |
+<%= link_to 'Edit', edit_project_participant_ranking_path(@participant.project_id, @participant.id, :secret_id => @participant.secret_id) %> |
 <%= link_to 'Back', project_participants_path %>

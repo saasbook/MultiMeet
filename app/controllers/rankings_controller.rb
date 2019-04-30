@@ -21,10 +21,11 @@ class RankingsController < ApplicationController
   def edit
     @participant = Participant.find_by(project_id: params[:project_id], id: params[:participant_id])
     if params[:secret_id] != @participant.secret_id
-      flash[:message] = "INVALID LINK"
-    else
-      flash[:message] = "VALID LINK"
+      flash[:message] = "Access denied."
+    elsif params[:secret_id] != @participant.secret_id
+      flash[:message] = "Project does not exist."
     end
+
   end
 
   # POST /rankings
