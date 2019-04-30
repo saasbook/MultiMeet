@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # class RostersController < ApplicationController
 #   before_action :set_roster, only: [:show, :edit, :update, :destroy]
 #

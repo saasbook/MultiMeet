@@ -33,6 +33,13 @@ When /^I access the landing page$/ do
     get "/"
 end
 
+When /^I send a POST request to "([^\"]*)" with:$/ do |url,body|
+    header 'Accept', 'application/json'
+    header 'Content-Type', 'application/json'
+
+    post url, body
+end
+
 When /^I access the matchings page for project of id "(.*)"$/ do |id|
     visit "/projects/" + id + "/matching"
 end
@@ -48,10 +55,6 @@ end
 When /^I press the delete bottom for participant of email "(.*)" and project id of "(.*)"$/ do |email, id|
     Participant.find_by(:project_id => id, :email => email)
     Participant.delete(:email => email)
-end
-
-When /^I access the times page for project of id "(.*)"$/ do |id|
-    visit "/projects/" + id + "/times"
 end
 
 When("I click the second show") do

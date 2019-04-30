@@ -1,21 +1,56 @@
+# frozen_string_literal: true
+
 class ParticipantsController < ApplicationController
-  before_action :set_participant, only: [:show, :edit, :update, :destroy]
+  before_action :set_participant, only: %i[show edit update destroy]
   before_action :set_new_user, only: [:display]
 
   # GET /participants
   # GET /participants.json
   def index
-    if !logged_in?
+    unless logged_in?
       require_user
       return
     end
-
     @participants = Participant.all
+    redirect_to display_project_participants_path(params[:project_id])
   end
 
   # GET /participants/1
   def display
     @participants = Participant.where(project_id: params[:project_id])
+    @project = Project.find(params[:project_id])
+  end
+
+
+  def email
+    @project = Project.find(params[:project_id])
+    @participants = @project.participants
+    @email_subject = params[:email_subject]
+    @email_body = params[:email_body]
+    
+    @participants.each do |participant|
+      ParticipantsMailer.availability_email(participant.id, @project.id, participant.email, participant.secret_id, @project.project_name, @email_subject, @email_body).deliver_now
+    end
+    
+    flash[:success] = 'Emails have been sent.'
+    redirect_to display_project_participants_path(params[:project_id])
+  end
+
+  # Temporary button for generating random preferences
+  def edit
+    all_project_time_ids = ProjectTime.where(project_id: @participant.project_id).pluck(:id)
+
+    all_project_time_ids.each do |project_time_id|
+      ranking = Ranking.find_by(participant_id: @participant.id, project_time_id: project_time_id)
+      if ranking
+        ranking.update(rank: rand(1..3))
+      else
+        Ranking.create(participant_id: @participant.id, project_time_id: project_time_id, rank: rand(1..3))
+      end
+    end
+    participant = Participant.find_by(id: @participant.id)
+    participant.update(last_responded: Time.now.getutc)
+    redirect_to display_project_participants_path(@participant.project_id)
   end
 
   # GET /participants/1
@@ -35,15 +70,16 @@ class ParticipantsController < ApplicationController
     @participant = Participant.new(participant_params)
     @participant.project_id = params[:project_id]
     if !Participant.where(
-        project_id: @participant.project_id, email: @participant.email).blank?
+      project_id: @participant.project_id, email: @participant.email
+    ).blank?
       flash[:error] = "Participant's email already exists"
       redirect_to display_project_participants_path(params[:project_id])
     else @participant.save!
-      flash[:success] = "Successfully created participant #{@participant.email}"
-      redirect_to display_project_participants_path(params[:project_id])
-    # else
-    #   flash[:message] = @user.errors.full_messages
-    #   redirect_to display_project_participants_path(params[:project_id])
+         flash[:success] = "Successfully created participant #{@participant.email}"
+         redirect_to display_project_participants_path(params[:project_id])
+      # else
+      #   flash[:message] = @user.errors.full_messages
+      #   redirect_to display_project_participants_path(params[:project_id])
     end
   end
 
@@ -73,7 +109,8 @@ class ParticipantsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_participant
-      @participant = Participant.find(params[:format])
+      #@participant = Participant.find(params[:format])
+      @participant = Participant.find_by(:id => params[:id])
     end
 
     def set_new_user
@@ -81,6 +118,6 @@ class ParticipantsController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def participant_params
-      params.require(:participant).permit(:email)
+      params.require(:participant).permit(:email, :last_responded)
     end
 end

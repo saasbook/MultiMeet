@@ -12,6 +12,24 @@ Feature: Choose times
     And I fill in "Password" with "password"
     And I press "Log In"
     Then I should be on the projects page
+  
+  Scenario: User submits with 0 minutes for duration
+    When I follow "New Project"
+    When I fill in "Project Name" with "Lan party"
+    And I press "Create Project and Choose Times"
+    When I send a POST request to "/projects/2/times" with:
+      """
+      {
+        "timeslot_hour":"0", 
+        "timeslot_minute":"0", 
+        "project_time":{"date_time":"2019-04-26"}, 
+        "times":{"2019-04-26":["09:00", "9:00"]}, 
+        "commit":"Submit", 
+        "project_id":"1"
+      }
+      """
+    And I follow "Back"
+    Then I should see "Current Timeslot Duration: Not set yet"
 
   Scenario: Choose times from project creation page
     When I follow "New Project"
@@ -19,11 +37,24 @@ Feature: Choose times
     When I fill in "Project Name" with "Party 2"
     And I press "Create Project and Choose Times"
     Then I should see "Successfully created project Party 2. Choose dates and times now!"
-    Then I should see "Step 1: Choose Duration"
-    And I select "2" from "timeslot_hour"
-    And I select "30" from "timeslot_minute"
-    Then I should see "Step 2: Choose Dates"
-
+    When I send a POST request to "/projects/2/times" with:
+      """
+      {
+        "timeslot_hour":"2", 
+        "timeslot_minute":"0", 
+        "project_time":{"date_time":"2019-04-26"}, 
+        "times":{"2019-04-26":["08:00", "10:00"]}, 
+        "commit":"Submit", 
+        "project_id":"2"
+      }
+      """
+    And I follow "Back"
+    Then I should see "Friday, April 26 2019"
+    Then I should see "Start: 08:00 AM"
+    Then I should see "End: 10:00 AM"
+    Then I should see "Reselect Times"
+    Then I should see "Duration: 120 minutes"   
+    
   Scenario: Choose times from projects page
     Given I am on the projects page
     When I follow "Show"
@@ -35,7 +66,7 @@ Feature: Choose times
     Then I should see "Step 1: Choose Duration"
 
   Scenario: No date chosen
-    Given I access the times page for project of id "1"
+    Given I am on the times page for "Party 1"
     And I follow "Add new time"
     Then I should see "Step 1: Choose Duration"
     And I press "Submit"
@@ -51,13 +82,14 @@ Feature: Choose times
 
   Scenario: Duration already set
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
-    And I access the times page for project of id "1"
+    Given I am on the times page for "Party 1"
     And I follow "Add new time"
     Then I should see "Current Timeslot Length: 60 minutes"
-    And I should see "Change Duration"
+    And I should see "Reselect Duration"
 
   Scenario: Reselect Times
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
-    And I access the times page for project of id "1"
+    Given I am on the times page for "Party 1"
     And I follow "Reselect Times"
     Then I should see "Current Timeslot Duration: Not set yet"
+    Then I should not see "Start:"
