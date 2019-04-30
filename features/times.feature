@@ -35,7 +35,7 @@ Feature: Choose times
     Then I should see "Step 1: Choose Duration"
 
   Scenario: No date chosen
-    Given I am on the times page for project of id "1"
+    Given I am on the times page for "Party 1"
     And I follow "Add new time"
     Then I should see "Step 1: Choose Duration"
     And I press "Submit"
@@ -51,13 +51,13 @@ Feature: Choose times
 
   Scenario: Duration already set
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
-    And I am on the times page for project of id "1"
+    Given I am on the times page for "Party 1"
     And I follow "Add new time"
     Then I should see "Current Timeslot Length: 60 minutes"
     And I should see "Change Duration"
 
   Scenario: Reselect Times
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
-    And I am on the times page for project of id "1"
+    Given I am on the times page for "Party 1"
     And I follow "Reselect Times"
     Then I should see "Current Timeslot Duration: Not set yet"

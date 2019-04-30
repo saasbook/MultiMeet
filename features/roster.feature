@@ -84,3 +84,32 @@ Feature: Roster
     When 2 people submitted preferences for "Participants Test"
     And I am on the roster page for "Participants Test"
     Then I should not see "No response yet"
+
+  Scenario: "Last Responded" should update with generate rankings
+    Given a registered user with the username "aaronli98" has a project named "Generate Rankings Test"
+    And the project named "Generate Rankings Test" has the following participants:
+    | email                       |
+    | andrew.huang@berkeley.edu   |
+
+    And the project named "Generate Rankings Test" has the following times:
+    | datetime            |
+    | Dec 1 2019 10:00 AM |
+    | Dec 1 2019 1:00 PM  |
+    | Dec 8 2019 3:00 PM  |
+
+    When I am on the roster page for "Generate Rankings Test"
+    Then I should see "No response yet"
+    When I am on the matchings page for "Generate Rankings Test"
+    Then I should see "Not everyone has submitted preferences."
+    When I am on the roster page for "Generate Rankings Test"
+    When I follow "Generate Rankings"
+    Then I should not see "No response yet"
+    When I follow "Generate Rankings"
+    Then I should not see "No response yet"
+    When I am on the matchings page for "Generate Rankings Test"
+    Then I should see "Ready to match."
+    And I press "Match!"
+    Then I should be on the matchings page for "Generate Rankings Test"
+    And I should see "Successfully matched."
+    Then I press "Run algorithm again"
+    And I should see "Successfully matched."
