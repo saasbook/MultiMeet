@@ -32,9 +32,5 @@ Feature: See Rankings
         Then I should see "Permission denied."
 
     Scenario: User tries to view matchings for a project that does not exist
-<<<<<<< HEAD
-        When I access the matchings page for project of id "4"
-=======
         When I am on the matchings page for project of id "4"
->>>>>>> 01736040df1e24cadc59e85b3d337b0486390eb7
         Then I should see "No such project exists."

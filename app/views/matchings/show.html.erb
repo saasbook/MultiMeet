@@ -42,7 +42,16 @@
 </table>
   <br>
   <%= button_to 'Run algorithm again', project_matching_path(@matching.project), class:"btn btn-primary" %>
-
+  <h1>Notify Participants</h1>
+  <%= form_tag email_project_matching_path, :method => :post, class: "email-body" do %>
+    <%= label_tag :email_subject, 'Email Subject', class: "font-weight-bold" %>
+    <%= text_field_tag :email_subject, 'Final Matching Result For '.concat(@project.project_name) , class: 'form-control email-subject'%>
+    <%= label_tag :email_body, 'Email Body', class: "font-weight-bold" %>
+    <%= text_area_tag :email_body, 'Hi there, here is your assigned time for '.concat(@project.project_name), rows: 7, class: "form-control" %>
+    <%= submit_tag "Send email to participants", class: "btn btn-secondary" %>
+  <% end %>
+  <br>
+  <%= link_to 'Back to All Projects', projects_path, class:"btn btn-info" %>
 <% else %>
 	<% if !@proj_exists %>
 		No such project exists.
