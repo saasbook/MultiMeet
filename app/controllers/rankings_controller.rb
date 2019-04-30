@@ -43,7 +43,6 @@ class RankingsController < ApplicationController
     #   end
     # end
     #
-    byebug
     @times.ids.each do |id|
       rank_num = params[id.to_s].to_i
       new_rank = Ranking.new(:id => @ranking.id, :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
