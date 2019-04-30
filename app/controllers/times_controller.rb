@@ -42,7 +42,7 @@ class TimesController < ApplicationController
 
     # Check min time and max time
     unless minmaxquery.blank?
-      (flash[:error] ||= '<br/>') << "#{DateTime.parse(date).strftime('%B %d %Y, %I:%M %p')} is an overlapping time.<br/>"
+      (flash[:error] ||= ' ') << "#{DateTime.parse(date).strftime('%B %d %Y, %I:%M %p')} is an overlapping time.<br/>"
       return false
     end
 
@@ -68,7 +68,7 @@ class TimesController < ApplicationController
   def add_time_to_db(date, time)
     time += ':00'
     if create_project_time_if_needed date, time, false
-      (flash[:success] ||= 'Added times: <br/>') << "#{DateTime.parse(date + ' ' + time).strftime('%B %d %Y, %I:%M %p')}<br/>"
+      (flash[:success] ||= 'Added times: ') << "#{DateTime.parse(date + ' ' + time).strftime('%B %d %Y, %I:%M %p')} "
     end
   end
 
