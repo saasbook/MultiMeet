@@ -23,8 +23,8 @@ class ParticipantsController < ApplicationController
 
 
   def email
-    @participants = Participant.where(project_id: params[:project_id])
     @project = Project.find(params[:project_id])
+    @participants = @project.participants
     @email_subject = params[:email_subject]
     @email_body = params[:email_body]
     
