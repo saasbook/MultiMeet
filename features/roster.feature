@@ -65,13 +65,36 @@ Feature: Roster
 
   Scenario: successfully email roster
     When I press the roster bottom for project of id "1"
-    When I fill in "Email" with "testing1@berkeley.edu"
+    When I fill in "Email" with "daniellee0228@berkeley.edu"
     And I press "Add New Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
     And I press "Send email to participants"
     Then the participant should receive an email
     Then I should see "Emails have been sent."
+  
+  Scenario: If correct secret_id, render successful template
+    When I press the roster bottom for project of id "1"
+    When I fill in "Email" with "daniellee0228@berkeley.edu"
+    And I press "Add New Participant"
+    And I fill in "email_body" with "Hello, please give me your availability"
+    And I press "Send email to participants"
+    Then the participant should receive an email
+    Then I should see "Emails have been sent."
+    When I visit the link from the email for project of id "1" and participant of id "1"
+    Then I should see "VALID LINK"
+    
+  Scenario: If incorrect secret_id, render invalid link template
+    When I press the roster bottom for project of id "1"
+    When I fill in "Email" with "daniellee0228@berkeley.edu"
+    And I press "Add New Participant"
+    And I fill in "email_body" with "Hello, please give me your availability"
+    And I press "Send email to participants"
+    Then the participant should receive an email
+    Then I should see "Emails have been sent."
+    When I visit the bad link from the email for project of id "1" and participant of id "1"
+    Then I should see "INVALID LINK"
 
+  
   Scenario: "Last Responded" should update with datetime of last response
     Given a registered user with the username "aaronli98" has a project named "Participants Test"
     And the project named "Participants Test" has the following participants:

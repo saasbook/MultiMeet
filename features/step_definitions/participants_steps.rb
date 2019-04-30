@@ -19,3 +19,13 @@ Then "the participant should receive an email" do
   email.to[0].should == participant.email
   email.body.encoded.should include("Hello, please give me your availability")
 end
+
+When /^I visit the link from the email for project of id "(.*)" and participant of id "(.*)"$/ do |project_id, part_id|
+    participant = Participant.find(part_id)
+    visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id
+end
+
+When /^I visit the bad link from the email for project of id "(.*)" and participant of id "(.*)"$/ do |project_id, part_id|
+    participant = Participant.find(part_id)
+    visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id + "a"
+end
