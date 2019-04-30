@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190402023510) do
+ActiveRecord::Schema.define(version: 20190428045610) do
 
   create_table "matchings", force: :cascade do |t|
     t.integer "project_id",  null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20190402023510) do
   create_table "participants", force: :cascade do |t|
     t.integer  "project_id",     null: false
     t.string   "email",          null: false
+    t.string  "secret_id"
     t.datetime "last_responded"
   end
 

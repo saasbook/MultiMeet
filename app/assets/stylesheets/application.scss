@@ -15,127 +15,179 @@
  */
 @import 'bootstrap';
 
+/* Regular html elements */
 ul {
   list-style-type: none;
+  
+  li {
+     margin: 5px 0;
+  }
 }
 
-ul li {
-    margin: 5px 0;
-}
-
-/* Times */
-.datepicker{
-    width: 30%;
-    font-size: 14px;
-}
-
-.dates-chosen {
-  white-space: pre
-}
-
-.datepicker-inline {
-    width: 80%;
-}
-
-.dropdown-menu{
-    width: 25%;
-}
-
-.datepicker table {
-    margin: auto;
-    width: 80%;
-}
-
-.table-condensed{
-    width: 300px;
-    height: 300px;
-}
-
-.user-container{
-    margin: 10% auto;
-    width: 50%;
-}
-
+/* Bootstrap classes */
 .jumbotron{
     padding-top: 3rem;
     padding-bottom: 3rem;
 }
 
+.navbar{
+    background-color: #F0F0F0;
+}
+
+
+/* Multiple views */
+.user-container{
+    margin: 10% auto;
+    width: 50%;
+}
+
+.actions {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: 62%;
+    margin: 0 auto;
+}
+
+.white-bg{
+    background-color: white;
+}
+
+/* Times */
+.current-duration{
+    margin-top: 20px;
+}
+
+.times-index {
+    width: 62%;
+    margin: 3rem auto 2rem auto;
+    padding: 2rem !important;
+}
+
+.project-times-table{
+    margin: 20px 0 30px 0;
+    
+    div {
+        width: 50%;
+    }
+    
+    .project-times-dateentry{
+        margin-top: 20px;
+    }
+    
+    .project-times-timeentry{
+        display: grid;
+        grid-template-columns: 50% 50%
+    }
+}
+
 #billboard{
     display: grid;
-}
-
-#dates{
-    display: grid;
-    grid-template-columns: 50% 50%;
-}
-
-.project-header{
-    font-size: 30px;
+    width: 65%;
+    margin: 1rem auto;
+    padding: 1.5rem 2rem;
+    
+    #timeslot {
+        margin-bottom: 2rem;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        #timeslot-div {
+            width: 100%;
+            
+            #timeslot-toggle {
+                margin-top: 20px;
+            }
+            
+            #timeslot_hour, #timeslot_minute {
+                border-radius:4px;
+                border:1px solid #AAAAAA;
+            }
+        }
+    }
+    
+    #dates {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        margin-bottom: 2rem;
+    
+        .dates-chosen {
+            white-space: pre
+        }
+    }
+    
+    #bottom-times {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        margin-bottom: 2rem;
+    }
+    
+    #actions {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
 }
 
 .times-table-date{
     font-weight:bold;
     margin: 15px 0;
+    
+    span {
+        font-size: 15px;
+        font-weight: normal;
+        margin-right: 10px;
+    }
+    
+    button {
+        margin: 0 15px;
+    }
+    
+    div {
+       margin: 10px 0; 
+    }
+    
+    .startInput, .endInput {
+        border-radius:4px;
+        border:1px solid #AAAAAA;
+    }
 }
 
-.times-table-date span{
-    font-size: 15px;
-    font-weight: normal;
-    margin-right: 10px;
+.datepicker{
+    width: 30%;
+    font-size: 14px;
+    
+    table {
+        margin: auto;
+        width: 80%;
+    }
+    
+    .dropdown-menu{
+        width: 25%;
+    }
+    
+    .table-condensed{
+        width: 300px;
+        height: 300px;
+    }
+    
+    .datepicker-inline {
+        width: 80%;
+        display: none !important;
+    }
+    
 }
 
-.times-table-date button{
-    margin: 0 15px;
+/* Projects */
+.project-header{
+    font-size: 30px;
 }
 
-.times-table-date div{
-    margin: 10px 0;
+/* Participants */
+.email-body{
+    width: 40%;
 }
 
-#bottom-times, #timeslow_div{
-    margin-top: 30px;
-}
-
-.timeslot-div {
-    width: 100%;
-}
-
-#timeslot, #dates, #bottom-times{
-    padding: 1.5rem 2rem;
-    margin: 1rem 0;
-}
-
-#actions {
-    padding: 1.5rem 2rem;
-    margin: 1rem 0;
-}
-
-.current-duration{
-    margin-top: 20px;
-}
-
-.project-times-table{
-    margin: 20px 0 30px 0;
-}
-
-.project-times-table div{
-    width: 50%;
-}
-
-.project-times-dateentry{
-    margin-top: 20px;
-}
-
-.project-times-timeentry{
-    display: grid;
-    grid-template-columns: 50% 50%
-}
-
-#timeslot-toggle {
-    margin-top: 20px;
-}
-
-.datepicker-inline{
-    display: none !important;
+.email-subject{
+    margin-bottom: 10px;
 }

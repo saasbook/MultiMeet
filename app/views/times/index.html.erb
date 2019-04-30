@@ -1,5 +1,5 @@
 <%= render 'layouts/navbar' %>
-<div class="jumbotron">
+<div class="jumbotron times-index shadow white-bg">
   <h1>Project Times</h1>
   
   <div class="current-duration">
@@ -12,7 +12,7 @@
   
   <% if flash[:message] %>
      <div class="alert alert-success alert-dismissible show" role="alert">
-       <strong>Added:</strong> <%= flash[:message] %>
+       <strong>Added:</strong> <%= flash[:message].html_safe %>
        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
        </button>
@@ -20,7 +20,7 @@
   <% end %>
   <% if flash[:error] %>
     <div class="alert alert-danger alert-dismissible show" role="alert">
-      <div class="error"><strong>Unable to add:</strong> <%= flash[:error] %></div>
+      <div class="error"><strong>Unable to add:</strong> <%= flash[:error].html_safe %></div>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -49,8 +49,9 @@
       <% end %>
     <% end %>
   </div>
-  
-  
+</div>
+
+<div class="jumbotron actions shadow white-bg">
   <%= link_to 'Back to project', project_path(@project_id), class:"btn btn-secondary"%>
   <% if !@times.empty? %>
     <%= link_to 'Reselect Times', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Delete all saved times for the project. \n- Reset duration."}, class:"btn btn-danger" %>
