@@ -1,5 +1,5 @@
 class RankingsController < ApplicationController
-  before_action :set_fields, only: [:show, :edit, :create, :update, :destroy]
+  before_action :set_fields, only: [:show, :edit, :create, :update, :end]
 
   # GET /rankings
   # GET /rankings.json
@@ -22,9 +22,10 @@ class RankingsController < ApplicationController
     @participant = Participant.find_by(project_id: params[:project_id], id: params[:participant_id])
     if params[:secret_id] != @participant.secret_id
       flash[:message] = "Access denied."
-    elsif params[:secret_id] != @participant.secret_id
-      flash[:message] = "Project does not exist."
     end
+  end
+
+  def end
 
   end
 
@@ -42,7 +43,14 @@ class RankingsController < ApplicationController
     #     format.json { render json: @ranking.errors, status: :unprocessable_entity }
     #   end
     # end
-    #
+
+    @times.ids.each do |id|
+      unless params.keys.include? id.to_s
+        flash[:error] = "Error: please fill in an option for each time."
+        redirect_to edit_project_participant_ranking_path and return
+      end
+    end
+
     @times.ids.each do |id|
       rank_num = params[id.to_s].to_i
       new_rank = Ranking.new(:id => @ranking.id, :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
