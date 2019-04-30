@@ -15,18 +15,37 @@
     <tbody>
     <% @times.each do |time| %>
       <tr>
-        <%# byebug %>
-        <td> <%=time.date_time.to_formatted_s(:long)%></td>
-        <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>
-        <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>
-        <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>
+<!--        <td> <%#=time.date_time.to_formatted_s(:long)%></td>-->
+<!--        <td><%#= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>-->
+<!--        <td><%#= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>-->
+<!--        <td><%#= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>-->
+<!--      </tr>-->
+
+<!--      <form action="">-->
+<!--        <fieldset id="<%#= time.id %>">-->
+        <%# form_for(@ranking, :url => edit_project_participant_ranking_path) do |f| %>
+
+          <% f.field_set time.id do %>
+            <td> <%=time.date_time.to_formatted_s(:long)%></td>
+            <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'preferred' %></td>
+            <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'okay' %></td>
+            <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'cannot' %></td>
+            <td><%= f.submit "Submit Preferences"%></td>
+<!--        </fieldset>-->
+          <% end %>
+
+<!--      </form>-->
+
       </tr>
     <% end %>
     </tbody>
 
   </table>
+
+
   <%= f.submit "Submit Preferences"%>
 <% end %>
+
 
 <!--<%#= link_to 'Show', @ranking %> |-->
 <%= link_to 'Back', project_participant_ranking_path %>
