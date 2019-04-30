@@ -10,4 +10,5 @@
 </ul>
 
 <%= link_to 'Back', projects_path, class:"btn btn-secondary" %>
-<%= link_to 'Edit', edit_project_path(@project), class:"btn btn-primary"%> 
+<%= link_to 'Edit', edit_project_path(@project), class:"btn btn-primary"%>
+<%= link_to 'Roster', project_participants_path(@project), class:"btn btn-success" %>
