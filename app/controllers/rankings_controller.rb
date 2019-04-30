@@ -81,13 +81,13 @@ class RankingsController < ApplicationController
 
     @times.ids.each do |id|
       rank_num = params[id.to_s].to_i
-      new_ranking = Ranking.new(:rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
       existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => id)
 
       if existing_ranking
-        Ranking.find_by(:participant_id => @participant.id, :project_time_id => id).update(
+        existing_ranking.update(
             :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
       else
+        new_ranking = Ranking.new(:rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
         new_ranking.save!
       end
     end
@@ -111,7 +111,7 @@ class RankingsController < ApplicationController
       @project = Project.find(params[:project_id])
       @participant = Participant.find_by(:project_id => params[:project_id], :id => params[:participant_id])
       @times = @project.project_times
-      @rankings = Ranking.all
+      @rankings = @participant.rankings
 
       @ranking = Ranking.find_by(:participant_id => params[:participant_id])
       if @ranking.nil?

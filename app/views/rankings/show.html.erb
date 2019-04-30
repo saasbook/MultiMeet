@@ -15,8 +15,7 @@
     <tbody>
     <% @rankings.each do |ranking| %>
       <tr>
-<!--        <td> <%#=@times.find(ranking.project_time_id).date_time.to_formatted_s(:long)%></td>-->
-        <td>temp</td>
+        <td> <%=ranking.project_time.date_time.to_formatted_s(:long)%></td>
         <td><%= ranking.rank %></td>
       </tr>
     <% end %>
