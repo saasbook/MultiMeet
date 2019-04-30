@@ -11,8 +11,8 @@ class ParticipantsController < ApplicationController
       require_user
       return
     end
-
     @participants = Participant.all
+    redirect_to display_project_participants_path(params[:project_id])
   end
 
   # GET /participants/1
@@ -20,6 +20,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.where(project_id: params[:project_id])
     @project = Project.find(params[:project_id])
   end
+
 
   def email
     @participants = Participant.where(project_id: params[:project_id])
@@ -34,6 +35,24 @@ class ParticipantsController < ApplicationController
     flash[:success] = 'Emails have been sent.'
     redirect_to display_project_participants_path(params[:project_id])
   end
+
+  # Temporary button for generating random preferences
+  def edit
+    all_project_time_ids = ProjectTime.where(project_id: @participant.project_id).pluck(:id)
+
+    all_project_time_ids.each do |project_time_id|
+      ranking = Ranking.find_by(participant_id: @participant.id, project_time_id: project_time_id)
+      if ranking
+        ranking.update(rank: rand(1..3))
+      else
+        Ranking.create(participant_id: @participant.id, project_time_id: project_time_id, rank: rand(1..3))
+      end
+    end
+    participant = Participant.find_by(id: @participant.id)
+    participant.update(last_responded: Time.now.getutc)
+    redirect_to display_project_participants_path(@participant.project_id)
+  end
+
   # GET /participants/1
   # GET /participants/1.json
   # def show
@@ -88,18 +107,17 @@ class ParticipantsController < ApplicationController
   end
 
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_participant
+      #@participant = Participant.find(params[:format])
+      @participant = Participant.find_by(:id => params[:id])
+    end
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_participant
-    @participant = Participant.find(params[:format])
-  end
-
-  def set_new_user
-    @participant = Participant.new
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def participant_params
-    params.require(:participant).permit(:email)
-  end
+    def set_new_user
+      @participant = Participant.new
+    end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def participant_params
+      params.require(:participant).permit(:email, :last_responded)
+    end
 end

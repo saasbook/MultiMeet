@@ -57,10 +57,6 @@ When /^I press the delete bottom for participant of email "(.*)" and project id 
     Participant.delete(:email => email)
 end
 
-When /^I access the times page for project of id "(.*)"$/ do |id|
-    visit "/projects/" + id + "/times"
-end
-
 When("I click the second show") do
     page.all("a.btn btn-info")[1].click
 end
