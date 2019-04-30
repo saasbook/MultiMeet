@@ -20,31 +20,29 @@
       </div>
     <% end %>
     
+    
     <%= form_for(@time) do |f| %>
-      <div class="jumbotron" id="timeslot">
+      <div class="jumbotron shadow white-bg" id="timeslot">
         <div id="timeslot-div">
           <h3>Step 1: Choose Duration</h3>
           <% if @duration.blank? %>
             <div>
-              <%= select_tag(:timeslot_hour, options_for_select((0..8))) %>
-              Hours
-              <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])) %>
-              Minutes
+              <%= select_tag(:timeslot_hour, options_for_select((0..8))) %> Hours
+              <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])) %> Minutes
+               
             </div>
           <% else %>
             <p><b>Current Timeslot Length:</b> <%= @duration %> minutes</p>
-            <button name="change-duration" id="change-duration" type="button" data-toggle="collapse" data-target="#timeslot-toggle" class="btn btn-info btn-sm">Change Duration</button>
+            <%= link_to 'Reselect Duration', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Delete all saved times for the project. \n- Reset duration."}, class:"btn btn-danger btn-sm" %>
             <div id="timeslot-toggle" class="collapse">
               <%= select_tag(:timeslot_hour, options_for_select((0..8), :selected => @hour)) %>
-              Hours
               <%= select_tag(:timeslot_minute, options_for_select([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55], :selected => @minute)) %>
-              Minutes
             </div>
           <% end %>
         </div>
       </div>
       
-      <div class="jumbotron" id="dates">
+      <div class="jumbotron shadow white-bg" id="dates">
         <div class="dates-left-side">
           <h3>Step 2: Choose Dates</h3>
           Press this box and pick dates.
@@ -60,18 +58,18 @@
         </div>
       </div>
       
-      <div class="jumbotron" id="bottom-times">
+      <div class="jumbotron shadow white-bg" id="bottom-times">
         <h3>Step 3: Choose Times</h3>
         <div id="times-table">
         </div>
       </div>
       
-      <div class="jumbotron" id="actions">
+      <div class="jumbotron shadow white-bg" id="actions">
         <%= link_to 'Back', project_times_path, class:"btn btn-secondary" %>
         <% if @duration.blank? %>
           <%= f.submit "Submit", data: {confirm: "Are you sure?"}, class:"btn btn-primary"%>
         <% else %>
-          <%= f.submit "Submit", data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Change end times for previously selected start times."}, class:"btn btn-primary"%>
+          <%= f.submit "Submit", data: {confirm: "Are you sure? Choosing 'OK' may.. \n- Change end times for previously selected start times."}, class:"btn btn-primary"%>
         <% end %>
       </div>
       

@@ -1,6 +1,7 @@
 <%= render 'layouts/navbar' %>
-<h1>Editing Ranking</h1>
 
+<%= flash[:message] %>
+<h1>Editing Ranking</h1>
 <%= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
   <table style="width:65%">
     <thead>
@@ -32,3 +33,4 @@
 
 <!--<%#= link_to 'Show', @ranking %> |-->
 <%= link_to 'Back', project_participant_ranking_path %>
+

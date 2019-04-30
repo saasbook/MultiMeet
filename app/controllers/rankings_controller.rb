@@ -19,7 +19,12 @@ class RankingsController < ApplicationController
 
   # GET /rankings/1/edit
   def edit
-    # set_fields
+    @participant = Participant.find_by(project_id: params[:project_id], id: params[:participant_id])
+    if params[:secret_id] != @participant.secret_id
+      flash[:message] = "INVALID LINK"
+    else
+      flash[:message] = "VALID LINK"
+    end
   end
 
   def submit_preference
