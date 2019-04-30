@@ -42,18 +42,50 @@ class RankingsController < ApplicationController
     end
   end
 
+  # def parse_rank id
+  #   if params[id].eql? 'preferred'
+  #     1
+  #   elsif params[id].eql? 'okay'
+  #     2
+  #   else
+  #     3
+  #   end
+  # end
+
   # PATCH/PUT /rankings/1
   # PATCH/PUT /rankings/1.json
   def update
-    respond_to do |format|
-      if @ranking.update(ranking_params)
-        format.html { redirect_to @ranking, notice: 'Ranking was successfully updated.' }
-        format.json { render :show, status: :ok, location: @ranking }
-      else
-        format.html { render :edit }
-        format.json { render json: @ranking.errors, status: :unprocessable_entity }
+    # respond_to do |format|
+    #   if @ranking.update(ranking_params)
+    #     format.html { redirect_to @ranking, notice: 'Ranking was successfully updated.' }
+    #     format.json { render :show, status: :ok, location: @ranking }
+    #   else
+    #     format.html { render :edit }
+    #     format.json { render json: @ranking.errors, status: :unprocessable_entity }
+    #   end
+    # end
+
+    @times.ids.each do |id|
+      # byebug
+      rank_num = params[id.to_s].to_i
+      new_rank = Ranking.new(:id => @ranking.id, :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
+      existing_rank = Ranking.find_by(:id => @ranking.id, :project_time_id => id)
+
+      if existing_rank
+        existing_rank.destroy
+        new_rank.save!
+        # flash[:message] = "Participant's email already exists"
+        # redirect_to display_project_participants_path(params[:project_id])
+      else @participant.save!
+        # flash[:success] = "Successfully created participant #{@participant.email}"
+        # redirect_to display_project_participants_path(params[:project_id])
       end
     end
+
+    redirect_to end_project_participant_ranking_path
+
+    # params[@times]
+    # Ranking.create()
   end
 
   # DELETE /rankings/1

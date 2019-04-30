@@ -16,9 +16,9 @@
           <% @times.each do |time| %>
           <tr>
               <td> <%=time.date_time.to_formatted_s(:long)%></td>
-              <td><%= radio_button_tag time.id, 'cannot' %></td>
-              <td><%= radio_button_tag time.id, 'okay' %></td>
-              <td><%= radio_button_tag time.id, 'preferred' %></td>
+              <td><%= radio_button_tag time.id, '3' %></td>
+              <td><%= radio_button_tag time.id, '2' %></td>
+              <td><%= radio_button_tag time.id, '1' %></td>
           </tr>
         <% end %>
     </tbody>
