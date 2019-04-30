@@ -28,7 +28,7 @@ Background: A project is set up and participants are invited to rank times
     When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
     And I choose "Preferred" for time "Dec 1 2019 1:00 PM"
     And I press "Enter"
-    Then I should see "Thank you for submitting your times!"
+    Then I should see "Thank you for submitting your preferences!"
 
 
   Scenario: User attempts to enter preferences for times for a project that they are not a part of
