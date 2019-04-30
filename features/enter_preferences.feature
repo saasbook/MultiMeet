@@ -25,6 +25,7 @@ Background: A project is set up and participants are invited to rank times
   Scenario: User enters their preferences for times
     When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secretid "empoleonsecretid"
     Then I should see "Please enter your preferences for these times."
+    And I should not see "Access denied"
     When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
     And I choose "Preferred" for time "Dec 1 2019 1:00 PM"
     And I press "Submit"
