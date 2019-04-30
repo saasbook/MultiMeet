@@ -52,6 +52,7 @@ When /^I press the edit bottom for project of id "(.*)"$/ do |id|
     visit "/projects/" + id + "/edit"
 end
 
+
 When /^I press the delete bottom for participant of email "(.*)" and project id of "(.*)"$/ do |email, id|
     Participant.find_by(:project_id => id, :email => email)
     Participant.delete(:email => email)
