@@ -6,7 +6,7 @@
   
   <body>
     <p><%=@body%></p>
-    <p>Click here to rank: <%= link_to "link", edit_project_participant_ranking_url(secret_id: @secret_id, participant_id: @part_id,project_id: @proj_id) %></p>
+    <p>Click here to rank: <%= link_to 'Link to rank', @rank_link %> </p>
   </body>
   
 </html>

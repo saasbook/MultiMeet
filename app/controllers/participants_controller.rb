@@ -25,11 +25,14 @@ class ParticipantsController < ApplicationController
   def email
     @project = Project.find(params[:project_id])
     @participants = @project.participants
-    @email_subject = params[:email_subject]
-    @email_body = params[:email_body]
+    email_subject = params[:email_subject]
+    email_body = params[:email_body]
     
     @participants.each do |participant|
-      ParticipantsMailer.availability_email(participant.id, @project.id, participant.email, participant.secret_id, @project.project_name, @email_subject, @email_body).deliver_now
+      rank_link = edit_project_participant_ranking_url(
+          secret_id: participant.secret_id, participant_id: participant.id, project_id: @project.id)
+      ParticipantsMailer.availability_email(
+          participant.email, @project.project_name, email_subject, email_body, rank_link).deliver_now
     end
     
     flash[:success] = 'Emails have been sent.'
