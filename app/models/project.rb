@@ -5,4 +5,5 @@ class Project < ActiveRecord::Base
   has_many :project_times
   has_many :participants
   has_many :rankings, through: :participants
+  has_one :matching
 end

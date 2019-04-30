@@ -1,5 +1,29 @@
 <%= render 'layouts/navbar' %>
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_ranking_path(@ranking) %> |
-<%= link_to 'Back', rankings_path %>
+<div class="mx-4 my-4">
+  <h2>Rankings</h2>
+
+  <table style="width:65%">
+    <thead>
+    <tr>
+      <th>Time</th>
+      <th>Rank</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @rankings.each do |ranking| %>
+      <tr>
+        <td> <%=ranking.project_time.date_time.to_formatted_s(:long)%></td>
+        <td><%= ranking.rank %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'Edit', edit_project_participant_ranking_path(
+      @participant.project_id, @participant.id, :secret_id => @participant.secret_id), class: "btn btn-primary" %>
+  <%= link_to 'Back', project_participants_path, class: "btn btn-primary" %>
+
+</div>

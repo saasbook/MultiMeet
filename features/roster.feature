@@ -72,7 +72,7 @@ Feature: Roster
     Then the participant should receive an email
     Then I should see "Emails have been sent."
   
-  Scenario: If correct secret_id, render successful template
+  Scenario: If correct secret_id, render edit preference page
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
     And I press "Add New Participant"
@@ -81,9 +81,9 @@ Feature: Roster
     Then the participant should receive an email
     Then I should see "Emails have been sent."
     When I visit the link from the email for project of id "1" and participant of id "1"
-    Then I should see "VALID LINK"
+    Then I should not see "Access denied"
     
-  Scenario: If incorrect secret_id, render invalid link template
+  Scenario: If incorrect secret_id, deny access
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
     And I press "Add New Participant"
@@ -92,7 +92,7 @@ Feature: Roster
     Then the participant should receive an email
     Then I should see "Emails have been sent."
     When I visit the bad link from the email for project of id "1" and participant of id "1"
-    Then I should see "INVALID LINK"
+    Then I should see "Access denied"
 
   
   Scenario: "Last Responded" should update with datetime of last response
