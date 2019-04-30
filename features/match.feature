@@ -28,7 +28,6 @@ Feature: Match
     | Dec 1 2019 1:00 PM  |
     | Dec 8 2019 3:00 PM  |
     | Dec 8 2019 4:00 PM  |
-
     And I am on the matchings page for "CS61A Sections"
 
   Scenario: User is unable to start a match when not everyone has submitted preferences

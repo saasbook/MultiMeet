@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class MatchingsController < ApplicationController
   before_action :set_instance_variables, only: [:show, :edit, :update, :destroy]
 
   # GET /project/:project_id/matching
   def show
-    if !logged_in?
+    unless logged_in?
       require_user
       return
     end
@@ -29,6 +31,7 @@ class MatchingsController < ApplicationController
 
   # TODO: convert to a PUT/ UPDATE
   # GET /projects/:project_id/matching/edit
+
   # def edit
   #   respond_to do |format|
   #     if all_submitted_preferences?
@@ -45,16 +48,16 @@ class MatchingsController < ApplicationController
 
   # POST /projects/:project_id/matching
   def create
-    @project = Project.find_by(:id => params[:project_id])
-    @matching = Matching.new({project_id: @project.id})
+    @project = Project.find_by(id: params[:project_id])
+    @matching = Matching.new(project_id: @project.id)
     @matching.output_json = api
 
     respond_to do |format|
       if @matching.save!
         flash[:success] = 'Successfully matched.'
         format.html { redirect_to project_matching_path }
-      # else
-      #   format.html { render :new }
+        # else
+        #   format.html { render :new }
       end
     end
   end
@@ -69,19 +72,19 @@ class MatchingsController < ApplicationController
   # end
 
   def category
-    "person_to_time"
+    'person_to_time'
   end
 
   def global_settings
-    {"minutes": @project.duration}
+    { "minutes": @project.duration }
   end
 
   def people
     all_participants_emails = @project.participants.pluck(:email)
 
     people = []
-    for email in all_participants_emails
-      row = {"name": email, "match_degree": 1}
+    all_participants_emails.each do |email|
+      row = { "name": email, "match_degree": 1 }
       people.push(row)
     end
 
@@ -92,9 +95,9 @@ class MatchingsController < ApplicationController
     all_project_times = ProjectTime.where(project_id: @project.id).pluck(:date_time)
 
     timeslots = []
-    for timeslot in all_project_times
+    all_project_times.each do |timeslot|
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      row = {"timestamp": timeslot_formatted, "tracks": 1}
+      row = { "timestamp": timeslot_formatted, "tracks": 1 }
       timeslots.push(row)
     end
 
@@ -127,17 +130,17 @@ class MatchingsController < ApplicationController
     require 'rest-client'
 
     input = {
-      :category => category,
-      :global_settings => global_settings,
-      :people => people,
-      :timeslots => timeslots,
-      :preferences => preferences
+      category: category,
+      global_settings: global_settings,
+      people: people,
+      timeslots: timeslots,
+      preferences: preferences
     }
     # print(JSON.pretty_generate(input))
 
     output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input.to_json,
-                             {content_type: :json, accept: :json}).body
-    return output
+                             content_type: :json, accept: :json).body
+    output
   end
 
   private
@@ -152,8 +155,14 @@ class MatchingsController < ApplicationController
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def matching_params
-      params.require(:project_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_matching_and_project
+    @matching = Matching.find_by(params.slice(:project_id))
+    @project = Project.find_by(id: params[:project_id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def matching_params
+    params.require(:project_id)
+  end
 end

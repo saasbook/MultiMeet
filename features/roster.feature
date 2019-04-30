@@ -63,6 +63,15 @@ Feature: Roster
     When I follow "Back to All Projects"
     Then I should be on the projects page
 
+  Scenario: successfully email roster
+    When I press the roster bottom for project of id "1"
+    When I fill in "Email" with "testing1@berkeley.edu"
+    And I press "Add New Participant"
+    And I fill in "email_body" with "Hello, please give me your availability"
+    And I press "Send email to participants"
+    Then the participant should receive an email
+    Then I should see "Emails have been sent."
+
   Scenario: "Last Responded" should update with datetime of last response
     Given a registered user with the username "aaronli98" has a project named "Participants Test"
     And the project named "Participants Test" has the following participants:
@@ -113,3 +122,4 @@ Feature: Roster
     And I should see "Successfully matched."
     Then I press "Run algorithm again"
     And I should see "Successfully matched."
+

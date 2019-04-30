@@ -1,5 +1,7 @@
-# class RankingsController < ApplicationController
-#   before_action :set_ranking, only: [:show, :edit, :update, :destroy]
+# frozen_string_literal: true
+
+class RankingsController < ApplicationController
+   #before_action :set_ranking, only: [:show, :edit, :update, :destroy]
 #
 #   # GET /rankings
 #   # GET /rankings.json
@@ -18,8 +20,14 @@
 #   end
 #
 #   # GET /rankings/1/edit
-#   def edit
-#   end
+   def edit
+        @participant = Participant.find_by(project_id: params[:project_id], id: params[:participant_id])
+        if params[:secret_id] != @participant.secret_id
+            flash[:message] = "INVALID LINK"
+        else
+            flash[:message] = "VALID LINK"
+        end
+   end
 #
 #   # POST /rankings
 #   # POST /rankings.json
@@ -61,14 +69,14 @@
 #     end
 #   end
 #
-#   private
-#     # Use callbacks to share common setup or constraints between actions.
-#     def set_ranking
-#       @ranking = Ranking.find(params[:id])
-#     end
-#
-#     # Never trust parameters from the scary internet, only allow the white list through.
-#     def ranking_params
-#       params.fetch(:ranking, {})
-#     end
-# end
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    #def set_ranking
+     # @ranking = Ranking.find(params[:participant_id])
+    #end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def ranking_params
+      params.fetch(:ranking, {})
+    end
+end

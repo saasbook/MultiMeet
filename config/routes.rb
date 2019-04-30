@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   # PROJECTS routes:
   ## PARTICIPANTS are copied from the ROSTER selected at project creation.
   ## RANKING is the time ranking selected by the specific participant.
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   resources :rosters
 
   # Custom singular routes or reroutes
+  post 'projects/:project_id/participants/display' => 'participants#email', :as => 'email_project_participants'
   delete 'projects/:project_id/times' => 'times#destroy_all', :as => 'destroy_project_times'
   post 'login' => 'sessions#create'
   get 'login' => 'sessions#new'

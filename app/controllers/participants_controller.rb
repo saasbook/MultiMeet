@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class ParticipantsController < ApplicationController
-  before_action :set_participant, only: [:show, :edit, :update, :destroy]
+  before_action :set_participant, only: %i[show edit update destroy]
   before_action :set_new_user, only: [:display]
 
   # GET /participants
   # GET /participants.json
   def index
-    if !logged_in?
+    unless logged_in?
       require_user
       return
     end
@@ -16,6 +18,22 @@ class ParticipantsController < ApplicationController
   # GET /participants/1
   def display
     @participants = Participant.where(project_id: params[:project_id])
+    @project = Project.find(params[:project_id])
+  end
+
+
+  def email
+    @project = Project.find(params[:project_id])
+    @participants = @project.participants
+    @email_subject = params[:email_subject]
+    @email_body = params[:email_body]
+    
+    @participants.each do |participant|
+      ParticipantsMailer.availability_email(participant.id, @project.id, participant.email, participant.secret_id, @project.project_name, @email_subject, @email_body).deliver_now
+    end
+    
+    flash[:success] = 'Emails have been sent.'
+    redirect_to display_project_participants_path(params[:project_id])
   end
 
   # Temporary button for generating random preferences
@@ -52,15 +70,16 @@ class ParticipantsController < ApplicationController
     @participant = Participant.new(participant_params)
     @participant.project_id = params[:project_id]
     if !Participant.where(
-        project_id: @participant.project_id, email: @participant.email).blank?
+      project_id: @participant.project_id, email: @participant.email
+    ).blank?
       flash[:error] = "Participant's email already exists"
       redirect_to display_project_participants_path(params[:project_id])
     else @participant.save!
-      flash[:success] = "Successfully created participant #{@participant.email}"
-      redirect_to display_project_participants_path(params[:project_id])
-    # else
-    #   flash[:message] = @user.errors.full_messages
-    #   redirect_to display_project_participants_path(params[:project_id])
+         flash[:success] = "Successfully created participant #{@participant.email}"
+         redirect_to display_project_participants_path(params[:project_id])
+      # else
+      #   flash[:message] = @user.errors.full_messages
+      #   redirect_to display_project_participants_path(params[:project_id])
     end
   end
 
