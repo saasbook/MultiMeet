@@ -27,12 +27,12 @@ When /^I access the time ranking page for project of id "(.*)" from user id "(.*
 end
 
 When /^I choose "(.*)" for time "(.*)"$/ do |option, time|
-  time = ProjectTime.find_by(:date_time => Time.parse(time[:datetime]))
+  time = ProjectTime.find_by(:date_time => Time.parse(time))
   if option.eql?("Preferred")
-    choose(time.id, option: 1) # name and value to make unique
+    choose(time.id.to_s, option: "1") # name and value to make unique
   elsif option.eql?("Okay")
-    choose(time.id, option: 2) # name and value to make unique
+    choose(time.id.to_s, option: "2") # name and value to make unique
   else
-    choose(time.id, option: 3) # name and value to make unique
+    choose(time.id.to_s, option: "3") # name and value to make unique
   end
 end
