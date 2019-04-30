@@ -1,5 +1,17 @@
 <%= render 'layouts/navbar' %>
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_ranking_path(@ranking) %> |
-<%= link_to 'Back', rankings_path %>
+<%#= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
+  <table style="width:100%">
+    <tbody>
+      <tr>
+        <td><b>test</b></td>
+        <td><b><%= @participant.project_id %></b></td>
+      </tr>
+    </tbody>
+  </table>
+
+<%# end %>
+
+<%= link_to 'Edit', edit_project_participant_ranking_path(@participant.project_id, @participant.id) %> |
+<%= link_to 'Back', project_participants_path %>

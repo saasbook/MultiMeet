@@ -1,7 +1,32 @@
 <%= render 'layouts/navbar' %>
 <h1>Editing Ranking</h1>
 
-<%= render 'form' %>
+<%= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
+  <table style="width:65%">
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Preferred</th>
+      <th>Okay</th>
+      <th>Can't Go</th>
+    </tr>
+    </thead>
 
-<%= link_to 'Show', @ranking %> |
-<%= link_to 'Back', rankings_path %>
+    <tbody>
+    <% @times.each do |time| %>
+      <tr>
+        <%# byebug %>
+        <td> <%=time.date_time.to_formatted_s(:long)%></td>
+        <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>
+        <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>
+        <td><%= f.radio_button :rank, :tag_value => time.id, :value =>'true' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+  <%= f.submit "Submit Preferences"%>
+<% end %>
+
+<!--<%#= link_to 'Show', @ranking %> |-->
+<%= link_to 'Back', project_participant_ranking_path %>
