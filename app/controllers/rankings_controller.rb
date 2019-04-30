@@ -109,13 +109,10 @@ class RankingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_fields
       @project = Project.find(params[:project_id])
-      # @ranking = Ranking.find_by(:participant_id => params[:participant_id])
       @participant = Participant.find_by(:project_id => params[:project_id], :id => params[:participant_id])
       @times = @project.project_times
-      # @rankings = Ranking.all
 
       @ranking = Ranking.find_by(:participant_id => params[:participant_id])
-
       if @ranking.nil?
         @ranking = Ranking.new
       end

@@ -21,16 +21,14 @@ Background: A project is set up and participants are invited to rank times
     And a participant to project "CS169 Sections" with email "charizard@berkeley.edu" has a secretid "charizardsecretid"
 
 
-#
-#  Scenario: User enters their preferences for times
-#    When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secretid "empoleonsecretid"
-#    Then I should see "Please enter your preferences for these times."
+  Scenario: User enters their preferences for times
+    When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secretid "empoleonsecretid"
+    Then I should see "Please enter your preferences for these times."
 #    And I should not see "Access denied"
-#    When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
-#    And I choose "Preferred" for time "Dec 1 2019 1:00 PM"
-#    And I press "Submit"
-#    Then I should see "Thanks for submitting your preferences!"
-
+    When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
+    And I choose "Preferred" for time "Dec 1 2019 1:00 PM"
+    And I press "Submit"
+    Then I should see "Thanks for submitting your preferences!"
 
 #  Scenario: User attempts to enter preferences for times for a project that they are not a part of
 #    I access the time ranking page for project of id "1" from user id "6" and secretid "none"
