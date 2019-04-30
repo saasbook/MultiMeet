@@ -1,6 +1,6 @@
 <%= render 'layouts/navbar' %>
 <%= render 'layouts/alerts' %>
-<div class="jumbotron">
+<div class="jumbotron times-index shadow white-bg">
   <h1>Project Times</h1>
   
   <div class="current-duration">
@@ -10,7 +10,7 @@
       <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
     <% end %>
   </div>
-  
+
   <div class="project-times-table">
     <% @times.each do |time| %>
       <% if time.is_date %>
@@ -33,8 +33,9 @@
       <% end %>
     <% end %>
   </div>
-  
-  
+</div>
+
+<div class="jumbotron actions shadow white-bg">
   <%= link_to 'Back to project', project_path(@project_id), class:"btn btn-secondary"%>
   <% if !@times.empty? %>
     <%= link_to 'Reselect Times', destroy_project_times_path, method: :delete, data: {confirm: "Are you sure? Choosing 'OK' will.. \n- Delete all saved times for the project. \n- Reset duration."}, class:"btn btn-danger" %>

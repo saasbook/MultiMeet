@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateInitialTables < ActiveRecord::Migration
   def change
     # USERS
@@ -13,7 +15,6 @@ class CreateInitialTables < ActiveRecord::Migration
       t.timestamps
     end
 
-
     # PROJECTS
     # primary key: integer id
     # foreign key: username => users.username
@@ -28,7 +29,6 @@ class CreateInitialTables < ActiveRecord::Migration
     # user_id => users.id
     add_foreign_key :projects, :users
 
-
     # PARTICIPANTS
     # primary key: integer id
     # foreign key: project_id => projects.id
@@ -36,14 +36,14 @@ class CreateInitialTables < ActiveRecord::Migration
       # default: t.primary_key :id => integer
       t.integer :project_id, null: false
       t.string :email, null: false
+      t.timestamp :last_responded, null: true, default: nil
     end
 
     # project_id => projects.id
     add_foreign_key :participants, :projects
 
     # for (project_id, email) unique
-    add_index :participants, [:project_id, :email], unique: true
-
+    add_index :participants, [:project_id, :email, :last_responded], unique: true
 
     # PROJECT_TIMES
     # primary key: integer id
@@ -57,7 +57,6 @@ class CreateInitialTables < ActiveRecord::Migration
       t.boolean :is_date, null: false, default: false
     end
 
-
     # RANKINGS
     # primary key: integer id
     # foreign key: participant_id
@@ -69,13 +68,12 @@ class CreateInitialTables < ActiveRecord::Migration
     end
 
     # for (participants.id, project_times.id) unique
-    add_index :rankings, [:participant_id, :project_time_id], unique: true
+    add_index :rankings, %i[participant_id project_time_id], unique: true
 
     # participant_id => participants.id
     add_foreign_key :rankings, :participants
     # project_time_id => project_times.id
     add_foreign_key :rankings, :project_times
-
 
     # MATCHING
     # primary key: integer id
@@ -89,4 +87,3 @@ class CreateInitialTables < ActiveRecord::Migration
     add_foreign_key :matchings, :projects
   end
 end
-
