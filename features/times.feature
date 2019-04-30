@@ -12,7 +12,7 @@ Feature: Choose times
     And I fill in "Password" with "password"
     And I press "Log In"
     Then I should be on the projects page
-  
+
   Scenario: User submits with 0 minutes for duration
     When I follow "New Project"
     When I fill in "Project Name" with "Lan party"
@@ -20,11 +20,11 @@ Feature: Choose times
     When I send a POST request to "/projects/2/times" with:
       """
       {
-        "timeslot_hour":"0", 
-        "timeslot_minute":"0", 
-        "project_time":{"date_time":"2019-04-26"}, 
-        "times":{"2019-04-26":["09:00", "9:00"]}, 
-        "commit":"Submit", 
+        "timeslot_hour":"0",
+        "timeslot_minute":"0",
+        "project_time":{"date_time":"2019-04-26"},
+        "times":{"2019-04-26":["09:00", "9:00"]},
+        "commit":"Submit",
         "project_id":"1"
       }
       """
@@ -40,11 +40,11 @@ Feature: Choose times
     When I send a POST request to "/projects/2/times" with:
       """
       {
-        "timeslot_hour":"2", 
-        "timeslot_minute":"0", 
-        "project_time":{"date_time":"2019-04-26"}, 
-        "times":{"2019-04-26":["08:00", "10:00"]}, 
-        "commit":"Submit", 
+        "timeslot_hour":"2",
+        "timeslot_minute":"0",
+        "project_time":{"date_time":"2019-04-26"},
+        "times":{"2019-04-26":["08:00", "10:00"]},
+        "commit":"Submit",
         "project_id":"2"
       }
       """
@@ -53,11 +53,11 @@ Feature: Choose times
     Then I should see "Start: 08:00 AM"
     Then I should see "End: 10:00 AM"
     Then I should see "Reselect Times"
-    Then I should see "Duration: 120 minutes"   
-    
+    Then I should see "Duration: 120 minutes"
+
   Scenario: Choose times from projects page
     Given I am on the projects page
-    When I follow "Show"
+    When I follow "Party 1"
     Then I should see "Name: Party 1"
     And I should see "Times"
     When I follow "Times"
@@ -75,7 +75,7 @@ Feature: Choose times
   Scenario: Show dates and times after choosing
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
     When I am on the projects page
-    And I follow "Show"
+    And I follow "Party 1"
     Then I should see "Duration (minutes): 60"
     And I follow "Times"
     Then I should see "Sunday, December 01 2019"

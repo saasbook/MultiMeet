@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       end
     end
     resources :times
-    resource :matching
+    resource :matching do
+      post 'email', on: :collection
+    end
   end
 
   # USERS routes: currently admins, may also include participants

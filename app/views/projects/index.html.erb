@@ -9,39 +9,69 @@
 
 <%= render 'layouts/navbar' %>
 
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.header {
+  border: 1px solid #e6e6e6;
+  padding: 15px;
+}
+
+.menu {
+  width: 18%;
+  height:100%;
+  float: left;
+  padding: 15px;
+  border: 1px solid white;
+}
+
+.main {
+  width: 82%;
+  float: left;
+  padding: 15px;
+  border: 1px solid #e6e6e6;
+}
+</style>
+</head>
+
+<style>
+  span.proj { position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left: 0;}
+</style>
+
+
 <% if logged_in? %>
-  <div class="mx-4 my-4">
-    <p>Welcome to MultiMatch!</p></div>
-  <div class="project-header mx-4 my-4">All Projects</div>
+  <div class="header"><h1>All Projects</h1></div>
   <% if @projects %>
-    <div class="mx-4 my-4">
-      <%= link_to 'New Project', new_project_path, class:"btn btn-primary" %>
-      <br>
-
-      <table style="width:50%">
-        <thead>
-          <tr>
-            <th>Project Name</th>
-            <th>Project Number</th>
-            <th>Show</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @projects.each do |project| %>
-          <tr>
-            <td> <%= project.project_name %> </td>
-            <td> <%= project.id %> </td>
-            <td> <%= link_to 'Show', project, class:"btn btn-info" %> </td>
-            <td> <%= link_to 'Edit', edit_project_path(project.id), class:"btn btn-primary" %> </td>
-            <td> <%= link_to 'Roster', project_participants_path(project.id), class:"btn btn-success" %> </td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-
-    </div>
-  <% end %>
+    <div class="menu">
+      <p>Welcome to MultiMatch! Click the projects on the right to show or edit.</p></div>
+    <div class="main">
+      <div class="card" style="width: 42%; background-color:white; margin:15px">
+        <div class="card-body" id="bottom" style="border-style: dashed; border-color: #1a53ff">
+          <a href= <%=new_project_path%> style="text-decoration: none">
+            <h3 style="color: #1a53ff">Add New Project</h3><span class="proj"></span>
+          </a>
+        </div>
+      </div>
+      <div class="row box-row">
+        <% @projects.each do |project| %>
+          <div class="card" style="width: 44%; background-color:#f2f2f2; margin:30px">
+            <div class="card-body" id="bottom">
+              <a href= <%=project_path(project.id)%> <%= project.project_name %> style="text-decoration: none"><span class="proj"></span>
+                <h3 style="color: black"> <%= project.project_name%></h3>
+              </a>
+              <h11> Project ID: <%= project.id %></h11>
+            </div>
+          </div>
+        <% end%>
+      </div>
   </div>
 <% else %>
   <div class="mx-4 my-4">
@@ -51,4 +81,5 @@
       Please <strong>login</strong> or <strong>sign up</strong> for a new account!
     </p>
   </div>
+<% end %>
 <% end %>

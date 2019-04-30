@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MatchingsController < ApplicationController
-  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy]
+  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
 
   # GET /project/:project_id/matching
   def show
@@ -17,11 +17,25 @@ class MatchingsController < ApplicationController
 
     if @proj_exists and @matching
       @parsed_matching = JSON.parse(@matching.output_json)
+      print(@parsed_matching)
     elsif @proj_exists
       @participants_are_set = @all_participants_ids.size > 0
       @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
+  end
+
+  def email
+    @project = Project.find(params[:project_id])
+    @participants = @project.participants
+    @email_subject = params[:email_subject]
+    @email_body = params[:email_body]
+    @parsed_matching = JSON.parse(@matching.output_json)
+    @parsed_matching['schedule'].each do |matching|
+      ParticipantsMailer.matching_email(matching['people_called'][0], @project.project_name, @email_subject, @email_body, matching['timestamp']).deliver_now
+    end
+    flash[:success] = 'Emails have been sent.'
+    redirect_to project_matching_path(params[:project_id])
   end
 
   # GET /projects/:project_id/matching/new
