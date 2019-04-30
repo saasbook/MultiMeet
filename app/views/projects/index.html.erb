@@ -8,6 +8,36 @@
 <% end %>
 
 <%= render 'layouts/navbar' %>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.header {
+  border: 1px solid #e6e6e6;
+  padding: 15px;
+}
+
+.menu {
+  width: 18%;
+  height:100%;
+  float: left;
+  padding: 15px;
+  border: 1px solid white;
+}
+
+.main {
+  width: 82%;
+  float: left;
+  padding: 15px;
+  border: 1px solid #e6e6e6;
+}
+</style>
+</head>
+
 <style>
   span{ position:absolute;
   width:100%;
@@ -18,23 +48,23 @@
 
 
 <% if logged_in? %>
-  <div class="mx-4 my-4">
-    <p>Welcome to MultiMatch!</p></div>
-  <div class="project-header mx-4 my-4" >All Projects</div>
+  <div class="header"><h1>All Projects</h1></div>
   <% if @projects %>
-    <div class="mx-4 my-4">
-      <div class="card" style="width: 25%; background-color:#f2f2f2; margin:15px">
-        <div class="card-body" id="bottom" style="border-style: dotted; border-color: #41b5f4">
-          <h3 style="color: #41b5f4">Add New Project</h3>
+    <div class="menu">
+      <p>Welcome to MultiMatch! Click the projects on the right to show or edit.</p></div>
+    <div class="main">
+      <div class="card" style="width: 42%; background-color:white; margin:15px">
+        <div class="card-body" id="bottom" style="border-style: dashed; border-color: #1a53ff">
+          <h3 style="color: #1a53ff">Add New Project</h3>
           <a href= <%=new_project_path%>><span></span></a>
         </div>
       </div>
       <div class="row box-row">
         <% @projects.each do |project| %>
-          <div class="card" style="width: 45%; background-color:#f2f2f2; margin:30px">
+          <div class="card" style="width: 44%; background-color:#f2f2f2; margin:30px">
             <div class="card-body" id="bottom">
               <h3> <%= project.project_name%></h3>
-              <p> Project ID: <%= project.id %></p>
+              <h11> Project ID: <%= project.id %></h11>
               <a href= <%=project_path(project.id)%>><span></span></a>
             </div>
           </div>
