@@ -1,5 +1,6 @@
 class RankingsController < ApplicationController
   before_action :set_fields, only: [:show, :edit, :create, :update, :end]
+  helper_method :valid_secret_id?
 
   # GET /rankings
   # GET /rankings.json
@@ -17,10 +18,13 @@ class RankingsController < ApplicationController
     @ranking = Ranking.new
   end
 
+  def valid_secret_id?
+    params[:secret_id] == @participant.secret_id
+  end
+
   # GET /rankings/1/edit
   def edit
-    @participant = Participant.find_by(project_id: params[:project_id], id: params[:participant_id])
-    if params[:secret_id] != @participant.secret_id
+    unless valid_secret_id?
       flash[:message] = "Access denied."
     end
   end
@@ -47,7 +51,7 @@ class RankingsController < ApplicationController
     @times.ids.each do |id|
       unless params.keys.include? id.to_s
         flash[:error] = "Error: please fill in an option for each time."
-        redirect_to edit_project_participant_ranking_path and return
+        redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
       end
     end
 
@@ -58,14 +62,8 @@ class RankingsController < ApplicationController
 
       if existing_rank
         existing_rank.destroy
-        new_rank.save!
-        # flash[:message] = "Participant's email already exists"
-        # redirect_to display_project_participants_path(params[:project_id])
-      else
-        @participant.save!
-        # flash[:success] = "Successfully created participant #{@participant.email}"
-        # redirect_to display_project_participants_path(params[:project_id])
       end
+      new_rank.save!
     end
 
     redirect_to end_project_participant_ranking_path
@@ -74,25 +72,27 @@ class RankingsController < ApplicationController
   # PATCH/PUT /rankings/1
   # PATCH/PUT /rankings/1.json
   def update
-    # @times.ids.each do |id|
-    #   rank_num = params[id.to_s].to_i
-    #   new_rank = Ranking.new(:id => @ranking.id, :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
-    #   existing_rank = Ranking.find_by(:id => @ranking.id, :project_time_id => id)
-    #
-    #   if existing_rank
-    #     existing_rank.destroy
-    #     new_rank.save!
-    #     # flash[:message] = "Participant's email already exists"
-    #     # redirect_to display_project_participants_path(params[:project_id])
-    #   else
-    #     @participant.save!
-    #     # flash[:success] = "Successfully created participant #{@participant.email}"
-    #     # redirect_to display_project_participants_path(params[:project_id])
-    #   end
-    # end
-    #
-    # redirect_to end_project_participant_ranking_path
+    @times.ids.each do |id|
+      unless params.keys.include? id.to_s
+        flash[:error] = "Error: please fill in an option for each time."
+        redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
+      end
+    end
 
+    @times.ids.each do |id|
+      rank_num = params[id.to_s].to_i
+      new_ranking = Ranking.new(:rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
+      existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => id)
+
+      if existing_ranking
+        Ranking.find_by(:participant_id => @participant.id, :project_time_id => id).update(
+            :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
+      else
+        new_ranking.save!
+      end
+    end
+
+    redirect_to end_project_participant_ranking_path
   end
 
   # DELETE /rankings/1
@@ -111,6 +111,7 @@ class RankingsController < ApplicationController
       @project = Project.find(params[:project_id])
       @participant = Participant.find_by(:project_id => params[:project_id], :id => params[:participant_id])
       @times = @project.project_times
+      @rankings = Ranking.all
 
       @ranking = Ranking.find_by(:participant_id => params[:participant_id])
       if @ranking.nil?

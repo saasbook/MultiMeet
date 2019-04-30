@@ -1,7 +1,9 @@
 <%= render 'layouts/navbar' %>
+<div class="mx-4 my-4">
 
-<h1>Thanks for submitting your preferences!</h1>
+  <h2>Thanks for submitting your preferences!</h2>
 
-
-<!--<%#= link_to 'Show', @ranking %> |-->
-<%= link_to 'Go Back to Edit Your Preferences', edit_project_participant_ranking_path(@participant.project_id, @participant.id, :secret_id => @participant.secret_id) %>
+  <%= link_to 'Go Back to Edit Your Preferences',
+              edit_project_participant_ranking_path(@participant.project_id, @participant.id,
+                                                    :secret_id => @participant.secret_id), class: "btn btn-primary" %>
+</div>
