@@ -4,7 +4,7 @@ Given("the project named {string} has the following participants:") do |project_
 
   table.hashes.each do |row|
     index = Participant.all.count
-    participant = {id: index+1, project_id: project_id, email: row[:email]}
+    participant = {id: index+1, project_id: project_id, email: row[:email], last_responded: nil}
     Participant.create(participant)
   end
 end

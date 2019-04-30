@@ -1,5 +1,5 @@
 class MatchingsController < ApplicationController
-  before_action :set_matching_and_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy]
 
   # GET /project/:project_id/matching
   def show
@@ -12,12 +12,13 @@ class MatchingsController < ApplicationController
     if @proj_exists
       @permission = current_user.id == @project.user.id
     end
+
     if @proj_exists and @matching
-      @is_matching = true
       @parsed_matching = JSON.parse(@matching.output_json)
     elsif @proj_exists
-      @is_matching = false
-      @eligible_to_match = all_submitted_preferences?
+      @participants_are_set = @all_participants_ids.size > 0
+      @times_are_set = @all_participants_ids.size > 0
+      @all_submitted_preferences = all_submitted_preferences?
     end
   end
 
@@ -28,19 +29,19 @@ class MatchingsController < ApplicationController
 
   # TODO: convert to a PUT/ UPDATE
   # GET /projects/:project_id/matching/edit
-  def edit
-    respond_to do |format|
-      if all_submitted_preferences?
-        #matching = Matching.where(project_id: @project.id).update_all(output_json: api)
-        if @matching.update(output_json: api)
-          flash[:success] = 'Successfully matched.'
-          format.html { redirect_to project_matching_path }
-        # else
-        #   format.html { render :edit }
-        end
-      end
-    end
-  end
+  # def edit
+  #   respond_to do |format|
+  #     if all_submitted_preferences?
+  #       #matching = Matching.where(project_id: @project.id).update_all(output_json: api)
+  #       if @matching.update(output_json: api)
+  #         flash[:success] = 'Successfully matched.'
+  #         format.html { redirect_to project_matching_path }
+  #       # else
+  #       #   format.html { render :edit }
+  #       end
+  #     end
+  #   end
+  # end
 
   # POST /projects/:project_id/matching
   def create
@@ -103,9 +104,9 @@ class MatchingsController < ApplicationController
   def preferences
     preferences = []
     @project.rankings.each do |ranking|
+      person = ranking.participant.email
       timeslot = ranking.project_time.date_time
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      person = ranking.participant.email
       row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
       preferences.push(row)
     end
@@ -114,14 +115,9 @@ class MatchingsController < ApplicationController
   end
 
   def all_submitted_preferences?
-    all_participants_ids = @project.participants.pluck(:id)
-    all_project_time_ids = @project.project_times.pluck(:id)
-
-    all_participants_ids.each do |participant_id|
-      all_project_time_ids.each do |project_time_id|
-        unless Ranking.find_by(participant_id: participant_id, project_time_id: project_time_id)
-          return false
-        end
+    @all_participants_ids.each do |participant_id|
+      unless Participant.find_by(id: participant_id).last_responded
+        return false
       end
     end
     true
@@ -143,12 +139,17 @@ class MatchingsController < ApplicationController
                              {content_type: :json, accept: :json}).body
     return output
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_matching_and_project
+    def set_instance_variables
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
+
+      if @project
+        @all_participants_ids = @project.participants.pluck(:id)
+        @all_project_time_ids = @project.project_times.pluck(:id)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

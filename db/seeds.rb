@@ -42,19 +42,19 @@ end
 ##################
 participants_list = [
     # CS 61A Sections
-    {id: 1, project_id: 1, email: "adnan@berkeley.edu"},
-    {id: 2, project_id: 1, email: "awesometa@berkeley.edu"},
-    {id: 3, project_id: 1, email: "iteachforlife@berkeley.edu"},
-    {id: 4, project_id: 1, email: "jackiechan@berkeley.edu"},
+    {id: 1, project_id: 1, email: "adnan@berkeley.edu", last_responded: Time.parse("Dec 1 2019 10:00 AM")},
+    {id: 2, project_id: 1, email: "awesometa@berkeley.edu", last_responded: Time.parse("Dec 2 2019 10:00 AM")},
+    {id: 3, project_id: 1, email: "iteachforlife@berkeley.edu", last_responded: nil},
+    {id: 4, project_id: 1, email: "jackiechan@berkeley.edu", last_responded: Time.parse("Dec 4 2019 10:00 AM")},
     # 169 Meeting Times
-    {id: 5, project_id: 2, email: "bobmarley@gmail.com"},
-    {id: 6, project_id: 2, email: "johndoe@hotmail.com"},
-    {id: 7, project_id: 2, email: "texasranger@ranch.org"},
-    {id: 8, project_id: 2, email: "anju@berkeley.edu"},
+    {id: 5, project_id: 2, email: "bobmarley@gmail.com", last_responded: Time.parse("Dec 5 2019 10:00 AM")},
+    {id: 6, project_id: 2, email: "johndoe@hotmail.com", last_responded: nil},
+    {id: 7, project_id: 2, email: "texasranger@ranch.org", last_responded: nil},
+    {id: 8, project_id: 2, email: "anju@berkeley.edu", last_responded: Time.parse("Dec 8 2019 10:00 AM")},
     # multimatch-121
-    {id: 9, project_id: 5, email: "person1@gmail.com"},
-    {id: 10, project_id: 5, email: "person2@gmail.com"},
-    {id: 11, project_id: 5, email: "person3@gmail.com"},
+    {id: 9, project_id: 5, email: "person1@gmail.com", last_responded: Time.parse("Dec 9 2019 10:00 AM")},
+    {id: 10, project_id: 5, email: "person2@gmail.com", last_responded: Time.parse("Dec 10 2019 10:00 AM")},
+    {id: 11, project_id: 5, email: "person3@gmail.com", last_responded: Time.parse("Dec 11 2019 10:00 AM")}
 ]
 
 participants_list.each do |participant|
