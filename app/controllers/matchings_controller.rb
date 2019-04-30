@@ -63,7 +63,7 @@ class MatchingsController < ApplicationController
   # POST /projects/:project_id/matching
   def create
     @project = Project.find_by(id: params[:project_id])
-    @matching = Matching.new(project_id: @project.id)
+    @matching = @project.matching || Matching.new(project_id: @project.id)
     @matching.output_json = api
 
     respond_to do |format|
