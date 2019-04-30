@@ -63,10 +63,8 @@ Feature: Roster
     When I follow "Back to All Projects"
     Then I should be on the projects page
 
-
   Scenario: successfully email roster
     When I press the roster bottom for project of id "1"
-    Then I follow "Enter Manually"
     When I fill in "Email" with "testing1@berkeley.edu"
     And I press "Add New Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
