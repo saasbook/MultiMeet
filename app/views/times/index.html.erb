@@ -1,4 +1,5 @@
 <%= render 'layouts/navbar' %>
+<%= render 'layouts/alerts' %>
 <div class="jumbotron times-index shadow white-bg">
   <h1>Project Times</h1>
   
@@ -9,24 +10,7 @@
       <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
     <% end %>
   </div>
-  
-  <% if flash[:message] %>
-     <div class="alert alert-success alert-dismissible show" role="alert">
-       <strong>Added:</strong> <%= flash[:message].html_safe %>
-       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-       </button>
-     </div>
-  <% end %>
-  <% if flash[:error] %>
-    <div class="alert alert-danger alert-dismissible show" role="alert">
-      <div class="error"><strong>Unable to add:</strong> <%= flash[:error].html_safe %></div>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-  <% end %>
-  
+
   <div class="project-times-table">
     <% @times.each do |time| %>
       <% if time.is_date %>

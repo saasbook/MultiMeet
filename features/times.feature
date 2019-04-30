@@ -70,7 +70,7 @@ Feature: Choose times
     And I follow "Add new time"
     Then I should see "Step 1: Choose Duration"
     And I press "Submit"
-    Then I should see "Error: No date chosen."
+    Then I should see "No date chosen."
 
   Scenario: Show dates and times after choosing
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"

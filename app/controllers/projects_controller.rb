@@ -30,12 +30,12 @@ class ProjectsController < ApplicationController
   # returns true if ok, false if not
   def valid_project_name?(project_name)
     if project_name.nil? || project_name.empty?
-      flash[:message] = 'Invalid project name'
+      flash[:danger] = 'Invalid project name'
       return false
     elsif !Project.where(
       project_name: project_name, user_id: @project.user_id
     ).blank?
-      flash[:message] = 'Project name already exists'
+      flash[:danger] = 'Project name already exists'
       return false
     end
     true

@@ -68,7 +68,7 @@ class TimesController < ApplicationController
   def add_time_to_db(date, time)
     time += ':00'
     if create_project_time_if_needed date, time, false
-      (flash[:message] ||= '<br/>') << "#{DateTime.parse(date + ' ' + time).strftime('%B %d %Y, %I:%M %p')}<br/>"
+      (flash[:success] ||= 'Added times: <br/>') << "#{DateTime.parse(date + ' ' + time).strftime('%B %d %Y, %I:%M %p')}<br/>"
     end
   end
 
