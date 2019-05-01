@@ -58,7 +58,7 @@ Feature: Choose times
   Scenario: Choose times from projects page
     Given I am on the projects page
     When I follow "Party 1"
-    Then I should see "Name: Party 1"
+    Then I should see "Party 1"
     And I should see "Times"
     When I follow "Times"
     Then I should see "Project Times"
@@ -76,7 +76,7 @@ Feature: Choose times
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
     When I am on the projects page
     And I follow "Party 1"
-    Then I should see "Duration (minutes): 60"
+    Then I should see "Current Timeslot Duration(miniutes): 60 minutes"
     And I follow "Times"
     Then I should see "Sunday, December 01 2019"
 
