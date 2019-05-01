@@ -46,7 +46,9 @@
 
       <br>
       <%= f.submit "Submit Preferences", class:"btn btn-primary"%>
-      <%= link_to 'Back', project_participant_ranking_path, class:"btn btn-primary" %>
+      <% if logged_in? %>
+        <%= link_to 'Back', project_participant_ranking_path, class:"btn btn-primary" %>
+      <% end %>
       </div>
   <% end %>
 <% end %>

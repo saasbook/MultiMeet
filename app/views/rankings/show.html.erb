@@ -22,6 +22,50 @@
     </tbody>
   </table>
 
+  <div class="project-times-table">
+    <% @rankings.each do |ranking| %>
+      <% if ranking.project_time.is_date %>
+        <div class="project-times-dateentry list-group-item list-group-item-primary">
+          <strong>
+            <%= ranking.project_time.date_time.to_formatted_s(:long) %>
+            <%= ranking.rank %>
+          </strong>
+        </div>
+      <% else %>
+        <div class="project-times-timeentry list-group-item py-2">
+            <span>
+              <b>Start:</b>
+              <%= ranking.project_time.date_time.strftime("%I:%M %p")%>
+            </span>
+          <span>
+              <b>Rank:</b>
+            <%= ranking.rank %>
+            </span>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="jumbotron times-index shadow white-bg">
+    <h1> Rankings </h1>
+
+    <div class="project-times-table">
+      <% @rankings.each do |ranking|  %>
+        <div class="project-times-dateentry list-group-item list-group-item-primary">
+          <strong>
+            <%= ranking.project_time.date_time.to_formatted_s(:long) %>
+            <%= ranking.rank %>
+          </strong>
+        </div>
+<!--        <div class="project-times-timeentry list-group-item py-2">-->
+<!--          <span>-->
+            <%#= participant.email %>
+<!--          </span>-->
+<!--        </div>-->
+      <% end %>
+      <div class="card"><%= link_to 'Add More Participants', project_participants_path(@project), class:"btn btn-danger" %></div>
+    </div>
+
   <%= link_to 'Edit', edit_project_participant_ranking_path(
       @participant.project_id, @participant.id, :secret_id => @participant.secret_id), class: "btn btn-primary" %>
   <%= link_to 'Back', project_participants_path, class: "btn btn-primary" %>
