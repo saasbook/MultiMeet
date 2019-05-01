@@ -3,7 +3,7 @@
 <%= render 'layouts/navbar' %>
 <%= render 'layouts/alerts' %>
 
-<div class="user-container">
+<div class="user-container" style="width:58%">
   <div class="jumbotron">
 
     <h4>Enter the name of your new project here</h4>
@@ -27,7 +27,7 @@
       <% end %>
 
       <div class="actions">
-        <%= f.submit "Create Project", class:"btn btn-primary"  %>
+        <%= f.submit "Create Project", class:"btn btn-primary", style:"width=100%"  %>
         <%= f.submit "Create Project and Choose Times", class: "btn btn-primary" %>
         <%= link_to 'Back', projects_path, class:"btn btn-primary" %>
       </div>

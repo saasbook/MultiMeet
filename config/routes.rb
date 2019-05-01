@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   ## TIMES includes each datetime for the matching.
   ## MATCHING is the final matching.
   resources :projects do
+    post 'responded', on: :collection
     resources :participants do
       get 'display', on: :collection
       resource :ranking do
