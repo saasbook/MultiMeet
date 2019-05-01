@@ -1,14 +1,34 @@
 <%= render 'layouts/navbar' %>
 <p id="notice"><%= notice %></p>
 
-<ul>
-  <li><b>Name:</b> <%= @project.project_name %></li>
-  <li><b>Participants:</b> <%= @project.participants.to_json %></li>
-  <li><b>Duration (minutes):</b> <%= @project.duration %></li>
-  <li><%= link_to 'Matching', project_matching_path(@project) %></li>
-  <li><%= link_to 'Times', project_times_path(@project) %></li>
-</ul>
+<div class="jumbotron times-index shadow white-bg">
+  <h1> <%= @project.project_name %> </h1>
 
-<%= link_to 'Back', projects_path, class:"btn btn-secondary" %>
-<%= link_to 'Edit', edit_project_path(@project), class:"btn btn-primary"%>
-<%= link_to 'Roster', project_participants_path(@project), class:"btn btn-success" %>
+  <div class="current-duration">
+    <% if !@project.duration.blank? %>
+      <p><strong>Current Timeslot Duration(miniutes):</strong> <%= @project.duration %> minutes</p>
+    <% else %>
+      <p><strong>Current Timeslot Duration(miniutes):</strong> Not set yet</p>
+    <% end %>
+  </div>
+
+  <div class="project-times-table">
+    <div class="project-times-dateentry list-group-item list-group-item-primary">
+      <strong>
+        Participant Email
+      </strong>
+    </div>
+    <% @project.participants.each do |participant| %>
+        <div class="project-times-timeentry list-group-item py-2">
+          <span>
+            <%= participant.email %>
+          </span>
+        </div>
+    <% end %>
+    <div class="card"><%= link_to 'Add More Participants', project_participants_path(@project), class:"btn btn-danger" %></div>
+  </div>
+  <%= link_to 'Matching', project_matching_path(@project), class:"btn btn-info"%>
+  <%= link_to 'Times', project_times_path(@project), class:"btn btn-success"%>
+  <%= link_to 'Edit', edit_project_path(@project), class:"btn btn-primary"%>
+  <%= link_to 'Back', projects_path, class:"btn btn-secondary" %>
+</div>
