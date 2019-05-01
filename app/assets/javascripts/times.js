@@ -272,7 +272,7 @@ function formatDate(date){
    var d = new Date(date);
    var dayInt = d.getDay(); 
    var day = date.split("-")[2];
-   var month = parseInt(date.split("-")[1], 10);
+   var month = parseInt(date.split("-")[1], 10) - 1;
    var year = date.split("-")[0];
    
    return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day + ' ' + year;
