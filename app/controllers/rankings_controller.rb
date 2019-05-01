@@ -92,6 +92,8 @@ class RankingsController < ApplicationController
       end
     end
 
+    # byebug
+    @participant.update(last_responded: Time.now.getutc)
     redirect_to end_project_participant_ranking_path
   end
 
