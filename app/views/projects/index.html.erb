@@ -35,12 +35,29 @@
   width:100%;
   height:100%;
   top:0;
-  left: 0;}
+  left: 0;
+  transition: 0.5s;}
+  span:hover {background-color: #42bff4;
+  opacity: 0.5;
+color: white;}
+</style>
+
+<style>
+  span1.proj1 { position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  hover:1;
+  left: 0;
+  transition: 0.5s;}
+  span1:hover {background-color: #cccccc;
+    opacity: 0.5;
+  color: white;}
 </style>
 
 
 <% if logged_in? %>
-  <div class="header"><h1>All Projects</h1></div>
+  <div class="header"><h1>Project Dashboard</h1></div>
   <% if @projects %>
     <div class="menu">
       <p>Welcome to MultiMatch! Click the projects on the right to show or edit.</p></div>
@@ -55,11 +72,24 @@
       <div class="row box-row">
         <% @projects.each do |project| %>
           <div class="card" style="width: 44%; background-color:#f2f2f2; margin:30px">
+            <div class="card-header" style="background-color: #d9d9d9">Project ID: <%= project.id %></div>
             <div class="card-body" id="bottom">
-              <a href= <%=project_path(project.id)%> <%= project.project_name %> style="text-decoration: none"><span class="proj"></span>
+              <a href= <%=project_path(project.id)%> <%= project.project_name %> style="text-decoration: none"><span1 class="proj1"></span1>
                 <h3 style="color: black"> <%= project.project_name%></h3>
               </a>
-              <h11> Project ID: <%= project.id %></h11>
+              <div class="progress">
+
+                <% if responded(project.id)*100 > 75 %>
+                  <div class="progress-bar bg-success" role="progressbar" style= "width: <%=responded(project.id)*100%>%" aria-valuenow= "<%=responded(project.id)*100%>" aria-valuemin="0" aria-valuemax="100"></div>
+                <% elsif responded(project.id)*100 > 50 %>
+                  <div class="progress-bar bg-info" role="progressbar" style= "width: <%=responded(project.id)*100%>%" aria-valuenow= "<%=responded(project.id)*100%>" aria-valuemin="0" aria-valuemax="100"></div>
+                <% elsif responded(project.id)*100 > 25 %>
+                  <div class="progress-bar bg-warning" role="progressbar" style= "width: <%=responded(project.id)*100%>%" aria-valuenow= "<%=responded(project.id)*100%>" aria-valuemin="0" aria-valuemax="100"></div>
+                <% else %>
+                  <div class="progress-bar bg-danger" role="progressbar" style= "width: <%=responded(project.id)*100%>%" aria-valuenow= "<%=responded(project.id)*100%>" aria-valuemin="0" aria-valuemax="100"></div>
+                <% end %>
+
+              </div>
             </div>
           </div>
         <% end%>
