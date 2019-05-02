@@ -125,12 +125,12 @@ function changeTime(addBoolean, startInput, hourInput, minuteInput){
     var startHour = parseInt(startInput.split(":")[0], 10);
     var startMinute = parseInt(startInput.split(":")[1], 10);
     if (addBoolean){
-        var [outMinute, outHour] = addTimeLogic(hour, minute, startHour, startMinute)
+        [minute, hour] = addTimeLogic(hour, minute, startHour, startMinute)
     }else {
-        var [outMinute, outHour] = subtractTimeLogic(hour, minute, startHour, startMinute)
+        [minute, hour] = subtractTimeLogic(hour, minute, startHour, startMinute)
     }
-    var strHour = outHour.toString();
-    var strMinute = outMinute.toString();
+    var strHour = hour.toString();
+    var strMinute = minute.toString();
     if (strHour.length === 1){
         strHour = "0" + strHour;
     }
@@ -142,29 +142,26 @@ function changeTime(addBoolean, startInput, hourInput, minuteInput){
 }
 
 // add is boolean representing add (true) or subtract (false)
-function modifyTimeLogic(hour, minute, startHour, startMinute, add){
-    var sign_unit = add ? 1 : -1;
-    minute = startMinute + sign_unit * minute;
-    var overflow_condition = add ? minute >= 60 : minute < 0;
-    if (overflow_condition) {
-        hour = startHour + sign_unit * (hour + 1);
-        minute -= sign_unit * 60;
-    } else {
-        hour = startHour + sign_unit * hour;
-    }
+function createModifyTimeLogic(add) {
+    return function(hour, minute, startHour, startMinute) {
+        var sign_unit = add ? 1 : -1;
+        minute = startMinute + sign_unit * minute;
+        var overflow_condition = add ? minute >= 60 : minute < 0;
+        if (overflow_condition) {
+            hour = startHour + sign_unit * (hour + 1);
+            minute -= sign_unit * 60;
+        } else {
+            hour = startHour + sign_unit * hour;
+        }
 
-    hour = hour % 24;
+        hour = hour % 24;
 
-    return [minute, hour];
-}
+        return [minute, hour];
+    };
+};
 
-function addTimeLogic(hour, minute, startHour, startMinute){
-    return modifyTimeLogic(hour, minute, startHour, startMinute, true);
-}
-
-function subtractTimeLogic(hour, minute, startHour, startMinute) {
-    return modifyTimeLogic(hour, minute, startHour, startMinute, false);
-}
+var addTimeLogic = createModifyTimeLogic(true);
+var subtractTimeLogic = createModifyTimeLogic(false);;
 
 /* Time Entry Row */
 function createTimeEntry(divId){
@@ -275,7 +272,7 @@ function formatDate(date){
    var d = new Date(date);
    var dayInt = d.getDay(); 
    var day = date.split("-")[2];
-   var month = parseInt(date.split("-")[1], 10);
+   var month = parseInt(date.split("-")[1], 10) - 1;
    var year = date.split("-")[0];
    
    return dayNames[dayInt] + ", " + monthNames[month] + ' ' + day + ' ' + year;
