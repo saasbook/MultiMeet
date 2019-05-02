@@ -243,9 +243,9 @@ function addDiv(divId){
 /* Sort Dates divs in times table */
 function sortDivs(){
     const items = document.querySelector("#times-table");
-    const divs = [...items.children];
-    divs.sort((a,b) => a.id.localeCompare(b.id));
-    divs.forEach(div => items.appendChild(div));
+    const divs = [].slice.call(items.children);
+    divs.sort(function(a,b) { return a.id.localeCompare(b.id)});
+    divs.forEach(function(div){ items.appendChild(div)});
 }
 
 /* Delete a date div */
