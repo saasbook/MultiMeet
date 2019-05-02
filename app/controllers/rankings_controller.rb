@@ -60,14 +60,18 @@ class RankingsController < ApplicationController
   # POST /rankings
   # POST /rankings.json
   def create
-    @times.ids.each do |id|
-      unless params.keys.include? id.to_s
+    @times.each do |time|
+      unless params.keys.include? time.id.to_s and !time.is_date
         flash[:error] = "Error: please fill in an option for each time."
         redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
       end
     end
 
-    @times.ids.each do |id|
+    @times.each do |time|
+      if time.is_date
+        next
+      end
+      id = time.id
       rank_num = params[id.to_s].to_i
       existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => id)
 
@@ -87,8 +91,8 @@ class RankingsController < ApplicationController
   # PATCH/PUT /rankings/1
   # PATCH/PUT /rankings/1.json
   def update
-    @times.ids.each do |id|
-      unless params.keys.include? id.to_s
+    @times.each do |time|
+      if !params.keys.include? time.id.to_s and !time.is_date
         flash[:error] = "Error: please fill in an option for each time."
         redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
       end

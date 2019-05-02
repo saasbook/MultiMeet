@@ -4,6 +4,14 @@
   <div class="jumbotron times-index shadow white-bg">
     <h1> Rankings </h1>
 
+    <div class="current-duration">
+      <% if !@project.duration.blank? %>
+        <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>
+      <% else %>
+        <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
+      <% end %>
+    </div>
+
     <div class="rankings-times-table">
       <% @rankings_hash.keys.each do |date|  %>
         <div class="ranking-times-date-entry list-group-item list-group-item-primary">

@@ -18,6 +18,15 @@
 
   <div class="jumbotron times-index shadow white-bg">
     <h2>Please enter your preferences for these times.</h2>
+
+    <div class="current-duration">
+      <% if !@project.duration.blank? %>
+        <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>
+      <% else %>
+        <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
+      <% end %>
+    </div>
+
     <div class="rankings-times-table">
       <%= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
         <% @times_hash.keys.each do |date|  %>
