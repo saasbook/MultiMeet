@@ -31,9 +31,13 @@ class MatchingsController < ApplicationController
     @email_subject = params[:email_subject]
     @email_body = params[:email_body]
     @parsed_matching = JSON.parse(@matching.output_json)
+    ParticipantsMailer.set_project_name(@project.project_name)
+    
     @parsed_matching['schedule'].each do |matching|
-      ParticipantsMailer.matching_email(matching['people_called'][0], @project.project_name, @email_subject, @email_body, matching['timestamp']).deliver_now
+      ParticipantsMailer.matching_email(
+          matching['people_called'][0], @email_subject, @email_body, matching['timestamp']).deliver_now
     end
+
     flash[:success] = 'Emails have been sent.'
     redirect_to project_matching_path(params[:project_id])
   end

@@ -14,7 +14,7 @@ all strings are converted to arrays of one string
   <div class="alert alert-success alert-dismissible show" role="alert">
     <% messages = Array(flash[:success]) %>
     <% messages.each do |msg| %>
-      <p><%= msg %></p>
+      <p><%= msg.html_safe %></p>
     <% end %>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -26,7 +26,7 @@ all strings are converted to arrays of one string
   <div class="alert alert-primary alert-dismissible show" role="alert">
     <% messages = Array(flash[:message]) %>
     <% messages.each do |msg| %>
-      <p><%= msg %></p>
+      <p><%= msg.html_safe %></p>
     <% end %>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -38,7 +38,7 @@ all strings are converted to arrays of one string
   <div class="alert alert-danger alert-dismissible show" role="alert">
     <% messages = Array(flash[:danger]) %>
     <% messages.each do |msg| %>
-      <p><%= msg %></p>
+      <p><%= msg.html_safe %></p>
     <% end %>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
