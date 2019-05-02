@@ -243,7 +243,7 @@ function addDiv(divId){
 /* Sort Dates divs in times table */
 function sortDivs(){
     const items = document.querySelector("#times-table");
-    const divs = [...items.children];
+    const divs = items.children.slice();
     divs.sort((a,b) => a.id.localeCompare(b.id));
     divs.forEach(div => items.appendChild(div));
 }
