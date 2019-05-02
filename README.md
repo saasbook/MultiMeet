@@ -17,7 +17,12 @@
 3. install packages: `bundle install --without production`
 4. setup db: `rake db:setup db:migrate`
 5. seed db: `rake db:seed`
-6. `rails s(erver)` --> starts app on [http://localhost:3000](http://localhost:3000)
+6. create a file `config/initializers/app_env_vars.rb` and enter your emailer acc and password:
+```
+ENV['MAILER_EMAIL'] = 'noreply@multimeet.com'
+ENV['MAILER_PASSWORD'] = '<your password>'
+```
+7. `rails s(erver)` --> starts app on [http://localhost:3000](http://localhost:3000)
 
 ## Development Guidelines
 - develop on your own branch of this repo, call it by your <name/feature> e.g. kevin/projects-list
