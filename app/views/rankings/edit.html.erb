@@ -1,7 +1,5 @@
 <%= render 'layouts/navbar' %>
 
-<%# byebug %>
-
 <% if flash[:message]%>
   <div class="alert alert-danger alert-dismissible show" role="alert">
     <span class="error"><%= flash[:message] %></span>
@@ -17,38 +15,48 @@
 
 
 <% if valid_secret_id? %>
-  <div class="mx-4 my-4">
+
+  <div class="jumbotron times-index shadow white-bg">
     <h2>Please enter your preferences for these times.</h2>
-    <br>
-    <%= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
-    <%#= form_for(@ranking, :url => {:method => 'post'}) do |f| %>
-      <table style="width:65%">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Can't Go</th>
-            <th>Okay</th>
-            <th>Preferred</th>
-          </tr>
-        </thead>
+    <div class="rankings-times-table">
+      <%= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
+        <% @times_hash.keys.each do |date|  %>
+          <div class="ranking-times-date-entry list-group-item list-group-item-primary">
+            <strong>
+              <%= date %>
+            </strong>
+          </div>
+          <% @times_hash[date].each do |time|  %>
+            <div class="ranking-times-selection-entry list-group-item py-2">
+                <span>
+                  <b>Time:</b>
+                  <%= time.date_time.strftime("%I:%M %p")%>
+                </span>
 
-        <tbody>
-          <% @times.each do |time| %>
-            <tr>
-              <td> <%=time.date_time.to_formatted_s(:long)%></td>
-              <td><%= radio_button_tag time.id, '3' %></td>
-              <td><%= radio_button_tag time.id, '2' %></td>
-              <td><%= radio_button_tag time.id, '1' %></td>
-            </tr>
+                <span>
+                  <%= radio_button_tag time.id, '3' %>
+                  <%= label time.id, 'Can\'t go' %>
+                </span>
+
+                <span>
+                  <%= radio_button_tag time.id, '2' %>
+                  <%= label time.id, 'Okay' %>
+                </span>
+
+                <span>
+                  <%= radio_button_tag time.id, '1' %>
+                  <%= label time.id, 'Preferred' %>
+                </span>
+            </div>
           <% end %>
-        </tbody>
-      </table>
+        <% end %>
 
-      <br>
-      <%= f.submit "Submit Preferences", class:"btn btn-primary"%>
-      <% if logged_in? %>
-        <%= link_to 'Back', project_participant_ranking_path, class:"btn btn-primary" %>
+        <br>
+        <%= f.submit "Submit Preferences", class:"btn btn-primary"%>
+        <% if logged_in? %>
+          <%= link_to 'Back', project_participant_ranking_path, class:"btn btn-primary" %>
+        <% end %>
       <% end %>
-      </div>
-  <% end %>
+    </div>
+  </div>
 <% end %>
