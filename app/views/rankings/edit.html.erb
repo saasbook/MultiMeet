@@ -28,7 +28,7 @@
     </div>
 
     <div class="rankings-times-table">
-      <%= form_for(@ranking, :url => project_participant_ranking_path) do |f| %>
+      <%= form_for(@ranking, :url => project_participant_ranking_path, :method => :post) do |f| %>
         <% @times_hash.keys.each do |date|  %>
           <div class="ranking-times-date-entry list-group-item list-group-item-primary">
             <strong>
