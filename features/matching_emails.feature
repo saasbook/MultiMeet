@@ -4,9 +4,6 @@ Feature: Match
   I want to run the matching algorithm
   So users can be assigned a time
 
-  user = User.find_by(:username => username)
-  user.projects.create(:project_name => project_name)
-
   Background: A project is set up and matchings exist
     Given a registered user with the email "kevinchien@berkeley.edu" with username "kev-chien" exists
     And I am on the login page
@@ -36,4 +33,3 @@ Feature: Match
     And I press "Send email to participants"
     Then the user "nobodyhere@berkeley.edu" should receive a matching email with the correct timestamp "Dec 1 2019 10:00 AM"
     Then I should see "Emails have been sent."
-

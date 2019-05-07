@@ -11,7 +11,6 @@ Given('the project named {string} has the following participants:') do |project_
   end
 end
 
-
 Then "the participant should receive an email" do
   participant = Participant.find(1)
   email = ActionMailer::Base.deliveries.first
@@ -21,11 +20,19 @@ Then "the participant should receive an email" do
 end
 
 When /^I visit the link from the email for project of id "(.*)" and participant of id "(.*)"$/ do |project_id, part_id|
-    participant = Participant.find(part_id)
-    visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id
+  participant = Participant.find(part_id)
+  visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id
 end
 
 When /^I visit the bad link from the email for project of id "(.*)" and participant of id "(.*)"$/ do |project_id, part_id|
-    participant = Participant.find(part_id)
-    visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id + "a"
+  participant = Participant.find(part_id)
+  visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id + "a"
+end
+
+When("I update the match degree of {string} to {int}") do |string, int|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then("the match degree of {string} should be {int}") do |string, int|
+  pending # Write code here that turns the phrase above into concrete actions
 end
