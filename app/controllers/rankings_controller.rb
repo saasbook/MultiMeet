@@ -1,5 +1,7 @@
 class RankingsController < ApplicationController
   before_action :set_fields, only: [:show, :edit, :create, :update, :end]
+  before_action :create_rankings_hash, only: [:show]
+  before_action :create_times_hash, only: [:edit]
   helper_method :valid_secret_id?
 
   # GET /rankings
@@ -22,6 +24,28 @@ class RankingsController < ApplicationController
     params[:secret_id] == @participant.secret_id
   end
 
+  def create_rankings_hash
+    @rankings_hash = Hash.new
+    @rankings.each do |ranking|
+      unless ranking.project_time.is_date
+        date = ranking.project_time.date_time.strftime("%B %e, %Y")
+        @rankings_hash[date] ||= []
+        @rankings_hash[date].push(ranking)
+      end
+    end
+  end
+
+  def create_times_hash
+    @times_hash = Hash.new
+    @times.each do |time|
+      unless time.is_date
+        date = time.date_time.strftime("%B %e, %Y")
+        @times_hash[date] ||= []
+        @times_hash[date].push(time)
+      end
+    end
+  end
+
   # GET /rankings/1/edit
   def edit
     unless valid_secret_id?
@@ -36,50 +60,18 @@ class RankingsController < ApplicationController
   # POST /rankings
   # POST /rankings.json
   def create
-    # @ranking = Ranking.new(ranking_params)
-    #
-    # respond_to do |format|
-    #   if @ranking.save
-    #     format.html { redirect_to @ranking, notice: 'Ranking was successfully created.' }
-    #     format.json { render :show, status: :created, location: @ranking }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @ranking.errors, status: :unprocessable_entity }
-    #   end
-    # end
-
-    @times.ids.each do |id|
-      unless params.keys.include? id.to_s
+    @times.each do |time|
+      unless params.keys.include? time.id.to_s or time.is_date
         flash[:error] = "Error: please fill in an option for each time."
         redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
       end
     end
 
-    @times.ids.each do |id|
-      rank_num = params[id.to_s].to_i
-      new_rank = Ranking.new(:id => @ranking.id, :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
-      existing_rank = Ranking.find_by(:id => @ranking.id, :project_time_id => id)
-
-      if existing_rank
-        existing_rank.destroy
+    @times.each do |time|
+      if time.is_date
+        next
       end
-      new_rank.save!
-    end
-
-    redirect_to end_project_participant_ranking_path
-  end
-
-  # PATCH/PUT /rankings/1
-  # PATCH/PUT /rankings/1.json
-  def update
-    @times.ids.each do |id|
-      unless params.keys.include? id.to_s
-        flash[:error] = "Error: please fill in an option for each time."
-        redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
-      end
-    end
-
-    @times.ids.each do |id|
+      id = time.id
       rank_num = params[id.to_s].to_i
       existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => id)
 
@@ -92,7 +84,14 @@ class RankingsController < ApplicationController
       end
     end
 
+    @participant.update(last_responded: Time.now.getutc)
     redirect_to end_project_participant_ranking_path
+  end
+
+  # PATCH/PUT /rankings/1
+  # PATCH/PUT /rankings/1.json
+  def update
+
   end
 
   # DELETE /rankings/1

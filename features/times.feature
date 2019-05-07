@@ -76,7 +76,7 @@ Feature: Choose times
     Given a project of id "1" with date "Dec 1 2019" and time "Dec 1 2019 10:00 AM" and duration "60"
     When I am on the projects page
     And I follow "Party 1"
-    Then I should see "Current Timeslot Duration(miniutes): 60 minutes"
+    Then I should see "Current Timeslot Duration: 60 minutes"
     And I follow "Times"
     Then I should see "Sunday, December 01 2019"
 

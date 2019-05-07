@@ -1,29 +1,40 @@
 <%= render 'layouts/navbar' %>
 <p id="notice"><%= notice %></p>
 
-<div class="mx-4 my-4">
-  <h2>Rankings</h2>
+  <div class="jumbotron times-index shadow white-bg">
+    <h1> Rankings </h1>
 
-  <table style="width:65%">
-    <thead>
-    <tr>
-      <th>Time</th>
-      <th>Rank</th>
-    </tr>
-    </thead>
+    <div class="current-duration">
+      <% if !@project.duration.blank? %>
+        <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>
+      <% else %>
+        <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
+      <% end %>
+    </div>
 
-    <tbody>
-    <% @rankings.each do |ranking| %>
-      <tr>
-        <td> <%=ranking.project_time.date_time.to_formatted_s(:long)%></td>
-        <td><%= ranking.rank %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-  <%= link_to 'Edit', edit_project_participant_ranking_path(
-      @participant.project_id, @participant.id, :secret_id => @participant.secret_id), class: "btn btn-primary" %>
-  <%= link_to 'Back', project_participants_path, class: "btn btn-primary" %>
-
-</div>
+    <div class="rankings-times-table">
+      <% @rankings_hash.keys.each do |date|  %>
+        <div class="ranking-times-date-entry list-group-item list-group-item-primary">
+          <strong>
+            <%= date %>
+          </strong>
+        </div>
+        <% @rankings_hash[date].each do |ranking|  %>
+          <div class="ranking-times-time-entry list-group-item py-2">
+            <span>
+              <b>Time:</b>
+              <%= ranking.project_time.date_time.strftime("%I:%M %p")%>
+            </span>
+            <span>
+              <b>Rank:</b>
+              <%= ranking.rank %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+      <br>
+      <%= link_to 'Edit', edit_project_participant_ranking_path(
+          @participant.project_id, @participant.id, :secret_id => @participant.secret_id), class: "btn btn-primary" %>
+      <%= link_to 'Back', project_participants_path, class: "btn btn-primary" %>
+    </div>
+  </div>
