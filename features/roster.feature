@@ -23,7 +23,7 @@ Feature: Roster
     Then I should be on the projects page
     And I should see "Successfully created project Test Meeting 3"
 
-  Scenario: successfully to display rosters
+  Scenario: successfully display rosters
     When I am on the roster page for "Test Meeting 1"
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing1@berkeley.edu"
@@ -36,32 +36,32 @@ Feature: Roster
     When I fill in "Email" with "testing3@berkeley.edu"
     And I press "Add New Participant"
     Then I should see "Participant's email already exists"
-    When I follow "Back to All Projects"
-    Then I should be on the projects page
+    When I follow "Back to Project"
+    Then I should see "Test Meeting 1"
     When I am on the roster page for "Test Meeting 1"
     Then I should see "testing1@berkeley.edu"
     Then I should see "testing2@berkeley.edu"
     Then I should see "testing3@berkeley.edu"
-    When I follow "Back to All Projects"
-    Then I should be on the projects page
+    When I follow "Back to Project"
+    Then I should see "Test Meeting 1"
 
-  Scenario: successfully to edit project name
+  Scenario: successfully rename a project
     When I am on the edit page for "Test Meeting 1"
-    Then I should see "Editing Project"
+    Then I should see "Renaming Project"
     When I fill in "New Project Name" with "Testing Meeting 1_1"
-    And I press "Confirm Editing"
-    Then I should be on the projects page
+    And I press "Confirm Renaming"
+    Then I should see "Successfully renamed project to Testing Meeting 1_1"
     And I should see "Testing Meeting 1_1"
 
-  Scenario: successfully to destroy participant
+  Scenario: successfully destroy a participant
     When I am on the roster page for "Test Meeting 2"
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
     And I press "Add New Participant"
     When I follow "DELETE"
     Then I should not see "testing4@berkeley.edu"
-    When I follow "Back to All Projects"
-    Then I should be on the projects page
+    When I follow "Back to Project"
+    Then I should see "Test Meeting 2"
 
   Scenario: successfully email roster
     When I press the roster bottom for project of id "1"
