@@ -28,17 +28,18 @@ class ParticipantsController < ApplicationController
     email_subject = params[:email_subject]
     email_body = params[:email_body]
     ParticipantsMailer.set_project_name(@project.project_name)
-    
+
     @participants.each do |participant|
       rank_link = edit_project_participant_ranking_url(
           secret_id: participant.secret_id, participant_id: participant.id, project_id: @project.id)
       ParticipantsMailer.availability_email(
           participant.email, email_subject, email_body, rank_link).deliver_now
     end
-    
+
     flash[:success] = 'Emails have been sent.'
     redirect_to display_project_participants_path(params[:project_id])
   end
+
 
   # Temporary button for generating random preferences
   def edit
@@ -123,6 +124,6 @@ class ParticipantsController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def participant_params
-      params.require(:participant).permit(:email, :last_responded)
+      params.require(:participant).permit(:email, :match_degree, :last_responded)
     end
 end
