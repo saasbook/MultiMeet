@@ -23,14 +23,26 @@ class ProjectsController < ApplicationController
   # end
 
   def update
+    # byebug
     @project = Project.find(params[:id].to_i)
-    @project.update(project_name: project_params[:project_name])
-    redirect_to projects_path
+    new_project_name = project_params[:project_name]
+
+    if valid_project_name? new_project_name
+      @project.update(project_name: new_project_name)
+      flash[:success] = "Successfully renamed project to #{new_project_name}"
+      redirect_to edit_project_path(@project)
+    else
+      redirect_to edit_project_path(@project)
+    end
+
   end
 
   # returns true if ok, false if not
   def valid_project_name?(project_name)
-    if project_name.nil? || project_name.empty?
+    if @project.project_name == project_name
+      flash[:danger] = 'Cannot rename to same project name'
+      return false
+    elsif project_name.nil? || project_name.empty?
       flash[:danger] = 'Invalid project name'
       return false
     elsif !Project.where(
