@@ -32,7 +32,7 @@ class MatchingsController < ApplicationController
     @email_body = params[:email_body]
     @parsed_matching = JSON.parse(@matching.output_json)
     ParticipantsMailer.set_project_name(@project.project_name)
-    
+
     @parsed_matching['schedule'].each do |matching|
       ParticipantsMailer.matching_email(
           matching['people_called'][0], @email_subject, @email_body, matching['timestamp']).deliver_now
@@ -98,11 +98,9 @@ class MatchingsController < ApplicationController
   end
 
   def people
-    all_participants_emails = @project.participants.pluck(:email)
-
     people = []
-    all_participants_emails.each do |email|
-      row = { "name": email, "match_degree": 1 }
+    @project.participants.each do |participant|
+      row = { "name": participant.email, "match_degree": participant.match_degree }
       people.push(row)
     end
 
@@ -154,7 +152,6 @@ class MatchingsController < ApplicationController
       timeslots: timeslots,
       preferences: preferences
     }
-    # print(JSON.pretty_generate(input))
 
     output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input.to_json,
                              content_type: :json, accept: :json).body

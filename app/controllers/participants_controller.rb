@@ -75,8 +75,10 @@ class ParticipantsController < ApplicationController
   def create
     @participant = Participant.new(participant_params)
     @participant.project_id = params[:project_id]
+    @participant.match_degree = @participant.match_degree ? @participant.match_degree : 1
     if !Participant.where(
-      project_id: @participant.project_id, email: @participant.email
+      project_id: @participant.project_id,
+      email: @participant.email
     ).blank?
       flash[:danger] = "Participant's email already exists"
       redirect_to display_project_participants_path(params[:project_id])

@@ -10,6 +10,7 @@
       <thead>
         <tr>
           <th>Participant Email</th>
+          <th>Match Degree</th>
           <th>Last Responded</th>
           <th>Actions</th>
         </tr>
@@ -43,7 +44,7 @@
       <div class="action" style="width:500px">
         <br>
         <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control", :required => 'required'%>
-        <%= f.text_field :match_degree, type: "number", placeholder: "Match Degree", class: "form-control", :required => 'required'%>
+        <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "Match Degree", class: "form-control", :required => 'required'%>
         <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
       </div>
     <% end %>

@@ -6,7 +6,7 @@ Given('the project named {string} has the following participants:') do |project_
 
   table.hashes.each do |row|
     index = Participant.all.count
-    participant = {id: index+1, project_id: project_id, email: row[:email], last_responded: nil}
+    participant = {id: index+1, project_id: project_id, email: row[:email], last_responded: nil, match_degree: 1}
     Participant.create(participant)
   end
 end
@@ -29,10 +29,11 @@ When /^I visit the bad link from the email for project of id "(.*)" and particip
   visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id + "a"
 end
 
-When("I update the match degree of {string} to {int}") do |string, int|
-  pending # Write code here that turns the phrase above into concrete actions
+When("I update the match degree of {string} to {int}") do |email, degree|
+  pending
 end
 
-Then("the match degree of {string} should be {int}") do |string, int|
-  pending # Write code here that turns the phrase above into concrete actions
+Then("the match degree of {string} should be {int}") do |email, degree|
+  participant = Participant.find_by(email: email)
+  participant.match_degree.should == degree
 end
