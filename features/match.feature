@@ -41,9 +41,9 @@ Feature: Match
     Then I should see "Ready to match."
     And I press "Match!"
     Then I should be on the matchings page for "CS61A Sections"
-    And I should see "Successfully matched."
+    And I should see "Matching Complete."
     Then I press "Run algorithm again"
-    And I should see "Successfully matched."
+    And I should see "Matching Complete."
 
   Scenario: A user sets up a project with no roster
     Given a registered user with the username "jsluong" has a project named "No Participants"

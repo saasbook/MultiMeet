@@ -142,7 +142,7 @@ Feature: Roster
     Then I should see "Ready to match."
     And I press "Match!"
     Then I should be on the matchings page for "Generate Rankings Test"
-    And I should see "Successfully matched."
+    And I should see "Matching Complete."
     Then I press "Run algorithm again"
-    And I should see "Successfully matched."
+    And I should see "Matching Complete."
 
