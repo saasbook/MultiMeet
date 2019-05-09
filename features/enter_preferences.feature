@@ -34,9 +34,9 @@ Background: A project is set up and participants are invited to rank times
     When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonfakesecretid"
     Then I should see "Access denied."
 
-  Scenario: User attempts to enter preferences for times for a project that they are not a part of
-    When I access the time ranking page for project of id "1" from user id "6" and secret_id "none"
-    Then I should see "Access denied."
+#  Scenario: User attempts to enter preferences for times for a project that they are not a part of
+#    When I access the time ranking page for project of id "1" from user id "6" and secret_id "none"
+#    Then I should see "Access denied."
 
 #  Scenario: User attempts to enter preferences for times for a project that does not exist
 #    I access the time ranking page for project of id "99" from user id "6" and secretid "none"

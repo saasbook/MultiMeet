@@ -49,3 +49,24 @@ Feature: Match
     Given a registered user with the username "jsluong" has a project named "No Participants"
     And I am on the matchings page for "No Participants"
     Then I should see "There are no participants."
+
+  Scenario: User is properly warned when not all users are matched
+    Given 5 people submitted negative preferences for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
+    Then I should see "Ready to match."
+    And I press "Match!"
+    Then I should be on the matchings page for "CS61A Sections"
+    And I should see "Matching Complete."
+    Then I press "Run algorithm again"
+    And I should see "Matching Complete."
+    And I should see "alexstennet@berkeley.edu, andrew.huang@berkeley.edu, addison.chan@berkeley.edu, annietang@berkeley.edu, tperumpail@berkeley.edu did not receive a match."
+
+  Scenario: User is not warned when all users are matched
+    Given 5 people submitted positive preferences for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
+    Then I should see "Ready to match."
+    And I press "Match!"
+    Then I should be on the matchings page for "CS61A Sections"
+    And I should see "Matching Complete."
+    Then I press "Run algorithm again"
+    And I should see "Matching Complete. All users successfully matched."

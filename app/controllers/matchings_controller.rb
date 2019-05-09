@@ -176,9 +176,7 @@ class MatchingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_instance_variables
-      @matching = Matching.find_by(params.slice(:project_id))
-      @project = Project.find_by(:id => params[:project_id])
-
+      set_matching_and_project
       if @project
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)
