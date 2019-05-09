@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   # Custom singular routes or reroutes
   post 'projects/:project_id/participants/display' => 'participants#email', :as => 'email_project_participants'
+  get 'projects/:project_id/participant/:id/autofill' => 'participants#autofill', :as => 'autofill_project_participant'
   delete 'projects/:project_id/times' => 'times#destroy_all', :as => 'destroy_project_times'
   post 'login' => 'sessions#create'
   get 'login' => 'sessions#new'
