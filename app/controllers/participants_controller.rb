@@ -72,7 +72,7 @@ class ParticipantsController < ApplicationController
     @csv = params[:participant][:file]
     if @csv.nil?
       flash[:danger] = "No file uploaded."
-    elsif @csv.content_type != "application/vnd.ms-excel" or @csv.content_type != "text/csv"
+    elsif !(@csv.content_type == "application/vnd.ms-excel" or @csv.content_type == "text/csv")
       flash[:danger] = "File is not a csv."
     else
       success, alert = Participant.import(@csv, params[:project_id])

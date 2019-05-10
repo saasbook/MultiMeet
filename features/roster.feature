@@ -145,4 +145,27 @@ Feature: Roster
     And I should see "Successfully matched."
     Then I press "Run algorithm again"
     And I should see "Successfully matched."
-
+    
+  Scenario: No file uploaded
+    When I am on the roster page for "Test Meeting 2"
+    When I press "Upload CSV"
+    Then I should see "No file uploaded."
+    
+  Scenario: Upload non csv
+    When I am on the roster page for "Test Meeting 2"
+    When I upload a non csv file
+    When I press "Upload CSV"
+    Then I should see "File is not a csv."
+    
+  Scenario: Successful upload test
+    When I am on the roster page for "Test Meeting 2"
+    And I fill in "Email" with "armando@berkeley.edu"
+    And I press "Add New Participant"
+    And I fill in "Email" with "ok@berkeley.edu"
+    And I press "Add New Participant"
+    When I upload a csv with valid emails
+    When I press "Upload CSV"
+    Then I should see "For armando@berkeley.edu : Email has already been taken"
+    Then I should see "For ok@berkeley.edu : Email has already been taken"
+    Then I should see "Imported participants: daniel@yahoo.com daniellee908908@gmail.com"
+    

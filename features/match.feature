@@ -49,3 +49,11 @@ Feature: Match
     Given a registered user with the username "jsluong" has a project named "No Participants"
     And I am on the matchings page for "No Participants"
     Then I should see "There are no participants."
+    
+  Scenario: Download CSV 
+    Given 5 people submitted preferences for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
+    And I press "Match!"
+    Then I should see "Download CSV"
+    When I follow "Download CSV"
+    Then I should get a download with the filename "CS61A Sections_matching.csv"
