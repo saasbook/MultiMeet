@@ -6,7 +6,7 @@
 <div class="user-container">
   <div class="jumbotron">
 
-    <h4>Editing Project</h4>
+    <h4>Renaming Project</h4>
 
     <%= form_for(@project) do |f| %>
       <div class="form-group">
@@ -14,8 +14,8 @@
       </div>
 
       <div class="actions">
-        <%= f.submit "Confirm Editing", class:"btn btn-primary"  %>
-        <%= link_to 'Cancel', projects_path, class:"btn btn-primary" %>
+        <%= f.submit "Confirm Renaming", class:"btn btn-primary"  %>
+        <%= link_to 'Cancel', project_path(@project), class:"btn btn-secondary" %>
       </div>
     <% end %>
 
