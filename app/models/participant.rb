@@ -1,4 +1,3 @@
-require 'csv'
 
 class Participant < ActiveRecord::Base
   belongs_to :project
@@ -11,8 +10,7 @@ class Participant < ActiveRecord::Base
                     format: { with: VALID_EMAIL_REGEX }
   
   def self.import(file, proj_id)
-    alert = ""
-    success = ""
+    alert, success = "", ""
     CSV.foreach(file.path, headers:true) do |row|
       address = row.to_s.gsub("\n", '')
       new = Participant.new(project_id: proj_id.to_i, email: address)

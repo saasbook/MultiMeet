@@ -35,7 +35,7 @@ Feature: Roster
     Then I should see "Successfully created participant testing3@berkeley.edu"
     When I fill in "Email" with "testing3@berkeley.edu"
     And I press "Add New Participant"
-    Then I should see "Participant's email already exists"
+    Then I should see "Email has already been taken"
     When I follow "Back to All Projects"
     Then I should be on the projects page
     When I am on the roster page for "Test Meeting 1"

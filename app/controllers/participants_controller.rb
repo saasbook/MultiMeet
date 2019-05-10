@@ -42,19 +42,19 @@ class ParticipantsController < ApplicationController
 
   # Temporary button for generating random preferences
   def autofill
-    all_project_time_ids = ProjectTime.where(project_id: @participant.project_id).pluck(:id)
+    all_project_time_ids = ProjectTime.where(project_id: params[:project_id]).pluck(:id)
 
     all_project_time_ids.each do |project_time_id|
-      ranking = Ranking.find_by(participant_id: @participant.id, project_time_id: project_time_id)
+      ranking = Ranking.find_by(participant_id: params[:id], project_time_id: project_time_id)
       if ranking
         ranking.update(rank: 3)
       else
-        Ranking.create(participant_id: @participant.id, project_time_id: project_time_id, rank: rand(1..3))
+        Ranking.create(participant_id: params[:id], project_time_id: project_time_id, rank: rand(1..3))
       end
     end
-    participant = Participant.find_by(id: @participant.id)
+    participant = Participant.find_by(id: params[:id])
     participant.update(last_responded: Time.now.getutc)
-    redirect_to display_project_participants_path(@participant.project_id)
+    redirect_to display_project_participants_path(params[:project_id])
   end
 
   # GET /participants/1
@@ -68,29 +68,34 @@ class ParticipantsController < ApplicationController
   # def new
   #   @participant = Participant.new
   # end
-  def import
+  def handle_import
+    @csv = params[:participant][:file]
+    if @csv.nil?
+      flash[:danger] = "No file uploaded."
+    elsif @csv.content_type != "application/vnd.ms-excel" or @csv.content_type != "text/csv"
+      flash[:danger] = "File is not a csv."
+    else
+      success, alert = Participant.import(@csv, params[:project_id])
+      alert.empty? ? () : (flash[:danger] = alert)
+      success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
+    end
+  end
   
+  def handle_simple
+    @participant = Participant.new(participant_params)
+    @participant.project_id = params[:project_id]
+    if !@participant.valid?
+      flash[:danger] = @participant.errors.full_messages.first
+    else 
+      @participant.save!
+      flash[:success] = "Successfully created participant #{@participant.email}"
+    end
   end
   
   # POST /participants
   # POST /participants.json
   def create
-    
-    if params[:import]
-      success, alert = Participant.import(params[:participant][:file], params[:project_id])
-      alert.empty? ? () : (flash[:message] = alert)
-      success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
-
-    else
-      @participant = Participant.new(participant_params)
-      @participant.project_id = params[:project_id]
-      if !@participant.valid?
-        flash[:danger] = @participant.errors.full_messages
-      else @participant.save!
-        flash[:success] = "Successfully created participant #{@participant.email}"
-      end
-    end
-    
+    params[:import] ? handle_import : handle_simple
     redirect_to display_project_participants_path(params[:project_id])
   end
   
