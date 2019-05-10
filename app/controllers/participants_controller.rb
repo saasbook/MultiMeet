@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ParticipantsController < ApplicationController
-  before_action :set_participant, only: %i[show autofill update destroy]
+  before_action :set_participant, only: %i[show edit update destroy]
   before_action :set_new_user, only: [:display]
 
   # GET /participants
@@ -68,25 +68,33 @@ class ParticipantsController < ApplicationController
   # def new
   #   @participant = Participant.new
   # end
-
+  def import
+  
+  end
+  
   # POST /participants
   # POST /participants.json
   def create
-    @participant = Participant.new(participant_params)
-    @participant.project_id = params[:project_id]
-    if !Participant.where(
-      project_id: @participant.project_id, email: @participant.email
-    ).blank?
-      flash[:danger] = "Participant's email already exists"
-      redirect_to display_project_participants_path(params[:project_id])
-    else @participant.save!
-         flash[:success] = "Successfully created participant #{@participant.email}"
-         redirect_to display_project_participants_path(params[:project_id])
-      # else
-      #   flash[:message] = @user.errors.full_messages
-      #   redirect_to display_project_participants_path(params[:project_id])
+    
+    if params[:import]
+      success, alert = Participant.import(params[:participant][:file], params[:project_id])
+      alert.empty? ? () : (flash[:message] = alert)
+      success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
+
+    else
+      @participant = Participant.new(participant_params)
+      @participant.project_id = params[:project_id]
+      if !@participant.valid?
+        flash[:danger] = @participant.errors.full_messages
+      else @participant.save!
+        flash[:success] = "Successfully created participant #{@participant.email}"
+      end
     end
+    
+    redirect_to display_project_participants_path(params[:project_id])
   end
+  
+ 
 
   # PATCH/PUT /participants/1
   # PATCH/PUT /participants/1.json

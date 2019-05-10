@@ -42,8 +42,15 @@
     <% else %>
       <div class="action" style="width:500px">
         <br>
-        <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control", :required => 'required'%>
-        <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
+        <div class="add-new-participant">
+          <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control"%>
+          <%= f.submit "Add New Participant", class:"btn btn-primary" %>
+        </div>
+        <div>
+          <p><b>Import CSV of participants. <br/> Format: One column with header "email"</b></p>
+          <%= f.file_field :file%>
+          <%= f.submit "Upload CSV", name: 'import', class:"btn btn-primary" %> </td>
+        </div>
       </div>
     <% end %>
   <% end %>
