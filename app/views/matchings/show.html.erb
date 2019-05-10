@@ -6,18 +6,16 @@
 
 <% if @matching %>
 
-<table style="width:100%">
+<table class="table">
 	<tbody>
 	<tr>
     <td><b>Time</b></td>
-		<td><b>Event</b></td>
 		<td><b>People</b></td>
 	</tr>
 
   <% @parsed_matching["schedule"].each do |event|  %>
     <tr>
-      <td><%= event["timestamp"] %></td>
-      <td><%= event["event_name"] %></td>
+      <td><%= Time.parse(event["timestamp"]).strftime("%A, %B %d %Y %I:%M %p") %></td>
       <td><%= event["people_called"].join(', ') %> </td>
     </tr>
 
