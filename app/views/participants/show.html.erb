@@ -2,15 +2,32 @@
 <%= render 'layouts/alerts' %>
 
 <div class="user-container">
-  <div class="jumbotron times-index shadow white-bg">
+  <div class="jumbotron shadow white-bg">
 
     <h1>Editing Participant</h1>
+
+    <div class="current-duration">
+      <% if !@project.duration.blank? %>
+        <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>
+      <% else %>
+        <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
+      <% end %>
+    </div>
+
+    <div class="match-degree">
+      <% if !@participant.match_degree == 1 %>
+      <% else %>
+        <p><strong>Number of times to be assigned to you:</strong> <%= @participant.match_degree %></p>
+      <% end %>
+    </div>
+
+    <hr>
 
     <%= form_for([@project, @participant]) do |f| %>
 
       <div class="form-group">
-        <%= f.text_field :email, placeholder: "Participant Email", class: "form-control"%>
-        <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "Match Degree", class: "form-control"%>
+        <b>Edit Email:</b> <%= f.text_field :email, placeholder: "Participant Email", class: "form-control"%><br>
+        <b>Edit Match Degree:</b> <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "Match Degree", class: "form-control"%>
       </div>
 
       <div class="actions">
