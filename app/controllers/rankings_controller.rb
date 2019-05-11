@@ -60,11 +60,21 @@ class RankingsController < ApplicationController
   # POST /rankings
   # POST /rankings.json
   def create
+    able_go_count = 0
     @times.each do |time|
+      if params[time.id.to_s].to_i != 0
+        able_go_count += 1
+      end
+
       unless params.keys.include? time.id.to_s or time.is_date
         flash[:error] = "Error: please fill in an option for each time."
         redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
       end
+    end
+
+    if able_go_count < @participant.match_degree
+      flash[:error] = "Error: you must be available for at least #{@participant.match_degree} times."
+      redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
     end
 
     @times.each do |time|
