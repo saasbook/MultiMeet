@@ -8,11 +8,11 @@
   
   <%= form_for(@participant, :url => project_participants_path) do |f| %>
   <div class="listing-participants jumbotron white-bg shadow">
-    <h1>Listing Participants</h1>
-    <table>
+    <h1>Participants</h1>
+    <table class="table">
       <thead>
         <tr>
-          <th>Participant Email</th>
+          <th>Email</th>
           <th>Last Responded</th>
           <th>Actions</th>
         </tr>
@@ -46,10 +46,10 @@
     <% else %>
       <div class="actions-participants">
         <div class="add-new-participant jumbotron white-bg shadow">
-          <h5><b>Manually Add</b></h5>
+          <h5><b>Add Manually</b></h5>
           <div class="manual-add-input">
             <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control"%>
-            <%= f.submit "Add New Participant", class:"btn btn-primary btn-sm" %>
+            <%= f.submit "Add Participant", class:"btn btn-primary btn-sm" %>
           </div>
         </div>
         <div class="import-participant jumbotron white-bg shadow">
@@ -72,9 +72,9 @@
   <div class="email-participants jumbotron white-bg shadow">
     <h1>Email Participants</h1>
     <%= form_tag email_project_participants_path, :method => :post, class: "email-body" do %>
-      <%= label_tag :email_subject, 'Email Subject', class: "font-weight-bold" %>
+      <%= label_tag :email_subject, 'Subject', class: "font-weight-bold" %>
       <%= text_field_tag :email_subject, 'Choose available times for '.concat(@project.project_name) , class: 'form-control email-subject'%>
-      <%= label_tag :email_body, 'Email Body', class: "font-weight-bold" %>
+      <%= label_tag :email_body, 'Body', class: "font-weight-bold" %>
       <%= text_area_tag :email_body, '', placeholder: "Add message here. For each participant, a unique link to rank preferences will be appended to the body.", rows: 7, class: "form-control" %>
       <%= submit_tag "Send email", class: "btn btn-secondary" %>
     <% end %>

@@ -58,7 +58,7 @@ ul {
 }
 
 .times-index {
-    width: 62%;
+    width: 70%;
     margin: 3rem auto 2rem auto;
     padding: 2rem !important;
 }
@@ -221,22 +221,6 @@ ul {
     width: 70%;
     margin: 2rem auto;
     
-    .listing-participants{
-        
-        table {
-            width:100%;
-        }
-        
-        table tr {
-            border-bottom: 1px solid grey;
-            
-            td{
-                padding-bottom: .5em;
-                padding-top: .5em;
-            }
-        }
-    }
-    
     .actions-participants{
         width: 100%;
         display: grid;
@@ -247,7 +231,12 @@ ul {
             justify-self:start;
             
             .manual-add-input{
+                margin-top: 20px;
                 display: flex;
+                
+                input {
+                    margin-right: 10px;
+                }
             }
         }
         
@@ -257,15 +246,17 @@ ul {
             
             .upload-row{
                 display: flex;
+                
+                div {
+                    margin-right: 10px;
+                }
             }
         }
     }
     
     .email-participants {
         
-       .email-body{
-            width: 40%;
-        }
+        width: 100%;
 
         .email-subject{
             margin-bottom: 10px;
@@ -277,6 +268,17 @@ ul {
 
 
 /* Matchings */
+.matchings {
+    width: 70%;
+    margin: 2rem auto;
+}
+
 .matching-actions{
+    margin-top: 10px;
     display: flex;
+    
+    a, form {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 }
