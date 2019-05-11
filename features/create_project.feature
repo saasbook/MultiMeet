@@ -44,3 +44,10 @@ Feature: create a project
     And I press "Create Project"
     Then I should see "Enter the name of your new project here"
     And I should see "Invalid project name"
+
+  Scenario: rename project to same name
+    When I am on the edit page for "Test Meeting 1"
+    Then I should see "Renaming Project"
+    When I fill in "New Project Name" with "Test Meeting 1"
+    And I press "Confirm Renaming"
+    Then I should see "Cannot rename to same project name"

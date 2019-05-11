@@ -23,7 +23,7 @@ Feature: Roster
     Then I should be on the projects page
     And I should see "Successfully created project Test Meeting 3"
 
-  Scenario: successfully to display rosters
+  Scenario: successfully display rosters
     When I am on the roster page for "Test Meeting 1"
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing1@berkeley.edu"
@@ -36,32 +36,32 @@ Feature: Roster
     When I fill in "Email" with "testing3@berkeley.edu"
     And I press "Add New Participant"
     Then I should see "Participant's email already exists"
-    When I follow "Back to All Projects"
-    Then I should be on the projects page
+    When I follow "Back to Project"
+    Then I should see "Test Meeting 1"
     When I am on the roster page for "Test Meeting 1"
     Then I should see "testing1@berkeley.edu"
     Then I should see "testing2@berkeley.edu"
     Then I should see "testing3@berkeley.edu"
-    When I follow "Back to All Projects"
-    Then I should be on the projects page
+    When I follow "Back to Project"
+    Then I should see "Test Meeting 1"
 
-  Scenario: successfully to edit project name
+  Scenario: successfully rename a project
     When I am on the edit page for "Test Meeting 1"
-    Then I should see "Editing Project"
+    Then I should see "Renaming Project"
     When I fill in "New Project Name" with "Testing Meeting 1_1"
-    And I press "Confirm Editing"
-    Then I should be on the projects page
+    And I press "Confirm Renaming"
+    Then I should see "Successfully renamed project to Testing Meeting 1_1"
     And I should see "Testing Meeting 1_1"
 
-  Scenario: successfully to destroy participant
+  Scenario: successfully destroy a participant
     When I am on the roster page for "Test Meeting 2"
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
     And I press "Add New Participant"
     When I follow "DELETE"
     Then I should not see "testing4@berkeley.edu"
-    When I follow "Back to All Projects"
-    Then I should be on the projects page
+    When I follow "Back to Project"
+    Then I should see "Test Meeting 2"
 
   Scenario: successfully email roster
     When I press the roster bottom for project of id "1"
@@ -117,32 +117,32 @@ Feature: Roster
     And I am on the roster page for "Participants Test"
     Then I should not see "No response yet"
 
-  Scenario: "Last Responded" should update with generate rankings
-    Given a registered user with the username "aaronli98" has a project named "Generate Rankings Test"
-    And the project named "Generate Rankings Test" has the following participants:
+  Scenario: "Last Responded" should update with autofill rankings
+    Given a registered user with the username "aaronli98" has a project named "Autofill Rankings Test"
+    And the project named "Autofill Rankings Test" has the following participants:
     | email                       |
     | andrew.huang@berkeley.edu   |
 
-    And the project named "Generate Rankings Test" has the following times:
+    And the project named "Autofill Rankings Test" has the following times:
     | datetime            |
     | Dec 1 2019 10:00 AM |
     | Dec 1 2019 1:00 PM  |
     | Dec 8 2019 3:00 PM  |
 
-    When I am on the roster page for "Generate Rankings Test"
+    When I am on the roster page for "Autofill Rankings Test"
     Then I should see "No response yet"
-    When I am on the matchings page for "Generate Rankings Test"
+    When I am on the matchings page for "Autofill Rankings Test"
     Then I should see "Not everyone has submitted preferences."
-    When I am on the roster page for "Generate Rankings Test"
-    When I follow "Generate Rankings"
+    When I am on the roster page for "Autofill Rankings Test"
+    When I follow "Autofill Rankings"
     Then I should not see "No response yet"
-    When I follow "Generate Rankings"
+    When I follow "Autofill Rankings"
     Then I should not see "No response yet"
-    When I am on the matchings page for "Generate Rankings Test"
+    When I am on the matchings page for "Autofill Rankings Test"
     Then I should see "Ready to match."
     And I press "Match!"
-    Then I should be on the matchings page for "Generate Rankings Test"
-    And I should see "Matching Complete."
+    Then I should be on the matchings page for "Autofill Rankings Test"
+    And I should see "Successfully matched."
     Then I press "Run algorithm again"
     And I should see "Matching Complete."
 

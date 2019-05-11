@@ -24,8 +24,15 @@ class ProjectsController < ApplicationController
 
   def update
     @project = Project.find(params[:id].to_i)
-    @project.update(project_name: project_params[:project_name])
-    redirect_to projects_path
+    new_project_name = project_params[:project_name]
+
+    if valid_renaming? new_project_name
+      @project.update(project_name: new_project_name)
+      flash[:success] = "Successfully renamed project to #{new_project_name}"
+      redirect_to project_path(@project)
+    else
+      redirect_to edit_project_path(@project)
+    end
   end
 
   # returns true if ok, false if not
@@ -40,6 +47,14 @@ class ProjectsController < ApplicationController
       return false
     end
     true
+  end
+
+  def valid_renaming?(project_name)
+    if @project.project_name == project_name
+      flash[:danger] = 'Cannot rename to same project name'
+      return false
+    end
+    valid_project_name? project_name
   end
 
   def redirect_based_on_create_type(project_name)
