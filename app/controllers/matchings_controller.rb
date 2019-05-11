@@ -71,8 +71,20 @@ class MatchingsController < ApplicationController
     @matching.output_json = api
 
     respond_to do |format|
+      allmatched = true
+      notmatched = ""
       if @matching.save!
-        flash[:success] = 'Successfully matched.'
+        for participant in @project.participants
+          if !@matching.output_json.include? participant.email
+            allmatched = false
+            notmatched += participant.email + ", "
+          end
+        end
+        if allmatched
+          flash[:success] = 'Matching Complete. All users successfully matched.'
+        else
+          flash[:success] = 'Matching Complete. ' + notmatched[0...-2] + ' did not receive a match.'
+        end
         format.html { redirect_to project_matching_path }
         # else
         #   format.html { render :new }
@@ -164,9 +176,7 @@ class MatchingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_instance_variables
-      @matching = Matching.find_by(params.slice(:project_id))
-      @project = Project.find_by(:id => params[:project_id])
-
+      set_matching_and_project
       if @project
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)
