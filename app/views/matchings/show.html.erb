@@ -1,4 +1,6 @@
-<% @title = "#{@project.project_name} Matching - MultiMeet" %>
+<% if @proj_exists %>
+  <% @title = "#{@project.project_name} Matching - MultiMeet" %>
+<% end %>
 <%= render 'layouts/navbar' %>
 <%= render 'layouts/alerts' %>
 <h1>Editing Matching</h1>
