@@ -142,9 +142,9 @@ Feature: Roster
     Then I should see "Ready to match."
     And I press "Match!"
     Then I should be on the matchings page for "Autofill Rankings Test"
-    And I should see "Successfully matched."
+    And I should see "successfully matched."
     Then I press "Run algorithm again"
-    And I should see "Successfully matched."
+    And I should see "Matching Complete."
     
   Scenario: No file uploaded
     When I am on the roster page for "Test Meeting 2"
@@ -168,4 +168,3 @@ Feature: Roster
     Then I should see "For armando@berkeley.edu : Email has already been taken"
     Then I should see "For ok@berkeley.edu : Email has already been taken"
     Then I should see "Imported participants: daniel@yahoo.com daniellee908908@gmail.com"
-    
