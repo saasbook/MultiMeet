@@ -58,7 +58,8 @@ Feature: Roster
     Then I should see "Listing Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
     And I press "Add New Participant"
-    When I follow "DELETE"
+    When I follow "Edit Participant"
+    When I follow "Delete Participant"
     Then I should not see "testing4@berkeley.edu"
     When I follow "Back to Project"
     Then I should see "Test Meeting 2"
@@ -71,7 +72,7 @@ Feature: Roster
     And I press "Send email to participants"
     Then the participant should receive an email
     Then I should see "Emails have been sent."
-  
+
   Scenario: If correct secret_id, render edit preference page
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
@@ -82,7 +83,7 @@ Feature: Roster
     Then I should see "Emails have been sent."
     When I visit the link from the email for project of id "1" and participant of id "1"
     Then I should not see "Access denied"
-    
+
   Scenario: If incorrect secret_id, deny access
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
@@ -94,7 +95,7 @@ Feature: Roster
     When I visit the bad link from the email for project of id "1" and participant of id "1"
     Then I should see "Access denied"
 
-  
+
   Scenario: "Last Responded" should update with datetime of last response
     Given a registered user with the username "aaronli98" has a project named "Participants Test"
     And the project named "Participants Test" has the following participants:
@@ -145,4 +146,3 @@ Feature: Roster
     And I should see "Successfully matched."
     Then I press "Run algorithm again"
     And I should see "Successfully matched."
-

@@ -46,3 +46,18 @@ Feature: Match
     Given a registered user with the username "jsluong" has a project named "No Participants"
     And I am on the matchings page for "No Participants"
     Then I should see "There are no participants."
+
+  Scenario: User runs the algorithm successfully on a single-degree match
+    Then the match degree of "alexstennet@berkeley.edu" should be 1
+    Then the match degree of "andrew.huang@berkeley.edu" should be 1
+    Then the match degree of "addison.chan@berkeley.edu" should be 1
+    Then the match degree of "annietang@berkeley.edu" should be 1
+    Then the match degree of "tperumpail@berkeley.edu" should be 1
+    When 5 people submitted preferences for "CS61A Sections"
+    And I am on the matchings page for "CS61A Sections"
+    Then I should see "Ready to match."
+    And I press "Match!"
+    Then I should be on the matchings page for "CS61A Sections"
+    And I should see "Successfully matched."
+    Then I press "Run algorithm again"
+    And I should see "Successfully matched."
