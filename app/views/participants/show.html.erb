@@ -9,12 +9,12 @@
     <%= form_for([@project, @participant]) do |f| %>
 
       <div class="form-group">
-        <%= f.text_field :email, placeholder: "New Participant Email", class: "form-control"%>
-        <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "New Match Degree", class: "form-control"%>
+        <%= f.text_field :email, placeholder: "Participant Email", class: "form-control"%>
+        <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "Match Degree", class: "form-control"%>
       </div>
 
       <div class="actions">
-        <%= f.submit "Confirm Editing", class:"btn btn-primary"  %>
+        <%= f.submit "Update Participant", class:"btn btn-success"  %>
         <%= link_to 'Cancel', project_participants_path, class:"btn btn-primary" %>
         <%= link_to 'Delete Participant', project_participant_path(@participant.project_id, @participant.id), method: :delete, url: project_participants_path, class:"btn btn-danger"%></td>
       </div>

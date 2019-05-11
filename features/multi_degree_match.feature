@@ -60,13 +60,12 @@ Feature: Multi-degree Matching
     Then the match degree of "addison.chan@berkeley.edu" should be 1
     Then the match degree of "annietang@berkeley.edu" should be 1
 
-    Then I am on the edit participants page for "alexstennet@berkeley.edu" for project "CS61A Sections"
+    Then I am on the project participants page for "alexstennet@berkeley.edu" for project "CS61A Sections"
     And I fill in "Match Degree" with "2"
-    And I press "Update match degree"
-    Then I should see "Match degree updated"
-    And I press "Back"
+    And I press "Update Participant"
+    Then I should see "Participant was successfully updated."
     Then I am on the participants page for "CS61A Sections"
-    And the match degree of "addison.chan@berkeley.edu" should be 2
+    And the match degree of "alexstennet@berkeley.edu" should be 2
 
     When 4 people submitted preferences for "CS61A Sections"
     And I am on the matchings page for "CS61A Sections"
