@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ParticipantsController < ApplicationController
-  before_action :set_participant, only: %i[show edit update destroy]
+  before_action :set_participant, only: %i[show autofill update destroy]
   before_action :set_new_user, only: [:display]
 
   # GET /participants
@@ -42,19 +42,19 @@ class ParticipantsController < ApplicationController
 
   # Temporary button for generating random preferences
   def autofill
-    all_project_time_ids = ProjectTime.where(project_id: params[:project_id]).pluck(:id)
+    all_project_time_ids = ProjectTime.where(project_id: @participant.project_id).pluck(:id)
 
     all_project_time_ids.each do |project_time_id|
-      ranking = Ranking.find_by(participant_id: params[:id], project_time_id: project_time_id)
+      ranking = Ranking.find_by(participant_id: @participant.id, project_time_id: project_time_id)
       if ranking
         ranking.update(rank: 3)
       else
-        Ranking.create(participant_id: params[:id], project_time_id: project_time_id, rank: rand(1..3))
+        Ranking.create(participant_id: @participant.id, project_time_id: project_time_id, rank: rand(1..3))
       end
     end
-    participant = Participant.find_by(id: params[:id])
+    participant = Participant.find_by(id: @participant.id)
     participant.update(last_responded: Time.now.getutc)
-    redirect_to display_project_participants_path(params[:project_id])
+    redirect_to display_project_participants_path(@participant.project_id)
   end
 
   # GET /participants/1
