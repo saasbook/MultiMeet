@@ -25,16 +25,16 @@ Feature: Roster
 
   Scenario: successfully display rosters
     When I am on the roster page for "Test Meeting 1"
-    Then I should see "Listing Participants"
+    Then I should see "Participants"
     When I fill in "Email" with "testing1@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "Email" with "testing2@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "Email" with "testing3@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     Then I should see "Successfully created participant testing3@berkeley.edu"
     When I fill in "Email" with "testing3@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     Then I should see "Email has already been taken"
     When I follow "Back to Project"
     Then I should see "Test Meeting 1"
@@ -55,9 +55,9 @@ Feature: Roster
 
   Scenario: successfully destroy a participant
     When I am on the roster page for "Test Meeting 2"
-    Then I should see "Listing Participants"
+    Then I should see "Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     When I follow "Delete"
     Then I should not see "testing4@berkeley.edu"
     When I follow "Back to Project"
@@ -66,7 +66,7 @@ Feature: Roster
   Scenario: successfully email roster
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
     And I press "Send email"
     Then the participant should receive an email
@@ -75,7 +75,7 @@ Feature: Roster
   Scenario: If correct secret_id, render edit preference page
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
     And I press "Send email"
     Then the participant should receive an email
@@ -86,7 +86,7 @@ Feature: Roster
   Scenario: If incorrect secret_id, deny access
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
     And I press "Send email"
     Then the participant should receive an email
@@ -160,9 +160,9 @@ Feature: Roster
   Scenario: Successful upload test
     When I am on the roster page for "Test Meeting 2"
     And I fill in "Email" with "armando@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "Email" with "ok@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     When I upload a csv with valid emails
     When I press "Upload CSV"
     Then I should see "For armando@berkeley.edu : Email has already been taken"
