@@ -8,7 +8,6 @@ Given('the project named {string} has the following participants:') do |project_
     index = Participant.all.count
     participant = {id: index+1, project_id: project_id, email: row[:email], last_responded: nil, match_degree: 1}
     Participant.create(participant)
-    puts(index+1)
   end
 end
 
