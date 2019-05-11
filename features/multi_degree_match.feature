@@ -37,7 +37,8 @@ Feature: Multi-degree Matching
     Then the match degree of "andrew.huang@berkeley.edu" should be 2
     Then the match degree of "addison.chan@berkeley.edu" should be 1
     Then the match degree of "annietang@berkeley.edu" should be 1
-    When 4 people submitted preferences for "CS61A Sections"
+
+    When I autofill rankings for "alexstennet@berkeley.edu"
     And I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"
@@ -68,28 +69,6 @@ Feature: Multi-degree Matching
     And the match degree of "alexstennet@berkeley.edu" should be 2
 
     When 4 people submitted preferences for "CS61A Sections"
-    And I am on the matchings page for "CS61A Sections"
-    Then I should see "Ready to match."
-    And I press "Match!"
-    Then I should be on the matchings page for "CS61A Sections"
-    And I should see "Successfully matched."
-    Then I press "Run algorithm again"
-    And I should see "Successfully matched."
-
-  Scenario: User runs the algorithm successfully on a single-degree match
-    When the project named "CS61A Sections" has the following participants:
-    | email                      |
-    | alexstennet@berkeley.edu   |
-    | andrew.huang@berkeley.edu  |
-    | addison.chan@berkeley.edu  |
-    | annietang@berkeley.edu     |
-
-    And I am on the participants page for "CS61A Sections"
-    Then the match degree of "alexstennet@berkeley.edu" should be 1
-    Then the match degree of "andrew.huang@berkeley.edu" should be 1
-    Then the match degree of "addison.chan@berkeley.edu" should be 1
-    Then the match degree of "annietang@berkeley.edu" should be 1
-    When 5 people submitted preferences for "CS61A Sections"
     And I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"
