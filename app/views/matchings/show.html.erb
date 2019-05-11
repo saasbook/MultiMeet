@@ -7,7 +7,6 @@
 <div class="matchings">
   <div class="editing-matching jumbotron shadow white-bg">
     <h1>Matching</h1>
-    
     <p id="notice"><%= notice %></p>
     
     <% if @matching %>
@@ -15,14 +14,12 @@
       	<tbody>
       	<tr>
           <td><b>Time</b></td>
-      		<td><b>Event</b></td>
       		<td><b>People</b></td>
       	</tr>
       
         <% @parsed_matching["schedule"].each do |event|  %>
           <tr>
-            <td><%= event["timestamp"] %></td>
-            <td><%= event["event_name"] %></td>
+            <td><%= Time.parse(event["timestamp"]).strftime("%A, %B %d %Y %I:%M %p") %></td>
             <td><%= event["people_called"].join(', ') %> </td>
           </tr>
       
