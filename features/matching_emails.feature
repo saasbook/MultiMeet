@@ -30,5 +30,5 @@ Feature: Match
   Scenario: successfully email matchings
     And I fill in "email_body" with "Hello, your final matching has been assigned!"
     And I press "Send email to participants"
-    Then the user "nobodyhere@berkeley.edu" should receive a matching email with the correct timestamp "Dec 1 2019 10:00 AM"
+    Then the user "nobodyhere@berkeley.edu" should receive a matching email with the correct timestamp "Sunday, December 01 2019 10:00 AM"
     Then I should see "Emails have been sent."
