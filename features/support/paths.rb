@@ -39,6 +39,10 @@ module NavigationHelpers
     when /^the matchings page for "(.*)"$/
       project_matching_path(Project.find_by(project_name: Regexp.last_match(1)))
 
+    when /^the edit participants page for "(.*)" for project "(.*)"$/
+      edit_project_participant_path(Project.find_by(:project_name => $2),
+                               Participant.find_by(:email => $1))
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

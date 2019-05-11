@@ -119,6 +119,7 @@ class ParticipantsController < ApplicationController
     def set_participant
       #@participant = Participant.find(params[:format])
       @participant = Participant.find_by(:id => params[:id])
+      @project = Project.find(@participant.project_id)
     end
 
     def set_new_user

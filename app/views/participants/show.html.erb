@@ -1,49 +1,22 @@
 <%= render 'layouts/navbar' %>
 <%= render 'layouts/alerts' %>
 
-<div class="mx-4 my-4">
-  <p id="notice"><%= notice %></p>
+<div class="user-container">
+  <div class="jumbotron times-index shadow white-bg">
 
-  <h1>Listing Participants</h1>
+    <h1>Editing Participant</h1>
 
-  <table style="width:65%">
-    <thead>
-      <tr>
-        <th>Participant Email</th>
-      </tr>
-    </thead>
+    <%= form_for([@project, @participant]) do |f| %>
 
-    <tbody>
-      <% @participants.each do |participant| %>
-        <tr>
-          <td> <%= participant.email %> </td>
-          <td> <%= link_to 'Edit', edit_project_participant_path(participant.id, participant.project_id), class:"btn btn-primary" %></td>
-          <td> <%= link_to 'Destroy', project_participants_path(participant.id), method: :delete, class:"btn btn-danger" %></td>
-        </tr>
-      <% end %>
-    </tbody>
+      <div class="form-group">
+        <%= f.text_field :email, placeholder: "New Participant Email", class: "form-control"%>
+      </div>
 
-    <%= form_for(@participant) do |f| %>
-      <% if @participant.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@participant.errors.count, "error") %> prohibited this participant from being saved:</h2>
-
-          <ul>
-            <% @participant.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-              <% end %>
-            </ul>
-        </div>
-      <% else %>
-        <div class="form-group">
-          <td> <%= f.text_field :project_id, placeholder: "Project Id", class: "form-control"%></td>
-          <td> <%= f.text_field :email, placeholder: "Email", class: "form-control"%></td>
-          <td> <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
-        </div>
-      <% end %>
+      <div class="actions">
+        <%= f.submit "Confirm Editing", class:"btn btn-primary"  %>
+        <%= link_to 'Cancel', project_participants_path, class:"btn btn-primary" %>
+      </div>
     <% end %>
-  </table>
 
-  <br>
-
-</div>
+  </div>
+</div>>

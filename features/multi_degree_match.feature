@@ -60,7 +60,7 @@ Feature: Multi-degree Matching
     Then the match degree of "addison.chan@berkeley.edu" should be 1
     Then the match degree of "annietang@berkeley.edu" should be 1
 
-    Then I am on edit participants page for "alexstennet@berkeley.edu"
+    Then I am on the edit participants page for "alexstennet@berkeley.edu" for project "CS61A Sections"
     And I fill in "Match Degree" with "2"
     And I press "Update match degree"
     Then I should see "Match degree updated"
