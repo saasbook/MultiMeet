@@ -17,7 +17,7 @@ class MatchingsController < ApplicationController
 
     if @proj_exists and @matching
       @parsed_matching = JSON.parse(@matching.output_json)
-      print(@parsed_matching)
+
     elsif @proj_exists
       @participants_are_set = @all_participants_ids.size > 0
       @times_are_set = @all_participants_ids.size > 0
@@ -33,9 +33,19 @@ class MatchingsController < ApplicationController
     @parsed_matching = JSON.parse(@matching.output_json)
     ParticipantsMailer.set_project_name(@project.project_name)
 
+    emails_to_times = {}
     @parsed_matching['schedule'].each do |matching|
-      ParticipantsMailer.matching_email(
-          matching['people_called'][0], @email_subject, @email_body, matching['timestamp']).deliver_now
+      email = matching['people_called'][0]
+      timestamp = Time.parse(matching["timestamp"]).strftime("%A, %B %d %Y %I:%M %p")
+
+      if !emails_to_times[email]
+        emails_to_times[email] = ""
+      end
+      emails_to_times[email] += timestamp + ", "
+    end
+
+    emails_to_times.each do |email, times|
+      ParticipantsMailer.matching_email(email, @email_subject, @email_body, times[0...-2]).deliver_now
     end
 
     flash[:success] = 'Emails have been sent.'
