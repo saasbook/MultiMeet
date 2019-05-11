@@ -18,6 +18,7 @@ Feature: Multi-degree Matching
     | Dec 1 2019 1:00 PM  |
     | Dec 8 2019 3:00 PM  |
     | Dec 8 2019 4:00 PM  |
+    | Dec 8 2019 6:00 PM  |
 
     And I am on the participants page for "CS61A Sections"
 
@@ -26,7 +27,7 @@ Feature: Multi-degree Matching
     And I fill in "Match Degree" with "2"
     And press "Add New Participant"
     When I fill in "Email" with "andrew.huang@berkeley.edu"
-    And I fill in "Match Degree" with "2"
+    And I fill in "Match Degree" with "1"
     And press "Add New Participant"
     When I fill in "Email" with "addison.chan@berkeley.edu"
     And I fill in "Match Degree" with "1"
@@ -34,7 +35,7 @@ Feature: Multi-degree Matching
     When I fill in "Email" with "annietang@berkeley.edu"
     And press "Add New Participant"
     Then the match degree of "alexstennet@berkeley.edu" should be 2
-    Then the match degree of "andrew.huang@berkeley.edu" should be 2
+    Then the match degree of "andrew.huang@berkeley.edu" should be 1
     Then the match degree of "addison.chan@berkeley.edu" should be 1
     Then the match degree of "annietang@berkeley.edu" should be 1
     When I autofill rankings for "alexstennet@berkeley.edu"
@@ -45,9 +46,9 @@ Feature: Multi-degree Matching
     Then I should see "Ready to match."
     And I press "Match!"
     Then I should be on the matchings page for "CS61A Sections"
-    And I should see "Successfully matched."
+    And I should see "All users successfully matched."
     Then I press "Run algorithm again"
-    And I should see "Successfully matched."
+    And I should see "All users successfully matched."
 
   Scenario: User edits match degree manually via participants page
     When the project named "CS61A Sections" has the following participants:
@@ -78,6 +79,6 @@ Feature: Multi-degree Matching
     Then I should see "Ready to match."
     And I press "Match!"
     Then I should be on the matchings page for "CS61A Sections"
-    And I should see "Successfully matched."
+    And I should see "All users successfully matched."
     Then I press "Run algorithm again"
-    And I should see "Successfully matched."
+    And I should see "All users successfully matched."

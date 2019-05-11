@@ -94,7 +94,7 @@ Feature: Match
     Then I should be on the matchings page for "CS61B Sections"
     And I should see "Matching Complete."
     Then I press "Run algorithm again"
-    And I should see "liangyozhu@berkeley.edu did not receive a match."
+    And I should see "did not receive a match."
 
   Scenario: User is not warned when all users are matched
     Given I autofill rankings for "alexstennet@berkeley.edu"
