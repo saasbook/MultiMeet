@@ -6,9 +6,9 @@ class Matching < ActiveRecord::Base
   
   def self.to_csv(json)
       CSV.generate do |csv|
-          csv << ['Time', 'Event', 'Person']
+          csv << ['Time', 'Person']
           JSON.parse(json)['schedule'].each do |hash|
-              csv << [hash['timestamp'], hash['event_name'], hash["people_called"].join(', ')]
+              csv << [hash['timestamp'], hash["people_called"].join(', ')]
           end
       end
   end
