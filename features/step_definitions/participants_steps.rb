@@ -8,6 +8,7 @@ Given('the project named {string} has the following participants:') do |project_
     index = Participant.all.count
     participant = {id: index+1, project_id: project_id, email: row[:email], last_responded: nil, match_degree: 1}
     Participant.create(participant)
+    puts(index+1)
   end
 end
 
@@ -36,4 +37,10 @@ end
 Then("the match degree of {string} should be {int}") do |email, degree|
   participant = Participant.find_by(email: email)
   participant.match_degree.should == degree
+end
+
+When /^I autofill rankings for "([^"]*)"$/ do |email|
+  participant = Participant.find_by(email: email)
+  autofill_button_id = "autofill_" + participant.id.to_s
+  click_link(autofill_button_id)
 end

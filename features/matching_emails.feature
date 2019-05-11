@@ -21,12 +21,11 @@ Feature: Match
       | Dec 1 2019 10:00 AM |
       | Dec 1 2019 1:00 PM  |
 
-    Given 2 people submitted preferences for "CS61A Sections"
-
+    When I am on the participants page for "CS61A Sections"
+    When I autofill rankings for "nobodyhere@berkeley.edu"
+    When I autofill rankings for "plsdontemailme@berkeley.edu"
     And the project named "CS61A Sections" has a two-person matching
-
-    Then I access the matchings page for project of id "1"
-
+    Then I am on the matchings page for "CS61A Sections"
 
   Scenario: successfully email matchings
     And I fill in "email_body" with "Hello, your final matching has been assigned!"

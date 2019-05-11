@@ -111,10 +111,11 @@ Feature: Roster
 
     When I am on the roster page for "Participants Test"
     Then I should see "No response yet"
-    When 1 people submitted preferences for "Participants Test"
+    Then I autofill rankings for "jsluong@berkeley.edu"
     And I am on the roster page for "Participants Test"
     Then I should see "No response yet"
-    When 2 people submitted preferences for "Participants Test"
+    When I autofill rankings for "andrew.huang@berkeley.edu"
+    And I autofill rankings for "jsluong@berkeley.edu"
     And I am on the roster page for "Participants Test"
     Then I should not see "No response yet"
 

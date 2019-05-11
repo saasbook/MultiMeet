@@ -37,8 +37,10 @@ Feature: Multi-degree Matching
     Then the match degree of "andrew.huang@berkeley.edu" should be 2
     Then the match degree of "addison.chan@berkeley.edu" should be 1
     Then the match degree of "annietang@berkeley.edu" should be 1
-
     When I autofill rankings for "alexstennet@berkeley.edu"
+    When I autofill rankings for "andrew.huang@berkeley.edu"
+    When I autofill rankings for "addison.chan@berkeley.edu"
+    When I autofill rankings for "annietang@berkeley.edu"
     And I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"
@@ -68,7 +70,10 @@ Feature: Multi-degree Matching
     Then I am on the participants page for "CS61A Sections"
     And the match degree of "alexstennet@berkeley.edu" should be 2
 
-    When 4 people submitted preferences for "CS61A Sections"
+    When I autofill rankings for "alexstennet@berkeley.edu"
+    When I autofill rankings for "andrew.huang@berkeley.edu"
+    When I autofill rankings for "addison.chan@berkeley.edu"
+    When I autofill rankings for "annietang@berkeley.edu"
     And I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"

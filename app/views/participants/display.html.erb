@@ -23,7 +23,7 @@
           <td><%= participant.match_degree %></td>
           <td><%= participant.last_responded ? time_ago_in_words(participant.last_responded) + ' ago' : 'No response yet'%></td>
           <td><%= link_to 'Edit Participant', project_participant_path(participant.project_id, participant.id), url: project_participants_path, class:"btn btn-info"%></td>
-          <td><%= link_to 'Autofill Rankings', autofill_project_participant_path(participant.project_id, participant.id), class:"btn btn-primary"%></td>
+          <td><%= link_to 'Autofill Rankings', autofill_project_participant_path(participant.project_id, participant.id), class:"btn btn-primary", id:"autofill_" + participant.id.to_s%></td>
           <td><%= link_to 'Show Rankings', project_participant_ranking_path(participant.project_id, participant.id), class:"btn btn-success" %></td>
         </tr>
       <% end %>

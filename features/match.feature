@@ -25,15 +25,21 @@ Feature: Match
     | Dec 1 2019 1:00 PM  |
     | Dec 8 2019 3:00 PM  |
     | Dec 8 2019 4:00 PM  |
-    And I am on the matchings page for "CS61A Sections"
+    And I am on the participants page for "CS61A Sections"
 
   Scenario: User is unable to start a match when not everyone has submitted preferences
-    Given 3 people submitted preferences for "CS61A Sections"
+    Given I autofill rankings for "alexstennet@berkeley.edu"
+    And I autofill rankings for "andrew.huang@berkeley.edu"
+    And I autofill rankings for "addison.chan@berkeley.edu"
     When I am on the matchings page for "CS61A Sections"
     Then I should see "Not everyone has submitted preferences."
 
   Scenario: User runs the algorithm successfully after everyone has submitted preferences and rematches
-    Given 5 people submitted preferences for "CS61A Sections"
+    Given I autofill rankings for "alexstennet@berkeley.edu"
+    And I autofill rankings for "andrew.huang@berkeley.edu"
+    And I autofill rankings for "addison.chan@berkeley.edu"
+    And I autofill rankings for "annietang@berkeley.edu"
+    And I autofill rankings for "tperumpail@berkeley.edu"
     When I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"
@@ -53,7 +59,11 @@ Feature: Match
     Then the match degree of "addison.chan@berkeley.edu" should be 1
     Then the match degree of "annietang@berkeley.edu" should be 1
     Then the match degree of "tperumpail@berkeley.edu" should be 1
-    When 5 people submitted preferences for "CS61A Sections"
+    Given I autofill rankings for "alexstennet@berkeley.edu"
+    And I autofill rankings for "andrew.huang@berkeley.edu"
+    And I autofill rankings for "addison.chan@berkeley.edu"
+    And I autofill rankings for "annietang@berkeley.edu"
+    And I autofill rankings for "tperumpail@berkeley.edu"
     And I am on the matchings page for "CS61A Sections"
     Then I should see "Ready to match."
     And I press "Match!"
