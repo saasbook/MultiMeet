@@ -90,22 +90,23 @@ class ParticipantsController < ApplicationController
       #   redirect_to display_project_participants_path(params[:project_id])
     end
   end
-
+  #
   # PATCH/PUT /participants/1
   # PATCH/PUT /participants/1.json
-  # def update
-  #   respond_to do |format|
-  #     if @participant.update(participant_params)
-  #       @participant.project_id = participant_params[:project_id]
-  #       @participant.email = participant_params[:email]
-  #       format.html { redirect_to display_project_participants_path(params[:project_id]), notice: 'Participant was successfully updated.' }
-  #       format.json { render :show, status: :ok, location: @participant }
-  #     else
-  #       format.html { render :edit }
-  #       format.json { render json: @participant.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+  def update
+    respond_to do |format|
+      if @participant.update(participant_params)
+        @participant.project_id = participant_params[:project_id]
+        @participant.email = participant_params[:email]
+        @participant.match_degree = participant_params[:match_degree]
+        format.html { redirect_to display_project_participants_path(params[:project_id]), notice: 'Participant was successfully updated.' }
+        format.json { render :show, status: :ok, location: @participant }
+      else
+        format.html { render :edit }
+        format.json { render json: @participant.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # DELETE /participants/1
   # DELETE /participants/1.json
