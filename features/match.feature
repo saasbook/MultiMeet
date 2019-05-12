@@ -116,4 +116,18 @@ Feature: Match
     Then I should be on the matchings page for "CS61A Sections"
     And I should see "Matching Complete."
     Then I press "Run algorithm again"
+<<<<<<< HEAD
     And I should see "All users successfully matched."
+=======
+    And I should see "Matching Complete. All users successfully matched."
+
+   Scenario: User is warned when no users are matched
+    Given 5 people submitted negative preferences for "CS61A Sections"
+    When I am on the matchings page for "CS61A Sections"
+    Then I should see "Ready to match."
+    And I press "Match!"
+    Then I should be on the matchings page for "CS61A Sections"
+    And I should see "Matching Complete."
+    Then I press "Run algorithm again"
+    And I should see "Matching Complete. addison.chan@berkeley.edu, alexstennet@berkeley.edu, andrew.huang@berkeley.edu, annietang@berkeley.edu, tperumpail@berkeley.edu did not receive a match."
+>>>>>>> 1264e4eed76cf24cb4d4b2df3f6596c27c8edc5c

@@ -101,7 +101,6 @@ class ParticipantsController < ApplicationController
     redirect_to display_project_participants_path(params[:project_id])
   end
 
->>>>>>> 69ff387ce71a44ecb73a71f20132b5ae10288880
   # PATCH/PUT /participants/1
   # PATCH/PUT /participants/1.json
   def update

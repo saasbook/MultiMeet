@@ -153,8 +153,10 @@ class MatchingsController < ApplicationController
       person = ranking.participant.email
       timeslot = ranking.project_time.date_time
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
-      preferences.push(row)
+      if ranking.rank != 0
+        row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
+        preferences.push(row)
+      end
     end
 
     preferences
