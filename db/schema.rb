@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20190508001114) do
     t.integer  "match_degree"
   end
 
-  add_index "participants", ["project_id", "email", "last_responded"], name: "index_participants_on_project_id_and_email_and_last_responded", unique: true
+  add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email", unique: true
 
   create_table "project_times", force: :cascade do |t|
     t.integer  "project_id",                 null: false
