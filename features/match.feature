@@ -121,3 +121,17 @@ Feature: Match
     And I should see "Matching Complete."
     Then I press "Run algorithm again"
     And I should see "All users successfully matched."
+
+  Scenario: User warned if there are too few times to successfully match to everyone if adding new person
+    When I fill in "Email" with "duckywucky@berkeley.edu"
+    And I fill in "Match Degree" with "1"
+    And press "Add Participant"
+    Then I should see "Successfully created participant"
+    Then I should see "Not everyone will receive a match."
+
+  Scenario: User warned if there are too few times to successfully match to everyone if editing match degree
+    Then I am on the project participants page for "alexstennet@berkeley.edu" for project "CS61A Sections"
+    And I fill in "Match Degree" with "2"
+    And I press "Update Participant"
+    Then I should see "Successfully updated participant"
+    Then I should see "Not everyone will receive a match."

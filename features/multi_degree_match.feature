@@ -66,7 +66,7 @@ Feature: Multi-degree Matching
     Then I am on the project participants page for "alexstennet@berkeley.edu" for project "CS61A Sections"
     And I fill in "Match Degree" with "2"
     And I press "Update Participant"
-    Then I should see "Participant was successfully updated."
+    Then I should see "Successfully updated participant"
     Then I am on the participants page for "CS61A Sections"
     And the match degree of "alexstennet@berkeley.edu" should be 2
 
