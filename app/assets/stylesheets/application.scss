@@ -52,6 +52,14 @@ ul {
     background-color: white;
 }
 
+.email-subject{
+    margin-bottom: 10px;
+} 
+        
+#email_body{
+    margin-bottom: 20px;
+}
+
 /* Times */
 .current-duration{
     margin-top: 20px;
@@ -255,12 +263,7 @@ ul {
     }
     
     .email-participants {
-        
         width: 100%;
-
-        .email-subject{
-            margin-bottom: 10px;
-        } 
     }
     
 }
