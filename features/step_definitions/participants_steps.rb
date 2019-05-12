@@ -43,3 +43,11 @@ When /^I autofill rankings for "([^"]*)"$/ do |email|
   autofill_button_id = "autofill_" + participant.id.to_s
   click_link(autofill_button_id)
 end
+
+When /^I upload a non csv file$/ do
+    attach_file(File.join(RAILS_ROOT, 'features', 'attach_file', 'dog.png'))
+end
+
+When /^I upload a csv with valid emails$/ do
+    attach_file(File.join(RAILS_ROOT, 'features', 'attach_file', 'example.csv'))
+end

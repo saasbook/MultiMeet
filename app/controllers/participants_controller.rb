@@ -69,28 +69,39 @@ class ParticipantsController < ApplicationController
   # def new
   #   @participant = Participant.new
   # end
+  def handle_import
+    @csv = params[:participant][:file]
+    if @csv.nil?
+      flash[:danger] = "No file uploaded."
+    elsif !(@csv.content_type == "application/vnd.ms-excel" or @csv.content_type == "text/csv")
+      flash[:danger] = "File is not a csv."
+    else
+      success, alert = Participant.import(@csv, params[:project_id])
+      alert.empty? ? () : (flash[:danger] = alert)
+      success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
+    end
+  end
+
+  def handle_simple
+    @participant = Participant.new(participant_params)
+    @participant.project_id = params[:project_id]
+    @participant.match_degree = @participant.match_degree ? @participant.match_degree : 1
+    if !@participant.valid?
+      flash[:danger] = @participant.errors.full_messages.first
+    else
+      @participant.save!
+      flash[:success] = "Successfully created participant #{@participant.email}"
+    end
+  end
 
   # POST /participants
   # POST /participants.json
   def create
-    @participant = Participant.new(participant_params)
-    @participant.project_id = params[:project_id]
-    @participant.match_degree = @participant.match_degree ? @participant.match_degree : 1
-    if !Participant.where(
-      project_id: @participant.project_id,
-      email: @participant.email
-    ).blank?
-      flash[:danger] = "Participant's email already exists"
-      redirect_to display_project_participants_path(params[:project_id])
-    else @participant.save!
-         flash[:success] = "Successfully created participant #{@participant.email}"
-         redirect_to display_project_participants_path(params[:project_id])
-      # else
-      #   flash[:message] = @user.errors.full_messages
-      #   redirect_to display_project_participants_path(params[:project_id])
-    end
+    params[:import] ? handle_import : handle_simple
+    redirect_to display_project_participants_path(params[:project_id])
   end
-  #
+
+>>>>>>> 69ff387ce71a44ecb73a71f20132b5ae10288880
   # PATCH/PUT /participants/1
   # PATCH/PUT /participants/1.json
   def update

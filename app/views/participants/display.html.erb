@@ -1,11 +1,18 @@
+<<<<<<< HEAD
+=======
+<% @title = @project.project_name + " Participants - MultiMeet" %>
+>>>>>>> 69ff387ce71a44ecb73a71f20132b5ae10288880
 <%= render 'layouts/navbar' %>
 <%= render 'layouts/alerts' %>
 
-<div class="mx-4 my-4">
+<div class="participants">
   <p id="notice"><%= notice %></p>
 
-  <h1>Listing Participants</h1>
+
   <%= form_for(@participant, :url => project_participants_path) do |f| %>
+
+  <div class="listing-participants jumbotron white-bg shadow">
+    <h1>Participants</h1>
     <table class="table">
       <thead>
         <tr>
@@ -29,7 +36,7 @@
       <% end %>
       </tbody>
     </table>
-
+  </div>
     <% if @participant.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@participant.errors.count, "error") %> prohibited this participant from being saved:</h2>
@@ -41,24 +48,44 @@
         </ul>
       </div>
     <% else %>
-      <div class="action" style="width:500px">
-        <br>
-        <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control", :required => 'required'%>
-        <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "Match Degree", class: "form-control", :required => 'required'%>
-        <%= f.submit "Add New Participant", class:"btn btn-primary"  %></td>
+      <div class="actions-participants">
+        <div class="add-new-participant jumbotron white-bg shadow">
+          <h5><b>Add Manually</b></h5>
+          <div class="manual-add-input">
+            <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control"%>
+            <%= f.submit "Add Participant", class:"btn btn-primary btn-sm" %>
+          </div>
+        </div>
+        <div class="import-participant jumbotron white-bg shadow">
+          <h5><b>Import CSV</b></h5>
+          <p><b>Format:</b> .csv file. One column w/ header "email"</p>
+          <div class="upload-row">
+            <div class="custom-file" id="customFile">
+              <%= f.file_field :file, class: "custom-file-input", id: "csvInputFile"%>
+              <%= label_tag "csvInputFile", "Select File", class: "custom-file-label" %>
+            </div>
+            <div class="upload-button">
+              <%= f.submit "Upload CSV", name: 'import', class:"btn btn-primary" %>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
   <% end %>
-  <br>
 
-  <h1>Notify Participants</h1>
-  <%= form_tag email_project_participants_path, :method => :post, class: "email-body" do %>
-    <%= label_tag :email_subject, 'Email Subject', class: "font-weight-bold" %>
-    <%= text_field_tag :email_subject, 'Choose available times for '.concat(@project.project_name) , class: 'form-control email-subject'%>
-    <%= label_tag :email_body, 'Email Body', class: "font-weight-bold" %>
-    <%= text_area_tag :email_body, '', placeholder: "Add message here. For each participant, a unique link to rank preferences will be appended to the body.", rows: 7, class: "form-control" %>
-    <%= submit_tag "Send email to participants", class: "btn btn-secondary" %>
-  <% end %>
-  <br>
-  <%= link_to 'Back to Project', project_path(@project), class:"btn btn-info" %>
+  <div class="email-participants jumbotron white-bg shadow">
+    <h1>Email Participants</h1>
+    <%= form_tag email_project_participants_path, :method => :post, class: "email-body" do %>
+      <%= label_tag :email_subject, 'Subject', class: "font-weight-bold" %>
+      <%= text_field_tag :email_subject, 'Choose available times for '.concat(@project.project_name) , class: 'form-control email-subject'%>
+      <%= label_tag :email_body, 'Body', class: "font-weight-bold" %>
+      <%= text_area_tag :email_body, '', placeholder: "Add message here. For each participant, a unique link to rank preferences will be appended to the body.", rows: 7, class: "form-control" %>
+      <%= submit_tag "Send email", class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+  
+  <div class="jumbotron white-bg shadow">
+    <%= link_to 'Back to Project', project_path(@project), class:"btn btn-info" %>
+  </div>
+
 </div>
