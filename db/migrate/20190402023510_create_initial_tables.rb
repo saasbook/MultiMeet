@@ -43,7 +43,7 @@ class CreateInitialTables < ActiveRecord::Migration
     add_foreign_key :participants, :projects
 
     # for (project_id, email) unique
-    add_index :participants, [:project_id, :email, :last_responded], unique: true
+    add_index :participants, [:project_id, :email], unique: true
 
     # PROJECT_TIMES
     # primary key: integer id
