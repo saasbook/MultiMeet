@@ -68,6 +68,7 @@ class RankingsController < ApplicationController
     end
 
     @times.each do |time|
+      # byebug
       if time.is_date
         next
       end
@@ -86,6 +87,10 @@ class RankingsController < ApplicationController
 
     @participant.update(last_responded: Time.now.getutc)
     redirect_to end_project_participant_ranking_path
+  end
+
+  def parse_rank rank
+
   end
 
   # PATCH/PUT /rankings/1
