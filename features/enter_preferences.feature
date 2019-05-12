@@ -53,7 +53,7 @@ Background: A project is set up and participants are invited to rank times
     Then I am on the project participants page for "empoleon@berkeley.edu" for project "CS169 Sections"
     And I fill in "Match Degree" with "2"
     And I press "Update Participant"
-    Then I should see "Participant was successfully updated."
+    Then I should see "Successfully updated participant"
     Then I am on the participants page for "CS169 Sections"
     And the match degree of "empoleon@berkeley.edu" should be 2
 

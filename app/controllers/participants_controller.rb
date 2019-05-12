@@ -58,6 +58,17 @@ class ParticipantsController < ApplicationController
     redirect_to display_project_participants_path(@participant.project_id)
   end
 
+  def need_more_times?
+    new_match_degree_sum = Participant.where(project_id: @participant.project_id)
+                  .pluck(:match_degree).inject(:+)
+    project_times_sum = ProjectTime.where(project_id: @participant.project_id, is_date: false)
+                  .size
+    if new_match_degree_sum > project_times_sum
+      return true
+    end
+    false
+  end
+
   # GET /participants/1
   # GET /participants/1.json
   # def show
@@ -90,7 +101,11 @@ class ParticipantsController < ApplicationController
       flash[:danger] = @participant.errors.full_messages.first
     else
       @participant.save!
-      flash[:success] = "Successfully created participant #{@participant.email}"
+      if need_more_times?
+        flash[:success] = "Successfully created participant #{@participant.email}, but you have more matches to make than you have times. Not everyone will receive a match. Please add more times."
+      else
+        flash[:success] = "Successfully created participant #{@participant.email}."
+      end
     end
   end
 
@@ -106,10 +121,14 @@ class ParticipantsController < ApplicationController
   def update
     respond_to do |format|
       if @participant.update(participant_params)
-        @participant.project_id = participant_params[:project_id]
-        @participant.email = participant_params[:email]
-        @participant.match_degree = participant_params[:match_degree]
-        format.html { redirect_to display_project_participants_path(params[:project_id]), notice: 'Participant was successfully updated.' }
+        @participant.email = participant_params[:email] ? participant_params[:email] : @participant.email
+        @participant.match_degree = participant_params[:match_degree] ? participant_params[:match_degree] : 1
+        if need_more_times?
+          flash[:success] = "Successfully updated participant #{@participant.email}, but you have more matches to make than you have times. Not everyone will receive a match. Please add more times."
+        else
+          flash[:success] = "Successfully updated participant #{@participant.email}."
+        end
+        format.html { redirect_to display_project_participants_path(params[:project_id]) }
         format.json { render :show, status: :ok, location: @participant }
       else
         format.html { render :edit }
