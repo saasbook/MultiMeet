@@ -57,7 +57,7 @@ Feature: Roster
     When I am on the roster page for "Test Meeting 2"
     Then I should see "Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     When I follow "Edit Participant"
     When I follow "Delete Participant"
     Then I should not see "testing4@berkeley.edu"
@@ -94,7 +94,6 @@ Feature: Roster
     Then I should see "Emails have been sent."
     When I visit the bad link from the email for project of id "1" and participant of id "1"
     Then I should see "Access denied"
-
 
   Scenario: "Last Responded" should update with datetime of last response
     Given a registered user with the username "aaronli98" has a project named "Participants Test"
