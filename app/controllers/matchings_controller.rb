@@ -1,35 +1,7 @@
 # frozen_string_literal: true
 
 class MatchingsController < ApplicationController
-  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email, :modify]
-
-  def set_show_variables
-    @proj_exists = !(@project.nil?)
-    if @proj_exists
-      @permission = current_user.id == @project.user.id
-    end
-
-    if @proj_exists and @matching
-      @parsed_matching = JSON.parse(@matching.output_json)
-
-    elsif @proj_exists
-      @all_submitted_preferences = all_submitted_preferences?
-    end
-
-    respond_to do |format|
-      format.html
-      format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
-    end
-  end
-
-  def modify
-    @matching = Matching.find_by(params.slice(:project_id))
-    @parsed_matching = JSON.parse(@matching.output_json)
-    !@parsed_matching["schedule"][params[:format].split('/')[0].to_i]["timestamp"]  = params[:format].split('/')[1]
-    !@matching.output_json = @parsed_matching.to_json
-    @matching.save
-    redirect_to project_matching_path(params[:project_id])
-  end
+  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
 
   # GET /project/:project_id/matching
   def show
@@ -38,7 +10,24 @@ class MatchingsController < ApplicationController
       return
     end
 
-    set_show_variables
+    @proj_exists = !(@project.nil?)
+    if @proj_exists
+      @permission = current_user.id == @project.user.id
+    end
+
+    if @proj_exists and @matching
+      @parsed_matching = JSON.parse(@matching.output_json)
+      print(@parsed_matching)
+    elsif @proj_exists
+      @participants_are_set = @all_participants_ids.size > 0
+      @times_are_set = @all_participants_ids.size > 0
+      @all_submitted_preferences = all_submitted_preferences?
+    end
+    
+    respond_to do |format|
+      format.html
+      format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
+    end
   end
 
   def email
@@ -48,20 +37,10 @@ class MatchingsController < ApplicationController
     @email_body = params[:email_body]
     @parsed_matching = JSON.parse(@matching.output_json)
     ParticipantsMailer.set_project_name(@project.project_name)
-
-    emails_to_times = {}
+    
     @parsed_matching['schedule'].each do |matching|
-      email = matching['people_called'][0]
-      timestamp = Time.parse(matching["timestamp"]).strftime("%A, %B %d %Y %I:%M %p")
-
-      if !emails_to_times[email]
-        emails_to_times[email] = ""
-      end
-      emails_to_times[email] += timestamp + ", "
-    end
-
-    emails_to_times.each do |email, times|
-      ParticipantsMailer.matching_email(email, @email_subject, @email_body, times[0...-2]).deliver_now
+      ParticipantsMailer.matching_email(
+          matching['people_called'][0], @email_subject, @email_body, matching['timestamp']).deliver_now
     end
 
     flash[:success] = 'Emails have been sent.'
@@ -97,20 +76,8 @@ class MatchingsController < ApplicationController
     @matching.output_json = api
 
     respond_to do |format|
-      allmatched = true
-      notmatched = ""
       if @matching.save!
-        for participant in @project.participants
-          if !@matching.output_json.include? participant.email
-            allmatched = false
-            notmatched += participant.email + ", "
-          end
-        end
-        if allmatched
-          flash[:success] = 'Matching Complete. All users successfully matched.'
-        else
-          flash[:success] = 'Matching Complete. ' + notmatched[0...-2] + ' did not receive a match.'
-        end
+        flash[:success] = 'Successfully matched.'
         format.html { redirect_to project_matching_path }
         # else
         #   format.html { render :new }
@@ -201,11 +168,62 @@ class MatchingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_instance_variables
+<<<<<<<<< saved version
+      @matching = Matching.find_by(params.slice(:project_id))
+      @project = Project.find_by(:id => params[:project_id])
+      set_matching_and_project
+=========
+      set_matching_and_project
+>>>>>>>>> local version
+      if @project
+<<<<<<<<< saved version
+  def all_submitted_preferences?
+    @all_participants_ids.each do |participant_id|
+      unless Participant.find_by(id: participant_id).last_responded
+        return false
+      end
+    end
+    true
+  end
+
+  def api
+    require 'rest-client'
+
+    input = {
+      category: category,
+      global_settings: global_settings,
+      people: people,
+      timeslots: timeslots,
+      preferences: preferences
+    }
+
+    output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input.to_json,
+                             content_type: :json, accept: :json).body
+    output
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_instance_variables
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
       set_matching_and_project
       if @project
         @times = @project.project_times.order(:date_time)
+=========
+    output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input.to_json,
+                             content_type: :json, accept: :json).body
+    output
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_instance_variables
+      set_matching_and_project
+      if @project
+        @all_participants_ids = @project.participants.pluck(:id)
+        @all_project_time_ids = @project.project_times.pluck(:id)
+>>>>>>>>> local version
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)
       end
