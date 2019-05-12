@@ -44,12 +44,20 @@ ul {
 .actions {
     padding-top: 2rem;
     padding-bottom: 2rem;
-    width: 62%;
+    width: 70%;
     margin: 0 auto;
 }
 
 .white-bg{
     background-color: white;
+}
+
+.email-subject{
+    margin-bottom: 10px;
+} 
+        
+#email_body{
+    margin-bottom: 20px;
 }
 
 /* Times */
@@ -58,7 +66,7 @@ ul {
 }
 
 .times-index {
-    width: 62%;
+    width: 70%;
     margin: 3rem auto 2rem auto;
     padding: 2rem !important;
 }
@@ -217,10 +225,63 @@ ul {
 }
 
 /* Participants */
-.email-body{
-    width: 40%;
+.participants{
+    width: 70%;
+    margin: 2rem auto;
+    
+    .actions-participants{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+    
+        .add-new-participant{
+            width: 97.5%;
+            justify-self:start;
+            
+            .manual-add-input{
+                margin-top: 20px;
+                display: flex;
+                
+                input {
+                    margin-right: 10px;
+                }
+            }
+        }
+        
+        .import-participant{
+            width: 97.5%;
+            justify-self:end;
+            
+            .upload-row{
+                display: flex;
+                
+                div {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    
+    .email-participants {
+        width: 100%;
+    }
+    
 }
 
-.email-subject{
-    margin-bottom: 10px;
+
+
+/* Matchings */
+.matchings {
+    width: 70%;
+    margin: 2rem auto;
+}
+
+.matching-actions{
+    margin-top: 10px;
+    display: flex;
+    
+    a, form {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 }

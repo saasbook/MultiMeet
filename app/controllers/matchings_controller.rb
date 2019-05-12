@@ -3,13 +3,7 @@
 class MatchingsController < ApplicationController
   before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
 
-  # GET /project/:project_id/matching
-  def show
-    unless logged_in?
-      require_user
-      return
-    end
-
+  def set_show_variables
     @proj_exists = !(@project.nil?)
     if @proj_exists
       @permission = current_user.id == @project.user.id
@@ -17,12 +11,25 @@ class MatchingsController < ApplicationController
 
     if @proj_exists and @matching
       @parsed_matching = JSON.parse(@matching.output_json)
-      print(@parsed_matching)
+      # print(@parsed_matching)
     elsif @proj_exists
-      @participants_are_set = @all_participants_ids.size > 0
-      @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
+    
+    respond_to do |format|
+      format.html
+      format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
+    end
+  end
+  
+  # GET /project/:project_id/matching
+  def show
+    unless logged_in?
+      require_user
+      return
+    end
+
+    set_show_variables
   end
 
   def email
@@ -71,8 +78,20 @@ class MatchingsController < ApplicationController
     @matching.output_json = api
 
     respond_to do |format|
+      allmatched = true
+      notmatched = ""
       if @matching.save!
-        flash[:success] = 'Successfully matched.'
+        for participant in @project.participants
+          if !@matching.output_json.include? participant.email
+            allmatched = false
+            notmatched += participant.email + ", "
+          end
+        end
+        if allmatched
+          flash[:success] = 'Matching Complete. All users successfully matched.'
+        else
+          flash[:success] = 'Matching Complete. ' + notmatched[0...-2] + ' did not receive a match.'
+        end
         format.html { redirect_to project_matching_path }
         # else
         #   format.html { render :new }
@@ -128,8 +147,10 @@ class MatchingsController < ApplicationController
       person = ranking.participant.email
       timeslot = ranking.project_time.date_time
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
-      preferences.push(row)
+      if ranking.rank != 0
+        row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
+        preferences.push(row)
+      end
     end
 
     preferences
@@ -164,9 +185,7 @@ class MatchingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_instance_variables
-      @matching = Matching.find_by(params.slice(:project_id))
-      @project = Project.find_by(:id => params[:project_id])
-
+      set_matching_and_project
       if @project
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)
