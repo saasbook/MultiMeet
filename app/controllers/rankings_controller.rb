@@ -2,7 +2,7 @@ class RankingsController < ApplicationController
   before_action :set_fields, only: [:show, :edit, :create, :update, :end]
   before_action :create_rankings_hash, only: [:show]
   before_action :create_times_hash, only: [:edit]
-  helper_method :valid_secret_id?, :parse_rank
+  helper_method :valid_secret_id?, :parse_rank, :get_rank_value_or_default
 
   # GET /rankings
   # GET /rankings.json
@@ -77,6 +77,14 @@ class RankingsController < ApplicationController
       end
     end
     true
+  end
+
+  def get_rank_value_or_default(time)
+    existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => time.id)
+    if existing_ranking
+      return existing_ranking.rank
+    end
+    2
   end
 
   def update_rankings_from_params

@@ -62,14 +62,17 @@ function parseRank(rank) {
                 </span>
 
                 <span>
-                  <%= range_field_tag "rangeInput#{time.id}", 2, in: 0..3, step: 1,
+                  <%= range_field_tag "rangeInput#{time.id}",
+                                      parse_rank(get_rank_value_or_default(time)), in: 0..3, step: 1,
                                       class: "custom-range", type: "range",
                                       oninput: "slider#{time.id}.value = parseRank(rangeInput#{time.id}.value)" %>
                 </span>
 
                 <span>
                   <b>Rank:</b>
-                  <output name="slider<%= time.id %>" id="slider<%= time.id %>" for="rangeInput<%= time.id %>">2</output>
+                  <output name="slider<%= time.id %>" id="slider<%= time.id %>" for="rangeInput<%= time.id %>">
+                    <%= get_rank_value_or_default(time) %>
+                  </output>
                 </span>
             </div>
           <% end %>
