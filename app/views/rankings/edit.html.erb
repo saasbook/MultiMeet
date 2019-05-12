@@ -13,6 +13,21 @@
   </div>
 <% end %>
 
+<script>
+function parseRank(rank) {
+    rank = parseInt(rank);
+    if (rank === 0) {
+        return "Can't go";
+    } else if (rank === 1) {
+        return 3;
+    } else if (rank === 2) {
+        return 2;
+    } else if (rank === 3) {
+        return 1;
+    }
+}
+</script>
+
 
 <% if valid_secret_id? %>
 
@@ -46,7 +61,11 @@
                 <span>
                   <%= range_field_tag "rangeInput#{time.id}", 2, in: 0..3, step: 1,
                                       class: "custom-range", type: "range",
-                                      oninput: "slider#{time.id}.value = rangeInput#{time.id}.value" %>
+                                      oninput: "slider#{time.id}.value = parseRank(rangeInput#{time.id}.value)" %>
+                </span>
+
+                <span>
+                  <b>Rank:</b>
                   <output name="slider<%= time.id %>" id="slider<%= time.id %>" for="rangeInput<%= time.id %>">2</output>
                 </span>
 

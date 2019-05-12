@@ -2,7 +2,7 @@ class RankingsController < ApplicationController
   before_action :set_fields, only: [:show, :edit, :create, :update, :end]
   before_action :create_rankings_hash, only: [:show]
   before_action :create_times_hash, only: [:edit]
-  helper_method :valid_secret_id?
+  helper_method :valid_secret_id?, :parse_rank
 
   # GET /rankings
   # GET /rankings.json
@@ -60,20 +60,19 @@ class RankingsController < ApplicationController
   # POST /rankings
   # POST /rankings.json
   def create
-    @times.each do |time|
-      unless params.keys.include? time.id.to_s or time.is_date
-        flash[:error] = "Error: please fill in an option for each time."
-        redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
-      end
-    end
+    # @times.each do |time|
+    #   unless params.keys.include? "rangeInput#{time.id}" or time.is_date
+    #     flash[:error] = "Error: please fill in an option for each time."
+    #     redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
+    #   end
+    # end
 
     @times.each do |time|
-      # byebug
       if time.is_date
         next
       end
       id = time.id
-      rank_num = params[id.to_s].to_i
+      rank_num = parse_rank(params["rangeInput#{time.id}"].to_i)
       existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => id)
 
       if existing_ranking
@@ -89,8 +88,16 @@ class RankingsController < ApplicationController
     redirect_to end_project_participant_ranking_path
   end
 
-  def parse_rank rank
-
+  def parse_rank(rank)
+    if rank.eql? 0
+      "Can't go"
+    elsif rank.eql? 1
+      3
+    elsif rank.eql? 2
+      2
+    elsif rank.eql? 3
+      1
+    end
   end
 
   # PATCH/PUT /rankings/1
