@@ -13,6 +13,17 @@
   </div>
 <% end %>
 
+<script>
+function parseRank(rank) {
+    rank = parseInt(rank);
+    if (rank === 0) {
+        return "Can't go";
+    } else {
+        return 4 - rank;
+    }
+}
+</script>
+
 
 <% if valid_secret_id? %>
 
@@ -43,6 +54,7 @@
             </strong>
           </div>
           <% @times_hash[date].each do |time|  %>
+
             <div class="ranking-times-selection-entry list-group-item py-2">
                 <span>
                   <b>Time:</b>
@@ -50,18 +62,14 @@
                 </span>
 
                 <span>
-                  <%= radio_button_tag time.id, '0' %>
-                  <%= label time.id, 'Can\'t go' %>
+                  <%= range_field_tag "rangeInput#{time.id}", 2, in: 0..3, step: 1,
+                                      class: "custom-range", type: "range",
+                                      oninput: "slider#{time.id}.value = parseRank(rangeInput#{time.id}.value)" %>
                 </span>
 
                 <span>
-                  <%= radio_button_tag time.id, '2' %>
-                  <%= label time.id, 'Okay' %>
-                </span>
-
-                <span>
-                  <%= radio_button_tag time.id, '1' %>
-                  <%= label time.id, 'Preferred' %>
+                  <b>Rank:</b>
+                  <output name="slider<%= time.id %>" id="slider<%= time.id %>" for="rangeInput<%= time.id %>">2</output>
                 </span>
             </div>
           <% end %>

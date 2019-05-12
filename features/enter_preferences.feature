@@ -24,8 +24,8 @@ Background: A project is set up and participants are invited to rank times
     When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
     Then I should see "Please enter your preferences for these times."
     And I should not see "Access denied"
-    When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
-    And I choose "Preferred" for time "Dec 1 2019 1:00 PM"
+    When I choose "Can't go" for time "Dec 1 2019 10:00 AM"
+    And I choose "1" for time "Dec 1 2019 1:00 PM"
     And I press "Submit"
     Then I should see "Thanks for submitting your preferences!"
 
@@ -41,12 +41,12 @@ Background: A project is set up and participants are invited to rank times
 #    I access the time ranking page for project of id "99" from user id "6" and secretid "none"
 #    Then I should see "Project does not exist."
 
-  Scenario: User submits without filling out all of the preferences
-    When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
-    Then I should see "Please enter your preferences for these times."
-    When I choose "Can't go" for time "Dec 1 2019 10:00 AM"
-    And I press "Submit"
-    Then I should see "Error: please fill in an option for each time."
+#  Scenario: User submits without filling out all of the preferences
+#    When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
+#    Then I should see "Please enter your preferences for these times."
+#    When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
+#    And I press "Submit"
+#    Then I should see "Error: please fill in an option for each time."
 
   Scenario: User has a match degree of greater than one, but only selects one time they can go to and runs into an error
     When I am on the participants page for "CS169 Sections"
@@ -59,7 +59,7 @@ Background: A project is set up and participants are invited to rank times
 
     When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
     Then I should see "Please enter your preferences for these times."
-    When I choose "Preferred" for time "Dec 1 2019 1:00 PM"
+    When I choose "1" for time "Dec 1 2019 1:00 PM"
     When I choose "Can't go" for time "Dec 1 2019 10:00 AM"
     And I press "Submit"
     Then I should see "Error: you must be available for at least 2 times."

@@ -16,11 +16,8 @@ end
 
 When /^I choose "(.*)" for time "(.*)"$/ do |option, time|
   time = ProjectTime.find_by(:date_time => Time.parse(time))
-  if option.eql?("Preferred")
-    choose(time.id.to_s, option: "1") # name and value to make unique
-  elsif option.eql?("Okay")
-    choose(time.id.to_s, option: "2") # name and value to make unique
-  else
-    choose(time.id.to_s, option: "0") # name and value to make unique
+  if option.eql? "Can't go"
+    option = 0
   end
+  find("#rangeInput#{time.id}").set option
 end
