@@ -39,11 +39,11 @@
 		No such project exists.
 	<% elsif !@permission %>
 		Permission denied.
-  <% elsif !@participants_are_set %>
+  <% elsif @all_participants_ids.size == 0 %>
     Not eligible to match. There are no participants.
-  <% elsif !@times_are_set %>
+  <% elsif @all_project_time_ids.size == 0 %>
     Not eligible to match. There are no times set for this project.
-	<% elsif !@all_submitted_preferences %>
+	<% elsif !(@all_submitted_preferences) %>
   	Not eligible to match. Not everyone has submitted preferences.
 	<% else %>
 		All participants have submitted preferences. Ready to match.

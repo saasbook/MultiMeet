@@ -3,13 +3,7 @@
 class MatchingsController < ApplicationController
   before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
 
-  # GET /project/:project_id/matching
-  def show
-    unless logged_in?
-      require_user
-      return
-    end
-
+  def set_show_variables
     @proj_exists = !(@project.nil?)
     if @proj_exists
       @permission = current_user.id == @project.user.id
@@ -17,12 +11,20 @@ class MatchingsController < ApplicationController
 
     if @proj_exists and @matching
       @parsed_matching = JSON.parse(@matching.output_json)
-      print(@parsed_matching)
+      # print(@parsed_matching)
     elsif @proj_exists
-      @participants_are_set = @all_participants_ids.size > 0
-      @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
+  end
+  
+  # GET /project/:project_id/matching
+  def show
+    unless logged_in?
+      require_user
+      return
+    end
+
+    set_show_variables
   end
 
   def email
