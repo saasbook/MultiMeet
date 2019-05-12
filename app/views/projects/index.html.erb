@@ -65,7 +65,7 @@ color: white;}
     <div class="main">
       <div class="card" style="width: 42%; background-color:white; margin:15px">
         <div class="card-body" id="bottom" style="border-style: dashed; border-color: #1a53ff">
-          <a href= <%=new_project_path%> style="text-decoration: none">
+          <a href="<%=new_project_path%>" style="text-decoration: none">
             <h3 style="color: #1a53ff">Add New Project</h3><span class="proj"></span>
           </a>
         </div>
@@ -73,11 +73,17 @@ color: white;}
       <div class="row box-row">
         <% @projects.each do |project| %>
           <div class="card" style="width: 44%; background-color:#f2f2f2; margin:30px">
-            <div class="card-header" style="background-color: #d9d9d9">Project ID: <%= project.id %></div>
-            <div class="card-body" id="bottom">
-              <a href= <%=project_path(project.id)%> <%= project.project_name %> style="text-decoration: none"><span1 class="proj1"></span1>
-                <h3 style="color: black"> <%= project.project_name%></h3>
+            <div class="card-header" style="background-color: #d9d9d9">
+              <a href= "<%=project_path(project.id)%>" style="text-decoration: none">
+                <span1 class="proj1"></span1>
+                <strong style="color: #222222"><%= project.project_name %></strong>
               </a>
+            </div>
+            <div class="card-body" id="bottom">
+                <p style="color: black;">
+                  <%= num_responded(project.id) %> /
+                  <%= project.participants.size %> participants responded
+                </p>
               <div class="progress">
 
                 <% if responded(project.id)*100 > 75 %>

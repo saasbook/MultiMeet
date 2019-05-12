@@ -3,13 +3,7 @@
 class MatchingsController < ApplicationController
   before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
 
-  # GET /project/:project_id/matching
-  def show
-    unless logged_in?
-      require_user
-      return
-    end
-
+  def set_show_variables
     @proj_exists = !(@project.nil?)
     if @proj_exists
       @permission = current_user.id == @project.user.id
@@ -19,15 +13,23 @@ class MatchingsController < ApplicationController
       @parsed_matching = JSON.parse(@matching.output_json)
 
     elsif @proj_exists
-      @participants_are_set = @all_participants_ids.size > 0
-      @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
-    
+
     respond_to do |format|
       format.html
       format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
     end
+  end
+
+  # GET /project/:project_id/matching
+  def show
+    unless logged_in?
+      require_user
+      return
+    end
+
+    set_show_variables
   end
 
   def email

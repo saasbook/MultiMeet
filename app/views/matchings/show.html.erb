@@ -8,42 +8,42 @@
   <div class="editing-matching jumbotron shadow white-bg">
     <h1>Matching</h1>
     <p id="notice"><%= notice %></p>
-    
+
     <% if @matching %>
       <table class="table">
-      	<tbody>
-      	<tr>
+        <tbody>
+        <tr>
           <td><b>Time</b></td>
-      		<td><b>People</b></td>
-      	</tr>
-      
+          <td><b>People</b></td>
+        </tr>
+
         <% @parsed_matching["schedule"].each do |event|  %>
           <tr>
             <td><%= Time.parse(event["timestamp"]).strftime("%A, %B %d %Y %I:%M %p") %></td>
             <td><%= event["people_called"].join(', ') %> </td>
           </tr>
-      
+
         <% end %>
-      	</tbody>
+        </tbody>
       </table>
     <% else %>
-    	<% if !@proj_exists %>
-    		No such project exists.
-    	<% elsif !@permission %>
-    		Permission denied.
-      <% elsif !@participants_are_set %>
+      <% if !@proj_exists %>
+        No such project exists.
+      <% elsif !@permission %>
+        Permission denied.
+      <% elsif @all_participants_ids.size == 0 %>
         Not eligible to match. There are no participants.
-      <% elsif !@times_are_set %>
+      <% elsif @all_project_time_ids.size == 0 %>
         Not eligible to match. There are no times set for this project.
-    	<% elsif !@all_submitted_preferences %>
-      	Not eligible to match. Not everyone has submitted preferences.
-    	<% else %>
-    		All participants have submitted preferences. Ready to match.
-    		<%= button_to 'Match!', project_matching_path(@project), class:"btn btn-primary" %>
+      <% elsif !(@all_submitted_preferences) %>
+        Not eligible to match. Not everyone has submitted preferences.
+      <% else %>
+        All participants have submitted preferences. Ready to match.
+        <%= button_to 'Match!', project_matching_path(@project), class:"btn btn-primary" %>
       <% end %>
     <% end %>
   </div>
-  
+
   <% if @matching %>
     <div class="notify-matching jumbotron shadow white-bg">
       <h1>Email Participants</h1>
@@ -56,15 +56,16 @@
       <% end %>
     </div>
   <% end %>
-  
+
   <div class="matching-actions jumbotron shadow white-bg">
-     <% if @proj_exists %>
-  	   <%= link_to 'Back to project', project_path(@project), class:"btn btn-primary" %>
-     <% end %>
-     <% if @matching %>
-       <%= button_to 'Run algorithm again', project_matching_path(@matching.project), class:"btn btn-primary" %>
-       <%= link_to 'Download CSV', project_matching_path(@project, format: "csv"), class: "btn btn-info" %>
-     <% end %>
+    <% if @proj_exists %>
+      <%= link_to 'Back to project', project_path(@project), class:"btn btn-primary" %>
+    <% end %>
+    <% if @matching %>
+      <%= button_to 'Run algorithm again', project_matching_path(@matching.project), class:"btn btn-primary" %>
+      <%= link_to 'Download CSV', project_matching_path(@project, format: "csv"), class: "btn btn-info" %>
+    <% end %>
   </div>
-  
+
 </div>
+

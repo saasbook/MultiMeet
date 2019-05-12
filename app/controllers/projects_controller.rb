@@ -2,7 +2,7 @@
 
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show edit]
-  helper_method :responded
+  helper_method :responded, :num_responded
 
   # GET /projects/new
   def new
@@ -104,13 +104,18 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:project_name)
   end
 
-  def responded(id)
+  def num_responded(id)
     count = 0
     Participant.where(project_id: id).pluck(:last_responded).each do |answer|
       unless answer.nil?
         count += 1
       end
     end
+    count
+  end
+
+  def responded(id)
+    count = num_responded(id)
     count.to_f / Participant.where(project_id: id).pluck(:last_responded).length.to_f
   end
 
