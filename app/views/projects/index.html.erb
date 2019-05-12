@@ -2,6 +2,7 @@
 <%= render 'layouts/alerts' %>
 
 <head>
+<% @title = "Project Dashboard - MultiMeet" %>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 * {
@@ -72,14 +73,17 @@ color: white;}
       <div class="row box-row">
         <% @projects.each do |project| %>
           <div class="card" style="width: 44%; background-color:#f2f2f2; margin:30px">
-            <div class="card-header" style="background-color: #d9d9d9"><strong><%= project.project_name %></strong></div>
+            <div class="card-header" style="background-color: #d9d9d9">
+              <a href= "<%=project_path(project.id)%>" style="text-decoration: none">
+                <span1 class="proj1"></span1>
+                <strong style="color: #222222"><%= project.project_name %></strong>
+              </a>
+            </div>
             <div class="card-body" id="bottom">
-              <a href= "<%=project_path(project.id)%> <%= project.project_name %>" style="text-decoration: none"><span1 class="proj1"></span1>
                 <p style="color: black;">
                   <%= num_responded(project.id) %> /
                   <%= project.participants.size %> participants responded
                 </p>
-              </a>
               <div class="progress">
 
                 <% if responded(project.id)*100 > 75 %>
@@ -97,6 +101,7 @@ color: white;}
           </div>
         <% end%>
       </div>
+   <% end %>
   </div>
 <% else %>
   <div class="mx-4 my-4">
@@ -106,5 +111,4 @@ color: white;}
       Please <strong>login</strong> or <strong>sign up</strong> for a new account!
     </p>
   </div>
-<% end %>
 <% end %>

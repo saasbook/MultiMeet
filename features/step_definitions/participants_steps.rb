@@ -29,3 +29,11 @@ When /^I visit the bad link from the email for project of id "(.*)" and particip
     participant = Participant.find(part_id)
     visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id + "a"
 end
+
+When /^I upload a non csv file$/ do
+    attach_file(File.join(RAILS_ROOT, 'features', 'attach_file', 'dog.png'))
+end
+
+When /^I upload a csv with valid emails$/ do
+    attach_file(File.join(RAILS_ROOT, 'features', 'attach_file', 'example.csv'))
+end
