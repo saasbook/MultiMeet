@@ -18,12 +18,8 @@ function parseRank(rank) {
     rank = parseInt(rank);
     if (rank === 0) {
         return "Can't go";
-    } else if (rank === 1) {
-        return 3;
-    } else if (rank === 2) {
-        return 2;
-    } else if (rank === 3) {
-        return 1;
+    } else {
+        return 4 - rank;
     }
 }
 </script>

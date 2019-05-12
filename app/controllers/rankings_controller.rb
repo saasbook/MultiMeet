@@ -118,12 +118,8 @@ class RankingsController < ApplicationController
   def parse_rank(rank)
     if rank.eql? 0
       0
-    elsif rank.eql? 1
-      3
-    elsif rank.eql? 2
-      2
-    elsif rank.eql? 3
-      1
+    else
+      4 - rank
     end
   end
 
