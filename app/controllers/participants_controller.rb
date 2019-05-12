@@ -28,17 +28,18 @@ class ParticipantsController < ApplicationController
     email_subject = params[:email_subject]
     email_body = params[:email_body]
     ParticipantsMailer.set_project_name(@project.project_name)
-    
+
     @participants.each do |participant|
       rank_link = edit_project_participant_ranking_url(
           secret_id: participant.secret_id, participant_id: participant.id, project_id: @project.id)
       ParticipantsMailer.availability_email(
           participant.email, email_subject, email_body, rank_link).deliver_now
     end
-    
+
     flash[:success] = 'Emails have been sent.'
     redirect_to display_project_participants_path(params[:project_id])
   end
+
 
   # Temporary button for generating random preferences
   def autofill
@@ -80,42 +81,42 @@ class ParticipantsController < ApplicationController
       success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
     end
   end
-  
+
   def handle_simple
     @participant = Participant.new(participant_params)
     @participant.project_id = params[:project_id]
+    @participant.match_degree = @participant.match_degree ? @participant.match_degree : 1
     if !@participant.valid?
       flash[:danger] = @participant.errors.full_messages.first
-    else 
+    else
       @participant.save!
       flash[:success] = "Successfully created participant #{@participant.email}"
     end
   end
-  
+
   # POST /participants
   # POST /participants.json
   def create
     params[:import] ? handle_import : handle_simple
     redirect_to display_project_participants_path(params[:project_id])
   end
-  
- 
 
   # PATCH/PUT /participants/1
   # PATCH/PUT /participants/1.json
-  # def update
-  #   respond_to do |format|
-  #     if @participant.update(participant_params)
-  #       @participant.project_id = participant_params[:project_id]
-  #       @participant.email = participant_params[:email]
-  #       format.html { redirect_to display_project_participants_path(params[:project_id]), notice: 'Participant was successfully updated.' }
-  #       format.json { render :show, status: :ok, location: @participant }
-  #     else
-  #       format.html { render :edit }
-  #       format.json { render json: @participant.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+  def update
+    respond_to do |format|
+      if @participant.update(participant_params)
+        @participant.project_id = participant_params[:project_id]
+        @participant.email = participant_params[:email]
+        @participant.match_degree = participant_params[:match_degree]
+        format.html { redirect_to display_project_participants_path(params[:project_id]), notice: 'Participant was successfully updated.' }
+        format.json { render :show, status: :ok, location: @participant }
+      else
+        format.html { render :edit }
+        format.json { render json: @participant.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # DELETE /participants/1
   # DELETE /participants/1.json
@@ -129,6 +130,7 @@ class ParticipantsController < ApplicationController
     def set_participant
       #@participant = Participant.find(params[:format])
       @participant = Participant.find_by(:id => params[:id])
+      @project = Project.find(@participant.project_id)
     end
 
     def set_new_user
@@ -136,6 +138,6 @@ class ParticipantsController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def participant_params
-      params.require(:participant).permit(:email, :last_responded)
+      params.require(:participant).permit(:email, :match_degree, :last_responded)
     end
 end

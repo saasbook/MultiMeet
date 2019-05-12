@@ -21,6 +21,6 @@ When /^I choose "(.*)" for time "(.*)"$/ do |option, time|
   elsif option.eql?("Okay")
     choose(time.id.to_s, option: "2") # name and value to make unique
   else
-    choose(time.id.to_s, option: "3") # name and value to make unique
+    choose(time.id.to_s, option: "0") # name and value to make unique
   end
 end

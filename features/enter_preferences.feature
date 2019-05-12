@@ -20,7 +20,6 @@ Background: A project is set up and participants are invited to rank times
     And a participant to project "CS169 Sections" with email "empoleon@berkeley.edu" has a secret_id "empoleonsecretid"
     And a participant to project "CS169 Sections" with email "charizard@berkeley.edu" has a secret_id "charizardsecretid"
 
-
   Scenario: User enters their preferences for times
     When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
     Then I should see "Please enter your preferences for these times."
@@ -45,6 +44,22 @@ Background: A project is set up and participants are invited to rank times
   Scenario: User submits without filling out all of the preferences
     When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
     Then I should see "Please enter your preferences for these times."
-    When I choose "Cannot go" for time "Dec 1 2019 10:00 AM"
+    When I choose "Can't go" for time "Dec 1 2019 10:00 AM"
     And I press "Submit"
     Then I should see "Error: please fill in an option for each time."
+
+  Scenario: User has a match degree of greater than one, but only selects one time they can go to and runs into an error
+    When I am on the participants page for "CS169 Sections"
+    Then I am on the project participants page for "empoleon@berkeley.edu" for project "CS169 Sections"
+    And I fill in "Match Degree" with "2"
+    And I press "Update Participant"
+    Then I should see "Participant was successfully updated."
+    Then I am on the participants page for "CS169 Sections"
+    And the match degree of "empoleon@berkeley.edu" should be 2
+
+    When I access the time ranking page for project "CS169 Sections" from email "empoleon@berkeley.edu" and secret_id "empoleonsecretid"
+    Then I should see "Please enter your preferences for these times."
+    When I choose "Preferred" for time "Dec 1 2019 1:00 PM"
+    When I choose "Can't go" for time "Dec 1 2019 10:00 AM"
+    And I press "Submit"
+    Then I should see "Error: you must be available for at least 2 times."

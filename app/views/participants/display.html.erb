@@ -4,8 +4,8 @@
 
 <div class="participants">
   <p id="notice"><%= notice %></p>
-  
-  
+
+
   <%= form_for(@participant, :url => project_participants_path) do |f| %>
 
   <div class="listing-participants jumbotron white-bg shadow">
@@ -15,6 +15,7 @@
         <tr>
           <th>Email</th>
           <th>Last Responded</th>
+          <th>Match Degree</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -24,9 +25,10 @@
         <tr>
           <td><%= participant.email %></td>
           <td><%= participant.last_responded ? time_ago_in_words(participant.last_responded) + ' ago' : 'No response yet'%></td>
+          <td><%= participant.match_degree %></td>
           <td>
-            <%= link_to 'Autofill Rankings', autofill_project_participant_path(participant.project_id, participant.id), class:"btn btn-primary btn-sm"%>
-            <%= link_to 'Delete', project_participant_path(participant.project_id, participant.id), method: :delete, url: project_participants_path, class:"btn btn-danger btn-sm"%>
+            <%= link_to 'Edit Participant', project_participant_path(participant.project_id, participant.id), url: project_participants_path, class:"btn btn-info btn-sm"%>
+            <%= link_to 'Autofill Rankings', autofill_project_participant_path(participant.project_id, participant.id), class:"btn btn-primary btn-sm", id:"autofill_" + participant.id.to_s%>
             <%= link_to 'Show Rankings', project_participant_ranking_path(participant.project_id, participant.id), class:"btn btn-success btn-sm" %>
           </td>
         </tr>
@@ -49,7 +51,8 @@
         <div class="add-new-participant jumbotron white-bg shadow">
           <h5><b>Add Manually</b></h5>
           <div class="manual-add-input">
-            <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control"%>
+            <%= f.text_field :email, type: "email", placeholder: "Email", class: "form-control", :required => 'required'%>
+            <%= f.number_field :match_degree, type: "number", min:"1", placeholder: "Match Degree", class: "form-control", :required => 'required'%>
             <%= f.submit "Add Participant", class:"btn btn-primary btn-sm" %>
           </div>
         </div>
@@ -69,7 +72,7 @@
       </div>
     <% end %>
   <% end %>
-  
+
   <div class="email-participants jumbotron white-bg shadow">
     <h1>Email Participants</h1>
     <%= form_tag email_project_participants_path, :method => :post, class: "email-body" do %>
@@ -80,9 +83,9 @@
       <%= submit_tag "Send email", class: "btn btn-secondary" %>
     <% end %>
   </div>
-  
+
   <div class="jumbotron white-bg shadow">
     <%= link_to 'Back to Project', project_path(@project), class:"btn btn-info" %>
   </div>
-  
+
 </div>

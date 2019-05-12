@@ -57,6 +57,19 @@ class RankingsController < ApplicationController
 
   end
 
+  def at_least_match_degree_times_available?
+    able_go_count = 0
+    @times.where(:is_date => false).each do |time|
+      if params[time.id.to_s].to_i != 0
+        able_go_count += 1
+      end
+    end
+    if able_go_count >= @participant.match_degree
+      return true
+    end
+    false
+  end
+
   def each_time_in_params?
     @times.where(:is_date => false).each do |time|
       unless params.keys.include? time.id.to_s
@@ -86,6 +99,12 @@ class RankingsController < ApplicationController
   def create
     unless each_time_in_params?
       flash[:error] = "Error: please fill in an option for each time."
+      redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
+      return
+    end
+
+    unless at_least_match_degree_times_available?
+      flash[:error] = "Error: you must be available for at least #{@participant.match_degree} times."
       redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
       return
     end
