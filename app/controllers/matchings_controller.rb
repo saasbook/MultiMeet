@@ -23,6 +23,11 @@ class MatchingsController < ApplicationController
       @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
+    
+    respond_to do |format|
+      format.html
+      format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
+    end
   end
 
   def email
@@ -148,8 +153,10 @@ class MatchingsController < ApplicationController
       person = ranking.participant.email
       timeslot = ranking.project_time.date_time
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
-      preferences.push(row)
+      if ranking.rank != 0
+        row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
+        preferences.push(row)
+      end
     end
 
     preferences

@@ -54,6 +54,18 @@ Feature: Match
     And I am on the matchings page for "No Participants"
     Then I should see "There are no participants."
 
+  Scenario: Download CSV
+    Given I autofill rankings for "alexstennet@berkeley.edu"
+    And I autofill rankings for "andrew.huang@berkeley.edu"
+    And I autofill rankings for "addison.chan@berkeley.edu"
+    And I autofill rankings for "annietang@berkeley.edu"
+    And I autofill rankings for "tperumpail@berkeley.edu"
+    When I am on the matchings page for "CS61A Sections"
+    And I press "Match!"
+    Then I should see "Download CSV"
+    When I follow "Download CSV"
+    Then I should get a download with the filename "CS61A Sections_matching.csv"
+
   Scenario: User runs the algorithm successfully on a single-degree match
     Then the match degree of "alexstennet@berkeley.edu" should be 1
     Then the match degree of "andrew.huang@berkeley.edu" should be 1
@@ -77,9 +89,9 @@ Feature: Match
   Scenario: User is properly warned when not all users are matched
     Given a registered user with the username "jsluong" has a project named "CS61B Sections"
     And the project named "CS61B Sections" has the following participants:
-    | email                      |
+    | email                     |
     | shidihuang@berkeley.edu   |
-    | liangyozhu@berkeley.edu  |
+    | liangyozhu@berkeley.edu   |
 
     And the project named "CS61B Sections" has the following times:
     | datetime            |
