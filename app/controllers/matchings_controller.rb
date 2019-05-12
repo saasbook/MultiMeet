@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MatchingsController < ApplicationController
-  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
+  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email, :modify]
 
   def set_show_variables
     @proj_exists = !(@project.nil?)
@@ -20,6 +20,15 @@ class MatchingsController < ApplicationController
       format.html
       format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
     end
+  end
+
+  def modify
+    @matching = Matching.find_by(params.slice(:project_id))
+    @parsed_matching = JSON.parse(@matching.output_json)
+    !@parsed_matching["schedule"][params[:format].split('/')[0].to_i]["timestamp"]  = params[:format].split('/')[1]
+    !@matching.output_json = @parsed_matching.to_json
+    @matching.save
+    redirect_to project_matching_path(params[:project_id])
   end
 
   # GET /project/:project_id/matching
@@ -192,8 +201,11 @@ class MatchingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_instance_variables
+      @matching = Matching.find_by(params.slice(:project_id))
+      @project = Project.find_by(:id => params[:project_id])
       set_matching_and_project
       if @project
+        @times = @project.project_times.order(:date_time)
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)
       end
