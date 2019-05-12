@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :times
     resource :matching do
       post 'email', on: :collection
+      post 'modify', on: :collection
     end
   end
 

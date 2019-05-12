@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MatchingsController < ApplicationController
-  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email]
+  before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email, :modify]
 
   # GET /project/:project_id/matching
   def show
@@ -25,6 +25,15 @@ class MatchingsController < ApplicationController
     end
   end
 
+  def modify
+    @matching = Matching.find_by(params.slice(:project_id))
+    @parsed_matching = JSON.parse(@matching.output_json)
+    !@parsed_matching["schedule"][params[:format].split('/')[0].to_i]["timestamp"]  = params[:format].split('/')[1]
+    !@matching.output_json = @parsed_matching.to_json
+    @matching.save
+    redirect_to project_matching_path(params[:project_id])
+  end
+
   def email
     @project = Project.find(params[:project_id])
     @participants = @project.participants
@@ -32,7 +41,7 @@ class MatchingsController < ApplicationController
     @email_body = params[:email_body]
     @parsed_matching = JSON.parse(@matching.output_json)
     ParticipantsMailer.set_project_name(@project.project_name)
-    
+
     @parsed_matching['schedule'].each do |matching|
       ParticipantsMailer.matching_email(
           matching['people_called'][0], @email_subject, @email_body, matching['timestamp']).deliver_now
@@ -166,7 +175,7 @@ class MatchingsController < ApplicationController
     def set_instance_variables
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
-
+      @times = @project.project_times.order(:date_time)
       if @project
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)

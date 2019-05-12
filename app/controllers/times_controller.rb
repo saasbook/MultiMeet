@@ -91,7 +91,7 @@ class TimesController < ApplicationController
     @hour = params[:timeslot_hour].to_i
     @minute = params[:timeslot_minute].to_i
     @duration = @hour * 60 + @minute
-    
+
     if params[:project_time][:date_time].nil? || params[:project_time][:date_time].empty?
       flash[:message] = 'No date chosen.'
       redirect_to(new_project_time_path) && return

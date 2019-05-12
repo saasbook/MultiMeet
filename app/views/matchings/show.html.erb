@@ -14,9 +14,22 @@
 		<td><b>People</b></td>
 	</tr>
 
-  <% @parsed_matching["schedule"].each do |event|  %>
+  <% @parsed_matching["schedule"].each_with_index do |event, index|  %>
     <tr>
-      <td><%= event["timestamp"] %></td>
+      <td>
+				<div class="btn-group">
+					<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<%= Time.parse(event["timestamp"]).strftime("%A, %B %d %Y %I:%M %p") %>
+					</button>
+					<div class="dropdown-menu">
+						<% @times.each do |time| %>
+							<a style="text-decoration: none">
+								<%= link_to time.date_time.strftime("%A, %B %d %Y %I:%M %p"), modify_project_matching_path(@project, [[index], [time.date_time.strftime("%A, %B %d %Y %I:%M %p")]]), method: :modify%>
+							</a>
+						<% end %>
+					</div>
+				</div>
+			</td>
       <td><%= event["event_name"] %></td>
       <td><%= event["people_called"].join(', ') %> </td>
     </tr>
