@@ -27,6 +27,13 @@
       <% end %>
     </div>
 
+    <div class="match-degree">
+      <% if !@participant.match_degree == 1 %>
+      <% else %>
+        <p><strong>Number of times to be assigned to you:</strong> <%= @participant.match_degree %></p>
+      <% end %>
+    </div>
+
     <div class="rankings-times-table">
       <%= form_for(@ranking, :url => project_participant_ranking_path, :method => :post) do |f| %>
         <% @times_hash.keys.each do |date|  %>
@@ -43,7 +50,7 @@
                 </span>
 
                 <span>
-                  <%= radio_button_tag time.id, '3' %>
+                  <%= radio_button_tag time.id, '0' %>
                   <%= label time.id, 'Can\'t go' %>
                 </span>
 

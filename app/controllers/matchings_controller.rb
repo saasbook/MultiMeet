@@ -3,13 +3,7 @@
 class MatchingsController < ApplicationController
   before_action :set_instance_variables, only: [:show, :edit, :update, :destroy, :email, :modify]
 
-  # GET /project/:project_id/matching
-  def show
-    unless logged_in?
-      require_user
-      return
-    end
-
+  def set_show_variables
     @proj_exists = !(@project.nil?)
     if @proj_exists
       @permission = current_user.id == @project.user.id
@@ -17,10 +11,8 @@ class MatchingsController < ApplicationController
 
     if @proj_exists and @matching
       @parsed_matching = JSON.parse(@matching.output_json)
-      print(@parsed_matching)
+
     elsif @proj_exists
-      @participants_are_set = @all_participants_ids.size > 0
-      @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
 
@@ -39,6 +31,16 @@ class MatchingsController < ApplicationController
     redirect_to project_matching_path(params[:project_id])
   end
 
+  # GET /project/:project_id/matching
+  def show
+    unless logged_in?
+      require_user
+      return
+    end
+
+    set_show_variables
+  end
+
   def email
     @project = Project.find(params[:project_id])
     @participants = @project.participants
@@ -47,9 +49,19 @@ class MatchingsController < ApplicationController
     @parsed_matching = JSON.parse(@matching.output_json)
     ParticipantsMailer.set_project_name(@project.project_name)
 
+    emails_to_times = {}
     @parsed_matching['schedule'].each do |matching|
-      ParticipantsMailer.matching_email(
-          matching['people_called'][0], @email_subject, @email_body, matching['timestamp']).deliver_now
+      email = matching['people_called'][0]
+      timestamp = Time.parse(matching["timestamp"]).strftime("%A, %B %d %Y %I:%M %p")
+
+      if !emails_to_times[email]
+        emails_to_times[email] = ""
+      end
+      emails_to_times[email] += timestamp + ", "
+    end
+
+    emails_to_times.each do |email, times|
+      ParticipantsMailer.matching_email(email, @email_subject, @email_body, times[0...-2]).deliver_now
     end
 
     flash[:success] = 'Emails have been sent.'
@@ -124,11 +136,9 @@ class MatchingsController < ApplicationController
   end
 
   def people
-    all_participants_emails = @project.participants.pluck(:email)
-
     people = []
-    all_participants_emails.each do |email|
-      row = { "name": email, "match_degree": 1 }
+    @project.participants.each do |participant|
+      row = { "name": participant.email, "match_degree": participant.match_degree }
       people.push(row)
     end
 
@@ -154,8 +164,10 @@ class MatchingsController < ApplicationController
       person = ranking.participant.email
       timeslot = ranking.project_time.date_time
       timeslot_formatted = timeslot.strftime('%Y-%m-%d %H:%M')
-      row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
-      preferences.push(row)
+      if ranking.rank != 0
+        row = {"person_name": person, "timeslot": timeslot_formatted, "rank": ranking.rank}
+        preferences.push(row)
+      end
     end
 
     preferences
@@ -180,7 +192,6 @@ class MatchingsController < ApplicationController
       timeslots: timeslots,
       preferences: preferences
     }
-    # print(JSON.pretty_generate(input))
 
     output = RestClient.post('http://api.multi-meet.com:5000/multimatch', input.to_json,
                              content_type: :json, accept: :json).body

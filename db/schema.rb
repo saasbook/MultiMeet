@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190428045610) do
+ActiveRecord::Schema.define(version: 20190508001114) do
 
   create_table "matchings", force: :cascade do |t|
     t.integer "project_id",  null: false
@@ -23,9 +23,10 @@ ActiveRecord::Schema.define(version: 20190428045610) do
     t.string   "email",          null: false
     t.datetime "last_responded"
     t.string   "secret_id"
+    t.integer  "match_degree"
   end
 
-  add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email_and_last_responded", unique: true
+  add_index "participants", ["project_id", "email"], name: "index_participants_on_project_id_and_email", unique: true
 
   create_table "project_times", force: :cascade do |t|
     t.integer  "project_id",                 null: false

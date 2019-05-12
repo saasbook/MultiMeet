@@ -57,32 +57,59 @@ class RankingsController < ApplicationController
 
   end
 
-  # POST /rankings
-  # POST /rankings.json
-  def create
-    @times.each do |time|
-      unless params.keys.include? time.id.to_s or time.is_date
-        flash[:error] = "Error: please fill in an option for each time."
-        redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
+  def at_least_match_degree_times_available?
+    able_go_count = 0
+    @times.where(:is_date => false).each do |time|
+      if params[time.id.to_s].to_i != 0
+        able_go_count += 1
       end
     end
+    if able_go_count >= @participant.match_degree
+      return true
+    end
+    false
+  end
 
-    @times.each do |time|
-      if time.is_date
-        next
+  def each_time_in_params?
+    @times.where(:is_date => false).each do |time|
+      unless params.keys.include? time.id.to_s
+        return false
       end
-      id = time.id
-      rank_num = params[id.to_s].to_i
-      existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => id)
+    end
+    true
+  end
+
+  def update_rankings_from_params
+    @times.where(:is_date => false).each do |time|
+      rank_num = params[time.id.to_s].to_i
+      existing_ranking = Ranking.find_by(:participant_id => @participant.id, :project_time_id => time.id)
 
       if existing_ranking
         existing_ranking.update(
-            :rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
+            :rank => rank_num, :participant_id => @participant.id, :project_time_id => time.id)
       else
-        new_ranking = Ranking.new(:rank => rank_num, :participant_id => @participant.id, :project_time_id => id)
+        new_ranking = Ranking.new(:rank => rank_num, :participant_id => @participant.id, :project_time_id => time.id)
         new_ranking.save!
       end
     end
+  end
+
+  # POST /rankings
+  # POST /rankings.json
+  def create
+    unless each_time_in_params?
+      flash[:error] = "Error: please fill in an option for each time."
+      redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
+      return
+    end
+
+    unless at_least_match_degree_times_available?
+      flash[:error] = "Error: you must be available for at least #{@participant.match_degree} times."
+      redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
+      return
+    end
+
+    update_rankings_from_params
 
     @participant.update(last_responded: Time.now.getutc)
     redirect_to end_project_participant_ranking_path

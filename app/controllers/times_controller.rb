@@ -28,15 +28,9 @@ class TimesController < ApplicationController
     @project.update(duration: @duration)
   end
 
-  def validate_times(date, is_date)
-    datetime = DateTime.parse(date)
+  def no_overlapping_times? datetime
     minDatetime = datetime.advance(hours: -@hour, minutes: -@minute)
     maxDatetime = datetime.advance(hours: +@hour, minutes: +@minute)
-    query = @project.project_times.where(date_time: datetime, is_date: is_date)
-
-    if is_date
-      query.blank? ? (return true) : (return false)
-    end
 
     minmaxquery = @project.project_times.where('date_time > ? AND date_time < ?', minDatetime, maxDatetime)
 
@@ -49,12 +43,24 @@ class TimesController < ApplicationController
     true
   end
 
+  def date_time_exists?(datetime, is_date)
+    query = @project.project_times.where(date_time: datetime, is_date: is_date)
+
+    query.blank? ? false : true
+  end
+
+  def can_insert_times?(date, is_date)
+    datetime = DateTime.parse(date)
+
+    not date_time_exists?(datetime, is_date) && no_overlapping_times?(datetime)
+  end
+
   # returns if a project time was created and saved
   def create_project_time_if_needed(date, time, is_date)
     date = date + ' ' + time unless is_date
 
     # let's do some validations
-    if validate_times(date, is_date)
+    if can_insert_times? date, is_date
       @time = @project.project_times.new(date_time: date, is_date: is_date)
       return @time.save
     end
