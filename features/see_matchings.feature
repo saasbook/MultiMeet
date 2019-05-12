@@ -18,10 +18,10 @@ Feature: See Rankings
 
     Scenario: User views matchings for a project they do have access to
         When I access the matchings page for project of id "1"
-        Then I should see /Time(\s*)Event(\s*)People/
-        Then I should see /Fri, 22 Mar 2019 13:00:00 GMT(\s*)Person3-0(\s*)Person3/
-        Then I should see /Fri, 22 Mar 2019 14:00:00 GMT(\s*)Person1-0(\s*)Person1/
-        Then I should see /Fri, 22 Mar 2019 15:00:00 GMT(\s*)Person2-0(\s*)Person2/
+        Then I should see /Time(\s*)People/
+        Then I should see /Friday, March 22 2019 01:00 PM(\s*)Person3/
+        Then I should see /Friday, March 22 2019 02:00 PM(\s*)Person1/
+        Then I should see /Friday, March 22 2019 03:00 PM(\s*)Person2/
 
     Scenario: User tries to view matchings for a project with no matchings yet
         When I am on the matchings page for project of id "2"

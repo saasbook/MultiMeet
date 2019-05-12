@@ -2,6 +2,7 @@
 <%= render 'layouts/alerts' %>
 
 <head>
+<% @title = "Project Dashboard - MultiMeet" %>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 * {
@@ -94,6 +95,7 @@ color: white;}
           </div>
         <% end%>
       </div>
+   <% end %>
   </div>
 <% else %>
   <div class="mx-4 my-4">
@@ -103,5 +105,4 @@ color: white;}
       Please <strong>login</strong> or <strong>sign up</strong> for a new account!
     </p>
   </div>
-<% end %>
 <% end %>

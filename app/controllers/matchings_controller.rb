@@ -23,6 +23,11 @@ class MatchingsController < ApplicationController
       @times_are_set = @all_participants_ids.size > 0
       @all_submitted_preferences = all_submitted_preferences?
     end
+
+    respond_to do |format|
+      format.html
+      format.csv {send_data Matching.to_csv(@matching.output_json), :filename => @project.project_name + "_matching.csv"}
+    end
   end
 
   def modify
@@ -80,8 +85,20 @@ class MatchingsController < ApplicationController
     @matching.output_json = api
 
     respond_to do |format|
+      allmatched = true
+      notmatched = ""
       if @matching.save!
-        flash[:success] = 'Successfully matched.'
+        for participant in @project.participants
+          if !@matching.output_json.include? participant.email
+            allmatched = false
+            notmatched += participant.email + ", "
+          end
+        end
+        if allmatched
+          flash[:success] = 'Matching Complete. All users successfully matched.'
+        else
+          flash[:success] = 'Matching Complete. ' + notmatched[0...-2] + ' did not receive a match.'
+        end
         format.html { redirect_to project_matching_path }
         # else
         #   format.html { render :new }
@@ -176,6 +193,7 @@ class MatchingsController < ApplicationController
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
       @times = @project.project_times.order(:date_time)
+      set_matching_and_project
       if @project
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)

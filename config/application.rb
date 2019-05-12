@@ -3,6 +3,7 @@
 require File.expand_path('boot', __dir__)
 
 require 'rails'
+require 'csv'
 # Pick the frameworks you want:
 require 'active_model/railtie'
 require 'active_job/railtie'
