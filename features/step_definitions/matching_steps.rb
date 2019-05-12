@@ -91,3 +91,7 @@ Given('the project named {string} has a two-person matching') do |project_name|
 
   matching.save!
 end
+
+Then /^I should get a download with the filename "([^\"]*)"$/ do |filename|
+  page.response_headers['Content-Disposition'].should include("filename=\"#{filename}\"")
+end

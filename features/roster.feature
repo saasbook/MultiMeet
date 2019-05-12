@@ -25,17 +25,17 @@ Feature: Roster
 
   Scenario: successfully display rosters
     When I am on the roster page for "Test Meeting 1"
-    Then I should see "Listing Participants"
+    Then I should see "Participants"
     When I fill in "Email" with "testing1@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "Email" with "testing2@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "Email" with "testing3@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     Then I should see "Successfully created participant testing3@berkeley.edu"
     When I fill in "Email" with "testing3@berkeley.edu"
-    And I press "Add New Participant"
-    Then I should see "Participant's email already exists"
+    And I press "Add Participant"
+    Then I should see "Email has already been taken"
     When I follow "Back to Project"
     Then I should see "Test Meeting 1"
     When I am on the roster page for "Test Meeting 1"
@@ -55,10 +55,10 @@ Feature: Roster
 
   Scenario: successfully destroy a participant
     When I am on the roster page for "Test Meeting 2"
-    Then I should see "Listing Participants"
+    Then I should see "Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
-    And I press "Add New Participant"
-    When I follow "DELETE"
+    And I press "Add Participant"
+    When I follow "Delete"
     Then I should not see "testing4@berkeley.edu"
     When I follow "Back to Project"
     Then I should see "Test Meeting 2"
@@ -66,18 +66,18 @@ Feature: Roster
   Scenario: successfully email roster
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
-    And I press "Send email to participants"
+    And I press "Send email"
     Then the participant should receive an email
     Then I should see "Emails have been sent."
   
   Scenario: If correct secret_id, render edit preference page
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
-    And I press "Send email to participants"
+    And I press "Send email"
     Then the participant should receive an email
     Then I should see "Emails have been sent."
     When I visit the link from the email for project of id "1" and participant of id "1"
@@ -86,9 +86,9 @@ Feature: Roster
   Scenario: If incorrect secret_id, deny access
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
-    And I press "Add New Participant"
+    And I press "Add Participant"
     And I fill in "email_body" with "Hello, please give me your availability"
-    And I press "Send email to participants"
+    And I press "Send email"
     Then the participant should receive an email
     Then I should see "Emails have been sent."
     When I visit the bad link from the email for project of id "1" and participant of id "1"
@@ -145,4 +145,26 @@ Feature: Roster
     And I should see "successfully matched."
     Then I press "Run algorithm again"
     And I should see "Matching Complete."
-
+    
+  Scenario: No file uploaded
+    When I am on the roster page for "Test Meeting 2"
+    When I press "Upload CSV"
+    Then I should see "No file uploaded."
+    
+  Scenario: Upload non csv
+    When I am on the roster page for "Test Meeting 2"
+    When I upload a non csv file
+    When I press "Upload CSV"
+    Then I should see "File is not a csv."
+    
+  Scenario: Successful upload test
+    When I am on the roster page for "Test Meeting 2"
+    And I fill in "Email" with "armando@berkeley.edu"
+    And I press "Add Participant"
+    And I fill in "Email" with "ok@berkeley.edu"
+    And I press "Add Participant"
+    When I upload a csv with valid emails
+    When I press "Upload CSV"
+    Then I should see "For armando@berkeley.edu : Email has already been taken"
+    Then I should see "For ok@berkeley.edu : Email has already been taken"
+    Then I should see "Imported participants: daniel@yahoo.com daniellee908908@gmail.com"
