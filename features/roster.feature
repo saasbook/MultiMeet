@@ -58,7 +58,8 @@ Feature: Roster
     Then I should see "Participants"
     When I fill in "Email" with "testing4@berkeley.edu"
     And I press "Add Participant"
-    When I follow "Delete"
+    When I follow "Edit Participant"
+    When I follow "Delete Participant"
     Then I should not see "testing4@berkeley.edu"
     When I follow "Back to Project"
     Then I should see "Test Meeting 2"
@@ -71,7 +72,7 @@ Feature: Roster
     And I press "Send email"
     Then the participant should receive an email
     Then I should see "Emails have been sent."
-  
+
   Scenario: If correct secret_id, render edit preference page
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
@@ -82,7 +83,7 @@ Feature: Roster
     Then I should see "Emails have been sent."
     When I visit the link from the email for project of id "1" and participant of id "1"
     Then I should not see "Access denied"
-    
+
   Scenario: If incorrect secret_id, deny access
     When I press the roster bottom for project of id "1"
     When I fill in "Email" with "daniellee0228@berkeley.edu"
@@ -94,7 +95,6 @@ Feature: Roster
     When I visit the bad link from the email for project of id "1" and participant of id "1"
     Then I should see "Access denied"
 
-  
   Scenario: "Last Responded" should update with datetime of last response
     Given a registered user with the username "aaronli98" has a project named "Participants Test"
     And the project named "Participants Test" has the following participants:
@@ -110,10 +110,11 @@ Feature: Roster
 
     When I am on the roster page for "Participants Test"
     Then I should see "No response yet"
-    When 1 people submitted preferences for "Participants Test"
+    Then I autofill rankings for "jsluong@berkeley.edu"
     And I am on the roster page for "Participants Test"
     Then I should see "No response yet"
-    When 2 people submitted preferences for "Participants Test"
+    When I autofill rankings for "andrew.huang@berkeley.edu"
+    And I autofill rankings for "jsluong@berkeley.edu"
     And I am on the roster page for "Participants Test"
     Then I should not see "No response yet"
 
@@ -145,18 +146,18 @@ Feature: Roster
     And I should see "successfully matched."
     Then I press "Run algorithm again"
     And I should see "Matching Complete."
-    
+
   Scenario: No file uploaded
     When I am on the roster page for "Test Meeting 2"
     When I press "Upload CSV"
     Then I should see "No file uploaded."
-    
+
   Scenario: Upload non csv
     When I am on the roster page for "Test Meeting 2"
     When I upload a non csv file
     When I press "Upload CSV"
     Then I should see "File is not a csv."
-    
+
   Scenario: Successful upload test
     When I am on the roster page for "Test Meeting 2"
     And I fill in "Email" with "armando@berkeley.edu"
