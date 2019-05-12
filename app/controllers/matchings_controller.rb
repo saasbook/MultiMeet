@@ -192,9 +192,9 @@ class MatchingsController < ApplicationController
     def set_instance_variables
       @matching = Matching.find_by(params.slice(:project_id))
       @project = Project.find_by(:id => params[:project_id])
-      @times = @project.project_times.order(:date_time)
       set_matching_and_project
       if @project
+        @times = @project.project_times.order(:date_time)
         @all_participants_ids = @project.participants.pluck(:id)
         @all_project_time_ids = @project.project_times.pluck(:id)
       end
