@@ -11,13 +11,19 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   # GET /projects/1.json
-  # def show
-  #   # unless current_user
-  #   #   redirect_to root_path
-  #   # end
-  # end
-  #
-  # # GET /times/1/edit
+  def show
+    unless logged_in?
+      require_user
+      return
+    end
+
+    unless Project.where(user_id: current_user.id).ids.include? params[:id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to projects_path
+    end
+  end
+
+  # GET /times/1/edit
   # def edit
   #
   # end

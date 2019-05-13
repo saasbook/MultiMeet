@@ -70,10 +70,19 @@ class ParticipantsController < ApplicationController
 
   # GET /participants/1
   # GET /participants/1.json
-  # def show
-  #   @participants = Participant.where(project_id: params[:project_id])
-  #   redirect_to projects_path
-  # end
+  def show
+    unless logged_in?
+      require_user
+      return
+    end
+
+    unless Participant.where(project_id: @project.id).ids.include? params[:id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to display_project_participants_path(params[:project_id])
+    end
+    # @participants = Participant.where(project_id: params[:project_id])
+    # redirect_to projects_path
+  end
 
   # GET /participants/new
   # def new

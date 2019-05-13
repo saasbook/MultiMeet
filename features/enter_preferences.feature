@@ -5,8 +5,13 @@ So that I can select which times I like and get the times I want,
 I want to be able to rank the times.
 
 Background: A project is set up and participants are invited to rank times
-    Given a registered user with the email "raichu@berkeley.edu" with username "raichu" exists
+#    Given a registered user with the email "raichu@berkeley.edu" with username "raichu" exists
+    Given a user with the email "raichu@berkeley.edu" with password "password" and with username "raichu" exists
     And a registered user with the username "raichu" has a project named "CS169 Sections"
+    And I am on the login page
+    When I fill in "Email" with "raichu@berkeley.edu"
+    And I fill in "Password" with "password"
+    And I press "Log In"
     And the project named "CS169 Sections" has the following participants:
     | email                  |
     | empoleon@berkeley.edu  |

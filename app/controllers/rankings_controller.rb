@@ -13,6 +13,7 @@ class RankingsController < ApplicationController
   # GET /rankings/1
   # GET /rankings/1.json
   def show
+    require_user
   end
 
   # GET /rankings/new

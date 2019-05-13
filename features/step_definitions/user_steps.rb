@@ -52,6 +52,14 @@ When /^I press the edit bottom for project of id "(.*)"$/ do |id|
     visit "/projects/" + id + "/edit"
 end
 
+When /^I access the show page for the project with id "(.*)"$/ do |id|
+  visit "/projects/" + id
+end
+
+When /^I access the participant edit page for the project with id "(.*)" and participant with id "(.*)"$/ do |project_id, participant_id|
+  visit "/projects/" + project_id + "/participants/" + participant_id
+end
+
 
 When /^I press the delete bottom for participant of email "(.*)" and project id of "(.*)"$/ do |email, id|
     Participant.find_by(:project_id => id, :email => email)
