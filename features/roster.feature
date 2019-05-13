@@ -60,7 +60,8 @@ Feature: Roster
     And I press "Add Participant"
     When I follow "Edit Participant"
     When I follow "Delete Participant"
-    Then I should not see "testing4@berkeley.edu"
+    Then I should see "Successfully deleted participant testing4@berkeley.edu"
+    And I should not see /testing4@berkeley.edu(.*)testing4@berkeley.edu/
     When I follow "Back to Project"
     Then I should see "Test Meeting 2"
 

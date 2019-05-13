@@ -3,6 +3,7 @@
 class ParticipantsController < ApplicationController
   before_action :set_participant, only: %i[show autofill update destroy]
   before_action :set_new_user, only: [:display]
+  before_action :set_project, only: [:display, :email, :handle_simple, :show]
 
   # GET /participants
   # GET /participants.json
@@ -18,12 +19,10 @@ class ParticipantsController < ApplicationController
   # GET /participants/1
   def display
     @participants = Participant.where(project_id: params[:project_id])
-    @project = Project.find(params[:project_id])
   end
 
 
   def email
-    @project = Project.find(params[:project_id])
     @participants = @project.participants
     email_subject = params[:email_subject]
     email_body = params[:email_body]
@@ -81,7 +80,10 @@ class ParticipantsController < ApplicationController
   #   @participant = Participant.new
   # end
   def handle_import
-    @csv = params[:participant][:file]
+    params_participant = params[:participant]
+    if params_participant
+      @csv = params_participant[:file]
+    end
     if @csv.nil?
       flash[:danger] = "No file uploaded."
     elsif !(@csv.content_type == "application/vnd.ms-excel" or @csv.content_type == "text/csv")
@@ -101,11 +103,7 @@ class ParticipantsController < ApplicationController
       flash[:danger] = @participant.errors.full_messages.first
     else
       @participant.save!
-      if need_more_times?
-        flash[:success] = "Successfully created participant #{@participant.email}, but you have more matches to make than you have times. Not everyone will receive a match. Please add more times."
-      else
-        flash[:success] = "Successfully created participant #{@participant.email}."
-      end
+      render_participant_modified_message "created"
     end
   end
 
@@ -116,18 +114,20 @@ class ParticipantsController < ApplicationController
     redirect_to display_project_participants_path(params[:project_id])
   end
 
+  def render_participant_modified_message(action)
+    if need_more_times?
+      flash[:message] = "Successfully #{action} participant #{@participant.email}, but you have more matches to make than you have times. Not everyone will receive a match. Please add more times."
+    else
+      flash[:success] = "Successfully #{action} participant #{@participant.email}."
+    end
+  end
+
   # PATCH/PUT /participants/1
   # PATCH/PUT /participants/1.json
   def update
     respond_to do |format|
       if @participant.update(participant_params)
-        @participant.email = participant_params[:email] ? participant_params[:email] : @participant.email
-        @participant.match_degree = participant_params[:match_degree] ? participant_params[:match_degree] : 1
-        if need_more_times?
-          flash[:success] = "Successfully updated participant #{@participant.email}, but you have more matches to make than you have times. Not everyone will receive a match. Please add more times."
-        else
-          flash[:success] = "Successfully updated participant #{@participant.email}."
-        end
+        render_participant_modified_message "updated"
         format.html { redirect_to display_project_participants_path(params[:project_id]) }
         format.json { render :show, status: :ok, location: @participant }
       else
@@ -140,16 +140,21 @@ class ParticipantsController < ApplicationController
   # DELETE /participants/1
   # DELETE /participants/1.json
   def destroy
+    email = @participant.email
     @participant.destroy
+    flash[:success] = "Successfully deleted participant #{email}."
     redirect_to display_project_participants_path(@participant.project_id)
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_project
+      @project = Project.find(params[:project_id])
+    end
+
     def set_participant
       #@participant = Participant.find(params[:format])
       @participant = Participant.find_by(:id => params[:id])
-      @project = Project.find(@participant.project_id)
     end
 
     def set_new_user
