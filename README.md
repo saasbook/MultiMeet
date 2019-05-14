@@ -15,7 +15,7 @@
 1. clone repo: `git clone https://github.com/Aakup/MultiMeet`
 2. `cd MultiMatch`
 3. install packages: `bundle install --without production`
-4. setup db: `rake db:setup db:migrate`
+4. migrate db: `db:migrate`
 5. seed db: `rake db:seed`
 6. create a file `config/initializers/app_env_vars.rb` and enter your emailer acc and password:
 ```
