@@ -110,20 +110,31 @@ class ParticipantsController < ApplicationController
     # redirect_to projects_path
   end
 
+  def set_csv
+    params_participant = params[:participant]
+    if params_participant
+      @csv = params_participant[:file]
+    end
+  end
+
+  def check_csv_ok?
+    if @csv.nil?
+      flash[:danger] = "No file uploaded."
+      return false
+    elsif !(@csv.content_type == "application/vnd.ms-excel" or @csv.content_type == "text/csv")
+      flash[:danger] = "File is not a csv."
+      return false
+    end
+    true
+  end
+
   # GET /participants/new
   # def new
   #   @participant = Participant.new
   # end
   def handle_import
-    params_participant = params[:participant]
-    if params_participant
-      @csv = params_participant[:file]
-    end
-    if @csv.nil?
-      flash[:danger] = "No file uploaded."
-    elsif !(@csv.content_type == "application/vnd.ms-excel" or @csv.content_type == "text/csv")
-      flash[:danger] = "File is not a csv."
-    else
+    set_csv
+    if check_csv_ok?
       success, alert = Participant.import(@csv, params[:project_id])
       alert.empty? ? () : (flash[:danger] = alert)
       success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
