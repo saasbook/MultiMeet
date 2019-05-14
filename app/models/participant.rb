@@ -13,7 +13,7 @@ class Participant < ActiveRecord::Base
     alert, success = "", ""
     CSV.foreach(file.path, headers:true) do |row|
       address = row.to_s.gsub("\n", '')
-      new = Participant.new(project_id: proj_id.to_i, email: address)
+      new = Participant.new(project_id: proj_id.to_i, email: address, match_degree: 1)
       new.valid? ? (new.save! && success << "#{address} <br/>") : (alert << "For #{address} : #{new.errors.full_messages.first} <br/>")
     end
     return success, alert
