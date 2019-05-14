@@ -2,7 +2,7 @@
 class Participant < ActiveRecord::Base
   belongs_to :project
   has_secure_token :secret_id
-  has_many :rankings
+  has_many :rankings, :dependent => :destroy
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   validates :email, presence: true,
                     length: { maximum: 100 },
