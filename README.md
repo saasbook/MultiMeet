@@ -15,9 +15,8 @@
 1. clone repo: `git clone https://github.com/Aakup/MultiMeet`
 2. `cd MultiMatch`
 3. install packages: `bundle install --without production`
-4. setup db: `rake db:setup db:migrate`
-5. seed db: `rake db:seed`
-6. create a file `config/initializers/app_env_vars.rb` and enter your emailer acc and password:
+4. create and seed db: `db:setup` (runs `db:create db:schema:load db:seed`)
+5. create a file `config/initializers/app_env_vars.rb` and enter your emailer acc and password:
 ```
 ENV['MAILER_EMAIL'] = 'noreply@multimeet.com'
 ENV['MAILER_PASSWORD'] = '<your password>'
@@ -31,8 +30,6 @@ ENV['MAILER_PASSWORD'] = '<your password>'
 - before you push: make sure tests run via `bundle exec rspec` and `bundle exec cucumber features`
 - push the branch, then PR to master, and wait for a code review
 - in case of merge conflict: pull from master, resolve locally, push to your branch.
-
-- TODO: add linter
 
 ### DB migrations
 - if making db changes:
