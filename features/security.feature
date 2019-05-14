@@ -22,7 +22,11 @@ Feature: security
     When I access the show page for the project with id "2"
     Then I should see "Access denied."
 
-  Scenario: User tries to edit another user's participants
+  Scenario: User tries to access another user's participants through their project
+    When I access the participant edit page for the project with id "2" and participant with id "1"
+    Then I should see "Access denied."
+
+  Scenario: User tries to access another user's participants through other user's project
     When I access the participant edit page for the project with id "1" and participant with id "1"
     Then I should see "Access denied."
 
