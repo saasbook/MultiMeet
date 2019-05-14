@@ -24,3 +24,25 @@ public def formatted_preferences
     preferences
 end
 
+public def email_participants (subject, body)
+	participants = self.participants
+    
+    parsed_matching = JSON.parse(self.matching.output_json)
+    ParticipantsMailer.set_project_name(self.project_name)
+
+    emails_to_times = {}
+    parsed_matching['schedule'].each do |matching|
+      email = matching['people_called'][0]
+      timestamp = Time.parse(matching["timestamp"]).strftime("%A, %B %d %Y %I:%M %p")
+
+      if !emails_to_times[email]
+        emails_to_times[email] = ""
+      end
+      emails_to_times[email] += timestamp + ", "
+    end
+
+    emails_to_times.each do |email, times|
+      ParticipantsMailer.matching_email(email, subject, body, times[0...-2]).deliver_now
+    end
+
+end

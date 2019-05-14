@@ -52,26 +52,7 @@ class MatchingsController < ApplicationController
 
   def email
     @project = Project.find(params[:project_id])
-    @participants = @project.participants
-    @email_subject = params[:email_subject]
-    @email_body = params[:email_body]
-    @parsed_matching = JSON.parse(@matching.output_json)
-    ParticipantsMailer.set_project_name(@project.project_name)
-
-    emails_to_times = {}
-    @parsed_matching['schedule'].each do |matching|
-      email = matching['people_called'][0]
-      timestamp = Time.parse(matching["timestamp"]).strftime("%A, %B %d %Y %I:%M %p")
-
-      if !emails_to_times[email]
-        emails_to_times[email] = ""
-      end
-      emails_to_times[email] += timestamp + ", "
-    end
-
-    emails_to_times.each do |email, times|
-      ParticipantsMailer.matching_email(email, @email_subject, @email_body, times[0...-2]).deliver_now
-    end
+    @project.email_participants(params[:email_subject], params[:email_body])
 
     flash[:success] = 'Emails have been sent.'
     redirect_to project_matching_path(params[:project_id])
