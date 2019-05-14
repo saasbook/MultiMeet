@@ -18,20 +18,33 @@ class ParticipantsController < ApplicationController
     @participants = Participant.where(project_id: params[:project_id])
   end
 
-  def ensure_owner_logged_in
-    unless !logged_in? or Project.where(user_id: current_user.id).ids.include? params[:project_id].to_i
-      flash[:danger] = 'Access denied.'
+  # return true if redirected
+  def check_own_project_and_redirect?
+    unless current_user.projects.ids.include? params[:project_id].to_i
+      flash[:danger] = 'Access denied. You do not own that project.'
       redirect_to projects_path
-      return
+      return true
     end
+    false
+  end
 
-    unless params.keys.include? 'id'
-      return
-    end
-
+  # return true if redirected
+  def check_own_participant_and_redirect?
     unless @project.participants.ids.include? params[:id].to_i
-      flash[:danger] = 'Access denied.'
+      flash[:danger] = 'Access denied. Participant does not belong to that project.'
       redirect_to display_project_participants_path(@project.id)
+    end
+  end
+
+  def ensure_owner_logged_in
+    if logged_in?
+      if check_own_project_and_redirect?
+        return
+      end
+
+      if params.keys.include? 'id' and check_own_participant_and_redirect?
+        return
+      end
     end
   end
 
