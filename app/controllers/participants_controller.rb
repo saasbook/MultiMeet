@@ -3,24 +3,37 @@
 class ParticipantsController < ApplicationController
   before_action :set_participant, only: %i[show autofill update destroy]
   before_action :set_new_user, only: [:display]
-  before_action :set_project, only: [:display, :email, :handle_simple, :show]
+  before_action :set_project, only: [:index, :display, :email, :handle_simple, :show]
+  before_action :require_user, :ensure_owner_logged_in, only: [:display, :index, :show]
 
   # GET /participants
   # GET /participants.json
   def index
-    unless logged_in?
-      require_user
-      return
-    end
     @participants = Participant.all
     redirect_to display_project_participants_path(params[:project_id])
   end
 
-  # GET /participants/1
+  # GET /participants
   def display
     @participants = Participant.where(project_id: params[:project_id])
   end
 
+  def ensure_owner_logged_in
+    unless !logged_in? or Project.where(user_id: current_user.id).ids.include? params[:project_id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to projects_path
+      return
+    end
+
+    unless params.keys.include? 'id'
+      return
+    end
+
+    unless @project.participants.ids.include? params[:id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to display_project_participants_path(@project.id)
+    end
+  end
 
   def email
     @participants = @project.participants
@@ -70,10 +83,19 @@ class ParticipantsController < ApplicationController
 
   # GET /participants/1
   # GET /participants/1.json
-  # def show
-  #   @participants = Participant.where(project_id: params[:project_id])
-  #   redirect_to projects_path
-  # end
+  def show
+    # unless logged_in?
+    #   require_user
+    #   return
+    # end
+
+    # unless Participant.where(project_id: @project.id).ids.include? params[:id].to_i
+    #   flash[:danger] = 'Access denied.'
+    #   redirect_to display_project_participants_path(params[:project_id])
+    # end
+    # @participants = Participant.where(project_id: params[:project_id])
+    # redirect_to projects_path
+  end
 
   # GET /participants/new
   # def new
@@ -149,7 +171,8 @@ class ParticipantsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = Project.find(params[:project_id])
+      # @project = Project.find(params[:project_id])
+      @project = Project.find_by(:id => params[:project_id])
     end
 
     def set_participant

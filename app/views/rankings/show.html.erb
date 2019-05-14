@@ -13,7 +13,7 @@
     </div>
 
     <div class="rankings-times-table">
-      <% @rankings_hash.keys.each do |date|  %>
+      <% @rankings_hash.keys.sort.each do |date|  %>
         <div class="ranking-times-date-entry list-group-item list-group-item-primary">
           <strong>
             <%= date %>

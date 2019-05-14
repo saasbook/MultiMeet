@@ -1,5 +1,6 @@
 class RankingsController < ApplicationController
   before_action :set_fields, only: [:show, :edit, :create, :update, :end]
+  before_action :ensure_owner_logged_in, :require_user, only: [:show, :edit]
   before_action :create_rankings_hash, only: [:show]
   before_action :create_times_hash, only: [:edit]
   helper_method :valid_secret_id?, :parse_rank, :get_rank_value_or_default
@@ -13,11 +14,29 @@ class RankingsController < ApplicationController
   # GET /rankings/1
   # GET /rankings/1.json
   def show
+
   end
 
   # GET /rankings/new
   def new
     @ranking = Ranking.new
+  end
+
+  def ensure_owner_logged_in
+    unless Project.where(user_id: current_user.id).ids.include? params[:project_id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to projects_path
+      return
+    end
+
+    unless params.keys.include? 'participant_id'
+      return
+    end
+
+    unless @project.participants.ids.include? params[:participant_id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to display_project_participants_path(@project.id)
+    end
   end
 
   def valid_secret_id?
@@ -105,12 +124,6 @@ class RankingsController < ApplicationController
   # POST /rankings
   # POST /rankings.json
   def create
-    # unless each_time_in_params?
-    #   flash[:error] = "Error: please fill in an option for each time."
-    #   redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
-    #   return
-    # end
-
     unless at_least_match_degree_times_available?
       flash[:error] = "Error: you must be available for at least #{@participant.match_degree} times."
       redirect_to edit_project_participant_ranking_path(:secret_id => @participant.secret_id) and return
@@ -153,7 +166,10 @@ class RankingsController < ApplicationController
       @project = Project.find(params[:project_id])
       @participant = Participant.find_by(:project_id => params[:project_id], :id => params[:participant_id])
       @times = @project.project_times
-      @rankings = @participant.rankings
+
+      unless @participant.nil?
+        @rankings = @participant.rankings
+      end
 
       @ranking = Ranking.find_by(:participant_id => params[:participant_id])
       if @ranking.nil?
