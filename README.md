@@ -31,8 +31,6 @@ ENV['MAILER_PASSWORD'] = '<your password>'
 - push the branch, then PR to master, and wait for a code review
 - in case of merge conflict: pull from master, resolve locally, push to your branch.
 
-- TODO: add linter
-
 ### DB migrations
 - if making db changes:
   - run `db:migrate` and check in your new `schema.rb`
