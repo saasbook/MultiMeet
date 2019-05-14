@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show edit]
+  before_action :set_project, :require_user, :ensure_owner_logged_in, only: %i[show edit]
   helper_method :responded, :num_responded
 
   # GET /projects/new
@@ -11,16 +11,21 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   # GET /projects/1.json
-  # def show
-  #   # unless current_user
-  #   #   redirect_to root_path
-  #   # end
-  # end
-  #
-  # # GET /times/1/edit
+  def show
+
+  end
+
+  # GET /times/1/edit
   # def edit
   #
   # end
+
+  def ensure_owner_logged_in
+    unless !logged_in? or Project.where(user_id: current_user.id).ids.include? params[:id].to_i
+      flash[:danger] = 'Access denied.'
+      redirect_to projects_path
+    end
+  end
 
   def update
     @project = Project.find(params[:id].to_i)

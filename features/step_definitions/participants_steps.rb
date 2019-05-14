@@ -29,10 +29,6 @@ When /^I visit the bad link from the email for project of id "(.*)" and particip
   visit "/projects/"+ project_id + "/participants/" + part_id + "/ranking/edit?secret_id=" + participant.secret_id + "a"
 end
 
-When("I update the match degree of {string} to {int}") do |email, degree|
-  pending
-end
-
 Then("the match degree of {string} should be {int}") do |email, degree|
   participant = Participant.find_by(email: email)
   participant.match_degree.should == degree
