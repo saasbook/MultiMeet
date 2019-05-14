@@ -24,7 +24,7 @@ public def formatted_preferences
     preferences
 end
 
-public def email_participants (subject, body)
+public def email_matchings_to_participants (subject, body)
 	participants = self.participants
     
     parsed_matching = JSON.parse(self.matching.output_json)

@@ -52,7 +52,7 @@ class MatchingsController < ApplicationController
 
   def email
     @project = Project.find(params[:project_id])
-    @project.email_participants(params[:email_subject], params[:email_body])
+    @project.email_matchings_to_participants(params[:email_subject], params[:email_body])
 
     flash[:success] = 'Emails have been sent.'
     redirect_to project_matching_path(params[:project_id])
