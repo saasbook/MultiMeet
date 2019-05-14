@@ -3,7 +3,7 @@
 class ParticipantsController < ApplicationController
   before_action :set_participant, only: %i[show autofill update destroy]
   before_action :set_new_user, only: [:display]
-  before_action :set_project, only: [:display, :email, :handle_simple, :show]
+  before_action :set_project, only: [:display, :email, :handle_simple, :show, :autofill]
 
   # GET /participants
   # GET /participants.json
@@ -42,7 +42,7 @@ class ParticipantsController < ApplicationController
 
   # Temporary button for generating random preferences
   def autofill
-    all_project_time_ids = ProjectTime.where(project_id: @participant.project_id).pluck(:id)
+    all_project_time_ids = @project.project_times.where(is_date: false).pluck(:id)
 
     all_project_time_ids.each do |project_time_id|
       ranking = Ranking.find_by(participant_id: @participant.id, project_time_id: project_time_id)
@@ -141,6 +141,7 @@ class ParticipantsController < ApplicationController
   # DELETE /participants/1.json
   def destroy
     email = @participant.email
+    @participant.rankings
     @participant.destroy
     flash[:success] = "Successfully deleted participant #{email}."
     redirect_to display_project_participants_path(@participant.project_id)
