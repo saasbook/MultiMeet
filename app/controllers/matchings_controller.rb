@@ -98,11 +98,6 @@ class MatchingsController < ApplicationController
     end
   end
 
-  def global_settings
-    { "minutes": @project.duration }
-  end
-
-  
 
   private
     # Use callbacks to share common setup or constraints between actions.
