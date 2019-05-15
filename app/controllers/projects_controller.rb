@@ -94,11 +94,12 @@ class ProjectsController < ApplicationController
     @user = current_user
     if @user
       @projects = @user.projects # Project.where(user_id: @user.id)
-    end
-    @num_responded = {}
-    @responded_fraction = {}
-    @user.projects.each do |project|
-      calc_responded project.id
+
+      @num_responded = {}
+      @responded_fraction = {}
+      @user.projects.each do |project|
+        calc_responded project.id
+      end
     end
   end
 
