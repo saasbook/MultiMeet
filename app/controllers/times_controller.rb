@@ -1,5 +1,6 @@
 class TimesController < ApplicationController
   before_action :set_project_and_project_id, only: %i[index create destroy_all]
+  before_action :ensure_owner_logged_in
 
   # GET /times/new
   def new
@@ -10,6 +11,14 @@ class TimesController < ApplicationController
       @hour = @duration / 60.ceil
       @minute = @duration - (@hour * 60)
     end
+  end
+
+  def ensure_owner_logged_in
+    unless logged_in?
+      return
+    end
+
+    check_own_project_and_redirect?
   end
 
   # GET /times
