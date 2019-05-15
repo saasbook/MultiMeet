@@ -30,6 +30,11 @@ function parseRank(rank) {
   <div class="jumbotron times-index shadow white-bg">
     <h2>Please enter your preferences for these times.</h2>
 
+    <p><strong>Participant: </strong> <%= @participant.email %></p>
+    <p><strong>Project: </strong>
+      <%= @project.project_name %> by <%= @project.user.first_name + " " + @project.user.last_name %>
+    </p>
+
     <div class="current-duration">
       <% if !@project.duration.blank? %>
         <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>

@@ -3,6 +3,7 @@
 <% @title = @project.project_name + " Times - MultiMeet" %>
 <div class="jumbotron times-index shadow white-bg">
   <h1>Project Times</h1>
+  <h3><%= @project.project_name %></h3>
   
   <div class="current-duration">
     <% if !@duration.blank? %>
