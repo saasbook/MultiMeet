@@ -57,6 +57,17 @@ class MatchingsController < ApplicationController
     flash[:success] = 'Emails have been sent.'
     redirect_to project_matching_path(params[:project_id])
   end
+
+  def determine_matching_message
+    notmatched = @matching.participants_not_matched
+    allmatched = (notmatched == "")
+    if allmatched
+      flash[:success] = 'Matching Complete. All users successfully matched.'
+    else
+      flash[:success] = 'Matching Complete. ' + notmatched + ' did not receive a match.'
+    end
+  end
+
   # POST /projects/:project_id/matching
   def create
     @project = Project.find_by(id: params[:project_id])
@@ -65,13 +76,7 @@ class MatchingsController < ApplicationController
 
     respond_to do |format|
       if @matching.save!
-        notmatched = @matching.participants_not_matched
-        allmatched = (notmatched == "")
-        if allmatched
-          flash[:success] = 'Matching Complete. All users successfully matched.'
-        else
-          flash[:success] = 'Matching Complete. ' + notmatched + ' did not receive a match.'
-        end
+        determine_matching_message
         format.html { redirect_to project_matching_path }
         # else
         #   format.html { render :new }
