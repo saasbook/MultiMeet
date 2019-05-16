@@ -1,6 +1,6 @@
 class RankingsController < ApplicationController
   before_action :set_fields, only: [:show, :edit, :create, :update, :end]
-  before_action :ensure_owner_logged_in, :require_user, only: [:show, :edit]
+  before_action :ensure_owner_logged_in, :require_user, only: [:show]
   before_action :create_rankings_hash, only: [:show]
   before_action :create_times_hash, only: [:edit]
   helper_method :valid_secret_id?, :parse_rank, :get_rank_value_or_default
@@ -13,9 +13,9 @@ class RankingsController < ApplicationController
 
   # GET /rankings/1
   # GET /rankings/1.json
-  def show
-
-  end
+  # def show
+  #
+  # end
 
   # GET /rankings/new
   def new
@@ -41,14 +41,16 @@ class RankingsController < ApplicationController
   end
 
   def ensure_owner_logged_in
-    if logged_in?
-      if check_own_project_and_redirect?
-        return
-      end
+    unless logged_in?
+      return
+    end
 
-      if params.keys.include? 'participant_id' and check_own_participant_and_redirect?
-        return
-      end
+    if check_own_project_and_redirect?
+      return
+    end
+
+    if params.keys.include? 'participant_id'
+      check_own_participant_and_redirect?
     end
   end
 

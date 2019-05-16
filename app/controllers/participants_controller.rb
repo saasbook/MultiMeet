@@ -19,32 +19,26 @@ class ParticipantsController < ApplicationController
   end
 
   # return true if redirected
-  def check_own_project_and_redirect?
-    unless current_user.projects.ids.include? params[:project_id].to_i
-      flash[:danger] = 'Access denied. You do not own that project.'
-      redirect_to projects_path
+  def check_own_participant_and_redirect?
+    unless @project.participants.ids.include? params[:id].to_i
+      flash[:danger] = 'Access denied. Participant does not belong to that project.'
+      redirect_to display_project_participants_path(@project.id)
       return true
     end
     false
   end
 
-  # return true if redirected
-  def check_own_participant_and_redirect?
-    unless @project.participants.ids.include? params[:id].to_i
-      flash[:danger] = 'Access denied. Participant does not belong to that project.'
-      redirect_to display_project_participants_path(@project.id)
-    end
-  end
-
   def ensure_owner_logged_in
-    if logged_in?
-      if check_own_project_and_redirect?
-        return
-      end
+    unless logged_in?
+      return
+    end
 
-      if params.keys.include? 'id' and check_own_participant_and_redirect?
-        return
-      end
+    if check_own_project_and_redirect?
+      return
+    end
+
+    if params.keys.include? 'id'
+      check_own_participant_and_redirect?
     end
   end
 
@@ -94,22 +88,6 @@ class ParticipantsController < ApplicationController
     false
   end
 
-  # GET /participants/1
-  # GET /participants/1.json
-  def show
-    # unless logged_in?
-    #   require_user
-    #   return
-    # end
-
-    # unless Participant.where(project_id: @project.id).ids.include? params[:id].to_i
-    #   flash[:danger] = 'Access denied.'
-    #   redirect_to display_project_participants_path(params[:project_id])
-    # end
-    # @participants = Participant.where(project_id: params[:project_id])
-    # redirect_to projects_path
-  end
-
   def set_csv
     params_participant = params[:participant]
     if params_participant
@@ -136,8 +114,12 @@ class ParticipantsController < ApplicationController
     set_csv
     if check_csv_ok?
       success, alert = Participant.import(@csv, params[:project_id])
-      alert.empty? ? () : (flash[:danger] = alert)
-      success.empty? ? () : (flash[:success] = "Imported participants: <br/>" + success)
+      unless alert.empty?
+        flash[:danger] = alert
+      end
+      unless success.empty?
+        flash[:success] = "Imported participants: <br/>" + success
+      end
     end
   end
 

@@ -2,7 +2,9 @@
 <p id="notice"><%= notice %></p>
 
   <div class="jumbotron times-index shadow white-bg">
-    <h1> Rankings </h1>
+    <h1>Rankings</h1>
+    <p><strong>Participant: </strong> <%= @participant.email %></p>
+    <p><strong>Project: </strong><%= @project.project_name %></p>
 
     <div class="current-duration">
       <% if !@project.duration.blank? %>

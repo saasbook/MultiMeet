@@ -2,7 +2,7 @@
 
 class ProjectsController < ApplicationController
   before_action :set_project, :require_user, :ensure_owner_logged_in, only: %i[show edit]
-  helper_method :responded, :num_responded
+  helper_method :calc_responded
 
   # GET /projects/new
   def new
@@ -94,6 +94,12 @@ class ProjectsController < ApplicationController
     @user = current_user
     if @user
       @projects = @user.projects # Project.where(user_id: @user.id)
+
+      @num_responded = {}
+      @responded_fraction = {}
+      @user.projects.each do |project|
+        calc_responded project.id
+      end
     end
   end
 
@@ -109,19 +115,18 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:project_name)
   end
 
-  def num_responded(id)
+  def calc_responded(id)
+    participants = Project.find(id).participants
     count = 0
-    Participant.where(project_id: id).pluck(:last_responded).each do |answer|
-      unless answer.nil?
+    total = 0
+    participants.each do |participant|
+      unless participant.last_responded.nil?
         count += 1
       end
+      total += 1
     end
-    count
-  end
-
-  def responded(id)
-    count = num_responded(id)
-    count.to_f / Participant.where(project_id: id).pluck(:last_responded).length.to_f
+    @num_responded[id] = count
+    @responded_fraction[id] = count.to_f / total
   end
 
 end

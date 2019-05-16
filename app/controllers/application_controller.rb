@@ -21,4 +21,14 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
+
+  # return true if redirected
+  def check_own_project_and_redirect?
+    unless current_user.projects.ids.include? params[:project_id].to_i
+      flash[:danger] = 'Access denied. You do not own that project.'
+      redirect_to projects_path
+      return true
+    end
+    false
+  end
 end
