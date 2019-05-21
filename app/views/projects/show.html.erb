@@ -1,0 +1,39 @@
+<% @title = @project.project_name + " - MultiMeet"%>
+<%= render 'layouts/navbar' %>
+<%= render 'layouts/alerts' %>
+<p id="notice"><%= notice %></p>
+
+<div class="jumbotron times-index shadow white-bg">
+  <h1> <%= @project.project_name %> </h1>
+
+  <div class="current-duration">
+    <% if !@project.duration.blank? %>
+      <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>
+    <% else %>
+      <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
+    <% end %>
+  </div>
+
+  <div class="project-times-table">
+    <div class="project-times-dateentry list-group-item list-group-item-primary">
+      <strong>
+        Participant Email
+      </strong>
+    </div>
+    <% @project.participants.each do |participant| %>
+        <div class="project-times-timeentry list-group-item py-2">
+          <span>
+            <%= participant.email %>
+          </span>
+        </div>
+    <% end %>
+    <div class="card"><%= link_to 'Display Participants', project_participants_path(@project), class:"btn btn-danger" %></div>
+  </div>
+</div>
+
+<div class="jumbotron shadow white-bg actions">
+  <%= link_to 'Matching', project_matching_path(@project), class:"btn btn-info"%>
+  <%= link_to 'Times', project_times_path(@project), class:"btn btn-success"%>
+  <%= link_to 'Rename', edit_project_path(@project), class:"btn btn-primary"%>
+  <%= link_to 'Back', projects_path, class:"btn btn-secondary" %>
+</div>

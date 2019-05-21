@@ -1,0 +1,287 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require bootstrap-datepicker
+ *= require_tree
+ */
+@import 'bootstrap';
+
+/* Regular html elements */
+ul {
+  list-style-type: none;
+  
+  li {
+     margin: 5px 0;
+  }
+}
+
+/* Bootstrap classes */
+.jumbotron{
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.navbar{
+    background-color: #FFFAFA;
+}
+
+
+/* Multiple views */
+.user-container{
+    margin: 10% auto;
+    width: 50%;
+}
+
+.actions {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.white-bg{
+    background-color: white;
+}
+
+.email-subject{
+    margin-bottom: 10px;
+} 
+        
+#email_body{
+    margin-bottom: 20px;
+}
+
+/* Times */
+.current-duration{
+    margin-top: 20px;
+}
+
+.times-index {
+    width: 70%;
+    margin: 3rem auto 2rem auto;
+    padding: 2rem !important;
+}
+
+.project-times-table{
+    margin: 20px 0 30px 0;
+
+    div {
+        max-width: 400px;
+    }
+    
+    .project-times-dateentry{
+        margin-top: 20px;
+    }
+    
+    .project-times-timeentry{
+        display: grid;
+        grid-template-columns: 50% 50%
+    }
+
+    .ranking-times-timeentry{
+        display: grid;
+        grid-template-columns: 50% 50%
+    }
+}
+
+.rankings-times-table{
+  margin: 20px 0 30px 0;
+
+  div {
+    width: 100%;
+  }
+
+  span {
+    font-size: 15px;
+    font-weight: normal;
+    margin-right: 10px;
+  }
+
+  .ranking-times-date-entry{
+    margin-top: 20px;
+  }
+
+  .ranking-times-time-entry{
+    display: grid;
+    grid-template-columns: auto auto
+  }
+
+  .ranking-times-selection-entry{
+    display: grid;
+    grid-template-columns: auto auto auto auto
+  }
+}
+
+#billboard{
+    display: grid;
+    width: 70%;
+    margin: 1rem auto;
+    padding: 1.5rem 2rem;
+    
+    #timeslot {
+        margin-bottom: 2rem;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        #timeslot-div {
+            width: 100%;
+            
+            #timeslot-toggle {
+                margin-top: 20px;
+            }
+            
+            #timeslot_hour, #timeslot_minute {
+                border-radius:4px;
+                border:1px solid #AAAAAA;
+            }
+        }
+    }
+    
+    #dates {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        margin-bottom: 2rem;
+    
+        .dates-chosen {
+            white-space: pre
+        }
+    }
+    
+    #bottom-times {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        margin-bottom: 2rem;
+    }
+    
+    #actions {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+}
+
+.times-table-date{
+    font-weight:bold;
+    margin: 15px 0;
+    
+    span {
+        font-size: 15px;
+        font-weight: normal;
+        margin-right: 10px;
+    }
+    
+    button {
+        margin: 0 15px;
+    }
+    
+    div {
+       margin: 10px 0; 
+    }
+    
+    .startInput, .endInput {
+        border-radius:4px;
+        border:1px solid #AAAAAA;
+    }
+}
+
+.datepicker{
+    width: 30%;
+    font-size: 14px;
+    
+    table {
+        margin: auto;
+        width: 80%;
+    }
+    
+    .dropdown-menu{
+        width: 25%;
+    }
+    
+    .table-condensed{
+        width: 300px;
+        height: 300px;
+    }
+    
+    .datepicker-inline {
+        width: 80%;
+        display: none !important;
+    }
+    
+}
+
+/* Projects */
+.project-header{
+    font-size: 30px;
+}
+
+/* Participants */
+.participants{
+    width: 70%;
+    margin: 2rem auto;
+    
+    .actions-participants{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+    
+        .add-new-participant{
+            width: 97.5%;
+            justify-self:start;
+            
+            .manual-add-input{
+                margin-top: 20px;
+                display: flex;
+                
+                input {
+                    margin-right: 10px;
+                }
+            }
+        }
+        
+        .import-participant{
+            width: 97.5%;
+            justify-self:end;
+            
+            .upload-row{
+                display: flex;
+                
+                div {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    
+    .email-participants {
+        width: 100%;
+    }
+    
+}
+
+
+
+/* Matchings */
+.matchings {
+    width: 70%;
+    margin: 2rem auto;
+}
+
+.matching-actions{
+    margin-top: 10px;
+    display: flex;
+    
+    a, form {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}

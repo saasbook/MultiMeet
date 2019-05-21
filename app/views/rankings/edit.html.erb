@@ -1,0 +1,94 @@
+<%= render 'layouts/navbar' %>
+
+<% if flash[:message]%>
+  <div class="alert alert-danger alert-dismissible show" role="alert">
+    <span class="error"><%= flash[:message] %></span>
+  </div>
+<% elsif flash[:error]%>
+  <div class="alert alert-danger alert-dismissible show" role="alert">
+    <span class="error"><%= flash[:error] %></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+<script>
+function parseRank(rank) {
+    rank = parseInt(rank);
+    if (rank === 0) {
+        return "Can't go";
+    } else {
+        return 4 - rank;
+    }
+}
+</script>
+
+
+<% if valid_secret_id? %>
+
+  <div class="jumbotron times-index shadow white-bg">
+    <h2>Please enter your preferences for these times.</h2>
+
+    <p><strong>Participant: </strong> <%= @participant.email %></p>
+    <p><strong>Project: </strong>
+      <%= @project.project_name %> by <%= @project.user.first_name + " " + @project.user.last_name %>
+    </p>
+
+    <div class="current-duration">
+      <% if !@project.duration.blank? %>
+        <p><strong>Current Timeslot Duration:</strong> <%= @project.duration %> minutes</p>
+      <% else %>
+        <p><strong>Current Timeslot Duration:</strong> Not set yet</p>
+      <% end %>
+    </div>
+
+    <div class="match-degree">
+      <% if !@participant.match_degree == 1 %>
+      <% else %>
+        <p><strong>Number of times to be assigned to you:</strong> <%= @participant.match_degree %></p>
+      <% end %>
+    </div>
+
+    <div class="rankings-times-table">
+      <%= form_for(@ranking, :url => project_participant_ranking_path, :method => :post) do |f| %>
+        <% @times_hash.keys.sort.each do |date|  %>
+          <div class="ranking-times-date-entry list-group-item list-group-item-primary">
+            <strong>
+              <%= date %>
+            </strong>
+          </div>
+          <% @times_hash[date].each do |time|  %>
+
+            <div class="ranking-times-selection-entry list-group-item py-2">
+                <span>
+                  <b>Time:</b>
+                  <%= time.date_time.strftime("%I:%M %p")%>
+                </span>
+
+                <span>
+                  <%= range_field_tag "rangeInput#{time.id}",
+                                      parse_rank(get_rank_value_or_default(time)), in: 0..3, step: 1,
+                                      class: "custom-range", type: "range",
+                                      oninput: "slider#{time.id}.value = parseRank(rangeInput#{time.id}.value)" %>
+                </span>
+
+                <span>
+                  <b>Rank:</b>
+                  <output name="slider<%= time.id %>" id="slider<%= time.id %>" for="rangeInput<%= time.id %>">
+                    <%= get_rank_value_or_default(time) %>
+                  </output>
+                </span>
+            </div>
+          <% end %>
+        <% end %>
+
+        <br>
+        <%= f.submit "Submit Preferences", class:"btn btn-primary"%>
+        <% if logged_in? %>
+          <%= link_to 'Back', project_participant_ranking_path, class:"btn btn-primary" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

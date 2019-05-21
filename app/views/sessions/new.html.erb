@@ -1,0 +1,21 @@
+<%= stylesheet_link_tag "application" %>
+<% @title = "Login - MultiMeet" %>
+<%= render "layouts/navbar" %>
+<%= render "layouts/alerts" %>
+
+<div class="user-container">
+    <div class="jumbotron">
+        
+        <h1>Log In</h1>
+        
+        <%= form_for(:session, url: login_path) do |f| %>
+            <div class="form-group">
+                <%= f.email_field :email, placeholder: "Email", class: "form-control"%>
+            </div>
+            <div class="form-group">
+                <%= f.password_field :password, placeholder: "Password", class: "form-control" %>
+            </div>
+            <%= f.submit "Log In", class:"btn btn-primary" %>
+        <% end %>
+    </div>
+</div>
